@@ -2,8 +2,21 @@
   "name": "habittracker-backend",
   "private": true,
   "version": "2.0.0",
+  "type": "module",
   "main": "src/server.js",
-  "scripts": {"dev":"nodemon src/server.js","start":"node src/server.js"},
-  "dependencies": {"@supabase/supabase-js":"^2.57.0","cors":"^2.8.5","dotenv":"^16.6.1","express":"^5.1.0","helmet":"^8.1.0","zod":"^4.0.17"},
-  "devDependencies": {"nodemon":"^3.1.10"}
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.57.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "zod": "^4.0.17"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
 }
