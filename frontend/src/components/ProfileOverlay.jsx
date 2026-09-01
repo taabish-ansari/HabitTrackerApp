@@ -10,12 +10,23 @@ export default function ProfileOverlay() {
 
   useEffect(() => {
     const handleClick = (event) => {
-      const trigger = event.target.closest('.mini-profile');
-      if (trigger) setOpen(true);
+      if (event.target.closest('.mini-profile')) setOpen(true);
+    };
+    const handleKey = (event) => {
+      if (event.key === 'Escape') setOpen(false);
     };
     document.addEventListener('click', handleClick);
-    return () => document.removeEventListener('click', handleClick);
+    document.addEventListener('keydown', handleKey);
+    return () => {
+      document.removeEventListener('click', handleClick);
+      document.removeEventListener('keydown', handleKey);
+    };
   }, []);
+
+  useEffect(() => {
+    document.body.classList.toggle('profile-open', open);
+    return () => document.body.classList.remove('profile-open');
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -51,7 +62,7 @@ export default function ProfileOverlay() {
   const levelProgress = xp % 100;
   const joined = profile?.created_at ? new Date(profile.created_at).toLocaleDateString(undefined, { month: 'long', year: 'numeric' }) : '—';
 
-  return <div className="profile-overlay" role="dialog" aria-modal="true" aria-label="Your profile">
+  return <div className="profile-overlay" role="dialog" aria-modal="true" aria-label="Your profile" onMouseDown={(event) => { if (event.target === event.currentTarget) setOpen(false); }}>
     <div className="profile-panel">
       <button className="profile-close" onClick={() => setOpen(false)} aria-label="Close profile">×</button>
       <div className="profile-cover"><div className="profile-orb profile-orb-one"/><div className="profile-orb profile-orb-two"/></div>
@@ -67,7 +78,7 @@ export default function ProfileOverlay() {
             <div className="profile-card"><span>Completed</span><strong>{stats?.total_completed || 0}</strong><small>Habit check-ins</small></div>
             <div className="profile-card"><span>Member since</span><strong>{joined}</strong><small>Keep building consistency</small></div>
           </section>
-          <section className="profile-progress-card"><div><p className="eyebrow">Current momentum</p><h2>Level {level}</h2><p>{levelProgress} / 100 XP toward your next level</p></div><div className="profile-progress-ring"><div style={{ '--profile-progress': `${levelProgress * 3.6}deg` }}><strong>{levelProgress}%</strong></div></div></section>
+          <section className="profile-progress-card"><div><p className="eyebrow">Current momentum</p><h2>Level {level}</h2><p>{levelProgress} / 100 XP toward your next level</p></div><div className="profile-progress-ring" style={{ '--profile-progress': `${levelProgress * 3.6}deg` }}><div><strong>{levelProgress}%</strong></div></div></section>
         </>}
       </div>
     </div>
