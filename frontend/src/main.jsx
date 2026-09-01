@@ -7,6 +7,7 @@ import './styles.css';
 import './responsive.css';
 import './premium.css';
 import './profile.css';
+import './habit-colors.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
