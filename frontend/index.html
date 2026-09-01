@@ -5,9 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="HabitTracker — build consistency one day at a time." />
     <title>HabitTracker</title>
+    <script>
+      (() => {
+        const savedTheme = localStorage.getItem('habittracker-theme');
+        const theme = savedTheme === 'dark' || savedTheme === 'light'
+          ? savedTheme
+          : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <button class="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <span class="theme-icon" aria-hidden="true">◐</span>
+    </button>
+    <script>
+      (() => {
+        const button = document.querySelector('.theme-toggle');
+        const icon = button.querySelector('.theme-icon');
+        const sync = () => {
+          const dark = document.documentElement.dataset.theme === 'dark';
+          icon.textContent = dark ? '☀' : '◐';
+          button.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+          button.setAttribute('title', dark ? 'Switch to light mode' : 'Switch to dark mode');
+        };
+        button.addEventListener('click', () => {
+          const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+          document.documentElement.dataset.theme = next;
+          localStorage.setItem('habittracker-theme', next);
+          sync();
+        });
+        sync();
+      })();
+    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
