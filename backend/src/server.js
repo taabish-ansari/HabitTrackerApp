@@ -22,9 +22,21 @@ function userClient(token) {
   });
 }
 
-const habitInput = z.object({ name: z.string().trim().min(1).max(100), category: z.string().trim().min(1).max(40), difficulty: z.coerce.number().int().min(1).max(3).default(1), color: z.string().regex(/^#[0-9a-fA-F]{6}$/).default('#10b981') });
-const logInput = z.object({ habitId: z.coerce.number().int().positive(), date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/), completed: z.boolean() }).refine(value => value.date <= new Date().toISOString().slice(0, 10), { message: 'Future completion dates are not allowed', path: ['date'] });
-const dateRangeInput = z.object({ from: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(), to: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional() });
+const habitInput = z.object({
+  name: z.string().trim().min(1).max(100),
+  category: z.string().trim().min(1).max(40),
+  difficulty: z.coerce.number().int().min(1).max(3).default(1),
+  color: z.string().regex(/^#[0-9a-fA-F]{6}$/).default('#10b981'),
+});
+const logInput = z.object({
+  habitId: z.coerce.number().int().positive(),
+  date: z.string().date(),
+  completed: z.coerce.boolean(),
+});
+const dateRangeInput = z.object({
+  from: z.string().date().optional(),
+  to: z.string().date().optional(),
+});
 
 async function requireUser(req, res, next) {
   const auth = req.get('authorization');
@@ -42,7 +54,12 @@ app.get('/health', (_req, res) => res.json({ status: 'ok', service: 'habittracke
 
 app.get('/api/habits', requireUser, async (req, res, next) => {
   try {
-    const { data, error } = await req.supabase.from('habits').select('id,name,category,difficulty,color,position,created_at,streaks(current_streak,longest_streak,last_completed_date)').eq('user_id', req.user.id).order('position', { ascending: true }).order('created_at', { ascending: true });
+    const { data, error } = await req.supabase
+      .from('habits')
+      .select('id,name,category,difficulty,color,position,created_at,streaks(current_streak,longest_streak,last_completed_date)')
+      .eq('user_id', req.user.id)
+      .order('position', { ascending: true })
+      .order('created_at', { ascending: true });
     if (error) throw error;
     res.json(data ?? []);
   } catch (error) { next(error); }
@@ -53,7 +70,11 @@ app.post('/api/habits', requireUser, async (req, res, next) => {
     const input = habitInput.parse(req.body);
     const { data: last } = await req.supabase.from('habits').select('position').eq('user_id', req.user.id).order('position', { ascending: false }).limit(1).maybeSingle();
     const position = (last?.position ?? -1) + 1;
-    const { data, error } = await req.supabase.from('habits').insert({ user_id: req.user.id, ...input, position }).select('id,name,category,difficulty,color,position').single();
+    const { data, error } = await req.supabase
+      .from('habits')
+      .insert({ user_id: req.user.id, ...input, position })
+      .select('id,name,category,difficulty,color,position')
+      .single();
     if (error) throw error;
     res.status(201).json(data);
   } catch (error) { next(error); }
@@ -62,7 +83,13 @@ app.post('/api/habits', requireUser, async (req, res, next) => {
 app.patch('/api/habits/:id', requireUser, async (req, res, next) => {
   try {
     const input = habitInput.partial().parse(req.body);
-    const { data, error } = await req.supabase.from('habits').update({ ...input, updated_at: new Date().toISOString() }).eq('id', req.params.id).eq('user_id', req.user.id).select('id,name,category,difficulty,color,position').maybeSingle();
+    const { data, error } = await req.supabase
+      .from('habits')
+      .update({ ...input, updated_at: new Date().toISOString() })
+      .eq('id', req.params.id)
+      .eq('user_id', req.user.id)
+      .select('id,name,category,difficulty,color,position')
+      .maybeSingle();
     if (error) throw error;
     if (!data) return res.status(404).json({ error: 'Habit not found' });
     res.json(data);
@@ -110,10 +137,21 @@ app.get('/api/logs', requireUser, async (req, res, next) => {
 app.put('/api/logs', requireUser, async (req, res, next) => {
   try {
     const input = logInput.parse(req.body);
-    const { data: habit, error: habitError } = await req.supabase.from('habits').select('id,difficulty').eq('id', input.habitId).eq('user_id', req.user.id).single();
+    const { data: habit, error: habitError } = await req.supabase
+      .from('habits')
+      .select('id,difficulty')
+      .eq('id', input.habitId)
+      .eq('user_id', req.user.id)
+      .single();
     if (habitError || !habit) return res.status(404).json({ error: 'Habit not found' });
 
-    const { data: existing, error: existingError } = await req.supabase.from('habit_logs').select('id,completed').eq('habit_id', input.habitId).eq('user_id', req.user.id).eq('date', input.date).maybeSingle();
+    const { data: existing, error: existingError } = await req.supabase
+      .from('habit_logs')
+      .select('id,completed')
+      .eq('habit_id', input.habitId)
+      .eq('user_id', req.user.id)
+      .eq('date', input.date)
+      .maybeSingle();
     if (existingError) throw existingError;
 
     const write = existing
@@ -146,7 +184,12 @@ app.get('/api/gamification', requireUser, async (req, res, next) => {
 });
 
 app.use((error, _req, res, _next) => {
-  if (error instanceof z.ZodError) return res.status(400).json({ error: 'Invalid request', details: error.issues });
+  if (error instanceof z.ZodError) {
+    return res.status(400).json({
+      error: error.issues?.[0]?.message || 'Invalid request',
+      details: error.issues,
+    });
+  }
   console.error(error);
   res.status(500).json({ error: 'Internal server error' });
 });
