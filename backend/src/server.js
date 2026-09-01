@@ -23,7 +23,7 @@ function userClient(token) {
 }
 
 const habitInput = z.object({ name: z.string().trim().min(1).max(100), category: z.string().trim().min(1).max(40), difficulty: z.coerce.number().int().min(1).max(3).default(1), color: z.string().regex(/^#[0-9a-fA-F]{6}$/).default('#10b981') });
-const logInput = z.object({ habitId: z.coerce.number().int().positive(), date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/), completed: z.boolean() });
+const logInput = z.object({ habitId: z.coerce.number().int().positive(), date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/), completed: z.boolean() }).refine(value => value.date <= new Date().toISOString().slice(0, 10), { message: 'Future completion dates are not allowed', path: ['date'] });
 const dateRangeInput = z.object({ from: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(), to: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional() });
 
 async function requireUser(req, res, next) {
