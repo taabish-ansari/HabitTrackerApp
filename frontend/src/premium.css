@@ -1,0 +1,316 @@
+/* HabitTracker Premium Visual System
+   Intent: calm, tactile, editorial productivity UI rather than generic SaaS chrome.
+*/
+
+:root {
+  --p-ink: #111827;
+  --p-ink-2: #1f2937;
+  --p-paper: #f7f6f2;
+  --p-paper-2: #efeee9;
+  --p-card: rgba(255,255,255,.76);
+  --p-line: rgba(17,24,39,.09);
+  --p-accent: #0ea5a4;
+  --p-accent-2: #22c55e;
+  --p-warm: #f59e0b;
+  --p-shadow: 0 28px 70px rgba(17,24,39,.10);
+}
+
+html, body { min-height: 100%; }
+body {
+  background:
+    radial-gradient(circle at 9% 7%, rgba(14,165,164,.08), transparent 28%),
+    radial-gradient(circle at 92% 14%, rgba(245,158,11,.07), transparent 22%),
+    linear-gradient(180deg, var(--p-paper) 0%, #f3f4f2 100%);
+}
+
+/* Desktop shell */
+.app-shell {
+  grid-template-columns: 230px minmax(0, 1fr) !important;
+  background: transparent !important;
+}
+.sidebar {
+  background:
+    linear-gradient(180deg, rgba(17,24,39,.98), rgba(13,20,34,.98)) !important;
+  border-right: 1px solid rgba(255,255,255,.06) !important;
+  padding: 20px 14px !important;
+}
+.sidebar .brand-mark {
+  width: 38px; height: 38px; border-radius: 12px;
+  background: linear-gradient(145deg,#f8fafc,#dbe3ea) !important;
+  color: #0f172a !important;
+}
+.side-nav { margin-top: 46px !important; gap: 8px !important; }
+.side-nav button {
+  border-radius: 14px !important;
+  padding: 12px 13px !important;
+  position: relative;
+}
+.side-nav button.active::before {
+  content: "";
+  position: absolute; left: 4px; top: 10px; bottom: 10px;
+  width: 3px; border-radius: 99px; background: var(--p-accent);
+}
+.sidebar-bottom { gap: 12px !important; }
+.mini-profile { padding: 12px !important; border-radius: 16px !important; background: rgba(255,255,255,.035) !important; }
+
+.content {
+  width: min(1240px, calc(100% - 52px)) !important;
+  padding: 26px 0 90px !important;
+}
+
+/* Top surfaces become softer and more dimensional */
+.hero-card {
+  min-height: 255px;
+  padding: 34px !important;
+  border-radius: 30px !important;
+  background:
+    radial-gradient(circle at 85% 15%, rgba(45,212,191,.13), transparent 28%),
+    linear-gradient(145deg,#101827 0%,#172235 55%,#1d2b3f 100%) !important;
+  box-shadow: 0 30px 70px rgba(15,23,42,.20) !important;
+}
+.hero-card::before {
+  content: "";
+  position: absolute;
+  inset: 18px;
+  border: 1px solid rgba(255,255,255,.075);
+  border-radius: 23px;
+  pointer-events: none;
+}
+.hero-card::after {
+  width: 340px !important; height: 340px !important;
+  right: -120px !important; bottom: -210px !important;
+  background: radial-gradient(circle, rgba(45,212,191,.14), transparent 68%) !important;
+}
+.hero-card h1 {
+  font-size: clamp(38px, 5vw, 62px) !important;
+  max-width: 700px;
+}
+.hero-progress {
+  width: 280px !important;
+  min-height: 150px;
+  border-radius: 22px !important;
+  background: rgba(255,255,255,.06) !important;
+  backdrop-filter: blur(14px);
+}
+.hero-progress > span { font-size: 48px !important; }
+
+/* Toolbar feels like a product header */
+.toolbar {
+  margin: 34px 0 18px !important;
+}
+.toolbar h2 { font-size: 29px !important; }
+.toolbar-actions .search {
+  min-width: 245px;
+  border-radius: 14px !important;
+  background: rgba(255,255,255,.62) !important;
+  border-color: rgba(17,24,39,.10) !important;
+}
+.primary.small {
+  padding: 12px 16px !important;
+  border-radius: 14px !important;
+  background: linear-gradient(135deg,#0f766e,#0f172a) !important;
+}
+
+/* Stats become mini editorial panels */
+.stats-row { gap: 14px !important; }
+.stats-row > div {
+  min-height: 104px !important;
+  padding: 18px 19px !important;
+  border-radius: 19px !important;
+  background: rgba(255,255,255,.65) !important;
+  border-color: rgba(17,24,39,.08) !important;
+  box-shadow: 0 8px 30px rgba(17,24,39,.045) !important;
+  position: relative;
+  overflow: hidden;
+}
+.stats-row > div::after {
+  content: "";
+  position: absolute; right: -18px; top: -18px;
+  width: 58px; height: 58px; border-radius: 50%;
+  border: 1px solid rgba(14,165,164,.10);
+}
+.stats-row strong { font-size: 31px !important; }
+
+/* Habit rows: tactile, less database-like */
+.habit-list { gap: 11px !important; }
+.habit-card {
+  min-height: 76px;
+  padding: 15px 17px !important;
+  border-radius: 19px !important;
+  background: rgba(255,255,255,.72) !important;
+  box-shadow: 0 7px 24px rgba(17,24,39,.045) !important;
+}
+.habit-card.complete {
+  background: linear-gradient(100deg, rgba(220,252,231,.86), rgba(255,255,255,.72)) !important;
+  border-color: rgba(34,197,94,.20) !important;
+}
+.habit-card.complete .habit-main h3 { color: #166534; }
+.check {
+  width: 35px !important; height: 35px !important;
+  border-radius: 12px !important;
+  border-width: 1px !important;
+  background: rgba(255,255,255,.82) !important;
+}
+.check.checked {
+  background: linear-gradient(145deg,#20c997,#16a66f) !important;
+  box-shadow: 0 8px 20px rgba(16,185,129,.24) !important;
+}
+.check.checked::after {
+  content: "";
+}
+.meta { font-size: 10.5px !important; }
+.habit-right { gap: 4px !important; }
+.streak {
+  background: linear-gradient(135deg,#fff7ed,#fffbeb) !important;
+  border-color: rgba(245,158,11,.25) !important;
+}
+
+/* Micro interaction on completed rows */
+@keyframes popIn {
+  0% { transform: scale(.96); opacity: .4; }
+  70% { transform: scale(1.015); opacity: 1; }
+  100% { transform: scale(1); }
+}
+.habit-card.complete { animation: popIn .28s ease-out; }
+
+/* Calendar becomes a deliberate workspace */
+.calendar-toolbar { margin: 2px 0 6px; }
+.table-card {
+  border-radius: 22px !important;
+  background: rgba(255,255,255,.70) !important;
+  box-shadow: var(--p-shadow) !important;
+}
+th { background: rgba(248,250,252,.94) !important; }
+.sticky-col { backdrop-filter: blur(8px); }
+.done { background: rgba(220,252,231,.80) !important; }
+.today-cell { box-shadow: inset 0 0 0 2px rgba(14,165,164,.35) !important; }
+
+/* Modal */
+.modal-backdrop { background: rgba(9,14,24,.54) !important; }
+.modal {
+  padding: 28px !important;
+  border-radius: 26px !important;
+  box-shadow: 0 40px 120px rgba(0,0,0,.28) !important;
+}
+.modal-head h2 { font-size: 27px !important; }
+.color-swatch { width: 30px !important; height: 30px !important; border-radius: 9px !important; }
+
+/* Insights / rewards get a more magazine-like composition */
+.insights-grid { gap: 16px !important; }
+.insight-card {
+  border-radius: 22px !important;
+  background: rgba(255,255,255,.70) !important;
+  box-shadow: 0 10px 34px rgba(17,24,39,.05) !important;
+}
+.insight-card.large {
+  background:
+    radial-gradient(circle at 75% 20%, rgba(45,212,191,.12), transparent 24%),
+    linear-gradient(145deg,#101827,#182536) !important;
+}
+.rewards .insight-card { background: rgba(255,255,255,.70) !important; }
+.reward-hero {
+  border-radius: 26px !important;
+  background:
+    radial-gradient(circle at 80% 50%, rgba(34,197,94,.10), transparent 24%),
+    linear-gradient(145deg,#101827,#1b2a3d) !important;
+}
+.level-ring {
+  box-shadow: 0 16px 40px rgba(34,197,94,.12);
+}
+
+/* Auth: give it a memorable first impression */
+.auth-shell {
+  background:
+    radial-gradient(circle at 12% 12%, rgba(14,165,164,.14), transparent 25%),
+    radial-gradient(circle at 88% 84%, rgba(245,158,11,.11), transparent 24%),
+    linear-gradient(135deg,#fafaf8 0%,#f3f5f3 55%,#f6f6f1 100%) !important;
+}
+.auth-card {
+  width: min(470px,100%) !important;
+  border-radius: 32px !important;
+  padding: 38px !important;
+  background: rgba(255,255,255,.74) !important;
+  border-color: rgba(255,255,255,.92) !important;
+  box-shadow: 0 40px 100px rgba(17,24,39,.12) !important;
+}
+.auth-heading h1 { font-size: clamp(36px,7vw,50px) !important; }
+.auth-card .brand-mark { background: linear-gradient(145deg,#0f172a,#273449) !important; color: #fff !important; }
+
+/* Theme toggle becomes a floating piece of hardware */
+.theme-toggle {
+  right: 24px !important; bottom: 24px !important;
+  width: 50px !important; height: 50px !important;
+  border-radius: 16px !important;
+  border-color: rgba(17,24,39,.12) !important;
+  box-shadow: 0 16px 36px rgba(17,24,39,.14) !important;
+}
+
+/* Dark mode: cinematic, not simply inverted */
+html[data-theme="dark"],
+html[data-theme="dark"] body {
+  background:
+    radial-gradient(circle at 8% 3%, rgba(20,184,166,.08), transparent 28%),
+    radial-gradient(circle at 88% 12%, rgba(245,158,11,.06), transparent 24%),
+    #090f1a !important;
+}
+html[data-theme="dark"] .app-shell { background: transparent !important; }
+html[data-theme="dark"] .content { color: #e5e7eb; }
+html[data-theme="dark"] .hero-card { box-shadow: 0 34px 90px rgba(0,0,0,.30) !important; }
+html[data-theme="dark"] .stats-row > div,
+html[data-theme="dark"] .habit-card,
+html[data-theme="dark"] .table-card,
+html[data-theme="dark"] .insight-card {
+  background: rgba(17,24,39,.68) !important;
+  border-color: rgba(255,255,255,.075) !important;
+  box-shadow: 0 12px 36px rgba(0,0,0,.14) !important;
+}
+html[data-theme="dark"] .habit-card.complete {
+  background: linear-gradient(100deg,rgba(6,78,59,.36),rgba(17,24,39,.72)) !important;
+  border-color: rgba(52,211,153,.16) !important;
+}
+html[data-theme="dark"] .habit-card.complete .habit-main h3 { color: #d1fae5; }
+html[data-theme="dark"] .toolbar-actions .search,
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] .ghost {
+  background: rgba(17,24,39,.72) !important;
+  color: #e5e7eb !important;
+  border-color: rgba(255,255,255,.10) !important;
+}
+html[data-theme="dark"] .table-card th { background: #121b2a !important; }
+html[data-theme="dark"] .sticky-col { background: #111827 !important; }
+html[data-theme="dark"] .done { background: rgba(6,78,59,.28) !important; }
+html[data-theme="dark"] .modal { background: #111827 !important; border-color: rgba(255,255,255,.08) !important; }
+html[data-theme="dark"] .auth-card { background: rgba(17,24,39,.80) !important; border-color: rgba(255,255,255,.08) !important; }
+
+/* Responsive polish */
+@media (max-width: 980px) {
+  .content { width: min(100% - 30px, 820px) !important; }
+  .hero-card { min-height: 0; }
+}
+@media (max-width: 680px) {
+  .content { width: calc(100% - 20px) !important; padding-bottom: 78px !important; }
+  .hero-card { padding: 24px !important; border-radius: 24px !important; }
+  .hero-card h1 { font-size: 37px !important; }
+  .hero-progress { width: 100% !important; min-height: 120px; }
+  .toolbar { margin-top: 26px !important; }
+  .toolbar-actions { gap: 8px !important; }
+  .toolbar-actions .search { min-width: 0 !important; }
+  .stats-row.four, .stats-row.three { gap: 10px !important; }
+  .stats-row > div { min-height: 88px !important; }
+  .habit-card { padding: 13px !important; border-radius: 17px !important; }
+  .habit-right { width: auto; }
+  .theme-toggle { right: 14px !important; bottom: 14px !important; width: 46px !important; height: 46px !important; }
+}
+@media (max-width: 430px) {
+  .auth-card { padding: 28px !important; border-radius: 26px !important; }
+  .hero-card h1 { font-size: 33px !important; }
+  .stats-row > div { min-height: 82px !important; padding: 14px !important; }
+  .stats-row strong { font-size: 26px !important; }
+  .habit-main { gap: 10px !important; }
+  .habit-main h3 { font-size: 13px !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
