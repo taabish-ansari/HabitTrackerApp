@@ -16,21 +16,9 @@ const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 if (!supabaseUrl || !serviceKey) throw new Error('SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are required');
 const supabase = createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });
 
-const habitInput = z.object({
-  name: z.string().trim().min(1).max(100),
-  category: z.string().trim().min(1).max(40),
-  difficulty: z.coerce.number().int().min(1).max(3).default(1),
-  color: z.string().regex(/^#[0-9a-fA-F]{6}$/).default('#10b981'),
-});
-const logInput = z.object({
-  habitId: z.coerce.number().int().positive(),
-  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-  completed: z.boolean(),
-});
-const dateRangeInput = z.object({
-  from: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
-  to: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
-});
+const habitInput = z.object({ name: z.string().trim().min(1).max(100), category: z.string().trim().min(1).max(40), difficulty: z.coerce.number().int().min(1).max(3).default(1), color: z.string().regex(/^#[0-9a-fA-F]{6}$/).default('#10b981') });
+const logInput = z.object({ habitId: z.coerce.number().int().positive(), date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/), completed: z.boolean() });
+const dateRangeInput = z.object({ from: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(), to: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional() });
 
 async function requireUser(req, res, next) {
   const auth = req.get('authorization');
@@ -130,7 +118,6 @@ app.put('/api/logs', requireUser, async (req, res, next) => {
       const { error: rpcError } = await supabase.rpc('apply_habit_completion', { p_user_id: req.user.id, p_habit_id: input.habitId, p_date: input.date, p_xp: habit.difficulty * 10 });
       if (rpcError) throw rpcError;
     }
-
     if (existing?.completed && !input.completed) {
       const { error: streakError } = await supabase.rpc('recompute_habit_streak', { p_user_id: req.user.id, p_habit_id: input.habitId });
       if (streakError) throw streakError;
@@ -158,4 +145,6 @@ app.use((error, _req, res, _next) => {
 });
 
 const port = Number(process.env.PORT ?? 5000);
-app.listen(port, () => console.log(`HabitTracker API listening on ${port}`));
+if (!process.env.VERCEL) app.listen(port, () => console.log(`HabitTracker API listening on ${port}`));
+
+export default app;
