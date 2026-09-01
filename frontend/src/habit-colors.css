@@ -1,0 +1,53 @@
+/* Habit-specific completion colors */
+.habit-card.complete {
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--habit-color) 16%, var(--surface-strong)),
+    color-mix(in srgb, var(--habit-color) 5%, var(--surface-strong))
+  ) !important;
+  border-color: color-mix(in srgb, var(--habit-color) 48%, var(--line)) !important;
+  box-shadow:
+    inset 4px 0 0 var(--habit-color),
+    0 10px 30px color-mix(in srgb, var(--habit-color) 12%, transparent) !important;
+}
+
+.habit-card.complete .check.checked {
+  background: var(--habit-color) !important;
+  border-color: var(--habit-color) !important;
+  color: #fff !important;
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--habit-color) 14%, transparent),
+    0 8px 20px color-mix(in srgb, var(--habit-color) 32%, transparent) !important;
+}
+
+.habit-card.complete .habit-main h3 {
+  color: color-mix(in srgb, var(--habit-color) 78%, var(--text)) !important;
+}
+
+.habit-card.complete .meta .dot {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--habit-color) 16%, transparent);
+}
+
+.table-card td.done {
+  background: color-mix(in srgb, var(--habit-color) 15%, transparent) !important;
+  box-shadow: inset 4px 0 0 color-mix(in srgb, var(--habit-color) 72%, transparent) !important;
+}
+
+.table-card td.done input[type="checkbox"] {
+  accent-color: var(--habit-color) !important;
+}
+
+.habit-card.drag-over {
+  border-color: var(--habit-color) !important;
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--habit-color) 30%, transparent),
+    0 14px 32px color-mix(in srgb, var(--habit-color) 14%, transparent) !important;
+}
+
+/* Keep the palette tied to the exact seven colors available in the habit picker. */
+.habit-card[style*="#10b981"] { --habit-color: #10b981; }
+.habit-card[style*="#3b82f6"] { --habit-color: #3b82f6; }
+.habit-card[style*="#f59e0b"] { --habit-color: #f59e0b; }
+.habit-card[style*="#8b5cf6"] { --habit-color: #8b5cf6; }
+.habit-card[style*="#ef4444"] { --habit-color: #ef4444; }
+.habit-card[style*="#06b6d4"] { --habit-color: #06b6d4; }
+.habit-card[style*="#ec4899"] { --habit-color: #ec4899; }
