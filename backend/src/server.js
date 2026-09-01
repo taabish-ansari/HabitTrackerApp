@@ -145,29 +145,15 @@ app.put('/api/logs', requireUser, async (req, res, next) => {
       .single();
     if (habitError || !habit) return res.status(404).json({ error: 'Habit not found' });
 
-    const { data: existing, error: existingError } = await req.supabase
-      .from('habit_logs')
-      .select('id,completed')
-      .eq('habit_id', input.habitId)
-      .eq('user_id', req.user.id)
-      .eq('date', input.date)
-      .maybeSingle();
-    if (existingError) throw existingError;
-
-    const write = existing
-      ? await req.supabase.from('habit_logs').update({ completed: input.completed, updated_at: new Date().toISOString() }).eq('id', existing.id).select('id,habit_id,date,completed').single()
-      : await req.supabase.from('habit_logs').insert({ user_id: req.user.id, habit_id: input.habitId, date: input.date, completed: input.completed }).select('id,habit_id,date,completed').single();
-    if (write.error) throw write.error;
-
-    if (!existing?.completed && input.completed) {
-      const { error: rpcError } = await req.supabase.rpc('apply_habit_completion', { p_user_id: req.user.id, p_habit_id: input.habitId, p_date: input.date, p_xp: habit.difficulty * 10 });
-      if (rpcError) throw rpcError;
-    }
-    if (existing?.completed && !input.completed) {
-      const { error: streakError } = await req.supabase.rpc('recompute_habit_streak', { p_user_id: req.user.id, p_habit_id: input.habitId });
-      if (streakError) throw streakError;
-    }
-    res.json(write.data);
+    const { data, error } = await req.supabase.rpc('set_habit_completion', {
+      p_user_id: req.user.id,
+      p_habit_id: input.habitId,
+      p_date: input.date,
+      p_completed: input.completed,
+      p_xp: habit.difficulty * 10,
+    });
+    if (error) throw error;
+    res.json(data?.log ?? { habit_id: input.habitId, date: input.date, completed: input.completed });
   } catch (error) { next(error); }
 });
 
