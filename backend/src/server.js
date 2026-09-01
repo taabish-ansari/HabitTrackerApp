@@ -27,6 +27,10 @@ const logInput = z.object({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   completed: z.boolean(),
 });
+const dateRangeInput = z.object({
+  from: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+  to: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+});
 
 async function requireUser(req, res, next) {
   const auth = req.get('authorization');
@@ -41,12 +45,7 @@ app.get('/health', (_req, res) => res.json({ status: 'ok', service: 'habittracke
 
 app.get('/api/habits', requireUser, async (req, res, next) => {
   try {
-    const { data, error } = await supabase
-      .from('habits')
-      .select('id,name,category,difficulty,color,position,created_at,streaks(current_streak,longest_streak,last_completed_date)')
-      .eq('user_id', req.user.id)
-      .order('position', { ascending: true })
-      .order('created_at', { ascending: true });
+    const { data, error } = await supabase.from('habits').select('id,name,category,difficulty,color,position,created_at,streaks(current_streak,longest_streak,last_completed_date)').eq('user_id', req.user.id).order('position', { ascending: true }).order('created_at', { ascending: true });
     if (error) throw error;
     res.json(data ?? []);
   } catch (error) { next(error); }
@@ -87,10 +86,11 @@ app.delete('/api/habits/:id', requireUser, async (req, res, next) => {
 app.put('/api/habits/reorder', requireUser, async (req, res, next) => {
   try {
     const ids = z.array(z.coerce.number().int().positive()).min(1).parse(req.body.ids);
+    if (new Set(ids).size !== ids.length) return res.status(400).json({ error: 'Duplicate habit IDs are not allowed' });
     const { data: habits, error } = await supabase.from('habits').select('id').eq('user_id', req.user.id);
     if (error) throw error;
     const allowed = new Set((habits ?? []).map(h => h.id));
-    if (ids.some(id => !allowed.has(id))) return res.status(400).json({ error: 'Invalid habit order' });
+    if (ids.length !== allowed.size || ids.some(id => !allowed.has(id))) return res.status(400).json({ error: 'Habit order must include every habit exactly once' });
     for (const [position, id] of ids.entries()) {
       const { error: updateError } = await supabase.from('habits').update({ position }).eq('id', id).eq('user_id', req.user.id);
       if (updateError) throw updateError;
@@ -101,9 +101,11 @@ app.put('/api/habits/reorder', requireUser, async (req, res, next) => {
 
 app.get('/api/logs', requireUser, async (req, res, next) => {
   try {
+    const range = dateRangeInput.parse({ from: req.query.from, to: req.query.to });
+    if (range.from && range.to && range.from > range.to) return res.status(400).json({ error: 'Invalid date range' });
     let query = supabase.from('habit_logs').select('id,habit_id,date,completed').eq('user_id', req.user.id).order('date', { ascending: true });
-    if (req.query.from) query = query.gte('date', req.query.from);
-    if (req.query.to) query = query.lte('date', req.query.to);
+    if (range.from) query = query.gte('date', range.from);
+    if (range.to) query = query.lte('date', range.to);
     const { data, error } = await query;
     if (error) throw error;
     res.json(data ?? []);
@@ -124,7 +126,6 @@ app.put('/api/logs', requireUser, async (req, res, next) => {
       : await supabase.from('habit_logs').insert({ user_id: req.user.id, habit_id: input.habitId, date: input.date, completed: input.completed }).select('id,habit_id,date,completed').single();
     if (write.error) throw write.error;
 
-    // The RPC is only called for a false -> true transition, so repeat clicks cannot award XP twice.
     if (!existing?.completed && input.completed) {
       const { error: rpcError } = await supabase.rpc('apply_habit_completion', { p_user_id: req.user.id, p_habit_id: input.habitId, p_date: input.date, p_xp: habit.difficulty * 10 });
       if (rpcError) throw rpcError;
