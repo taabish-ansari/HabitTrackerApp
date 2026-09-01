@@ -39,3 +39,10 @@ body{font-size:15px}.eyebrow{font-size:12px;letter-spacing:.16em}.muted{font-siz
 @media(max-width:980px){.mobile-header strong{font-size:15px}.mobile-header .ghost{font-size:13px}}
 @media(max-width:680px){body{font-size:14px}.hero-card h1{font-size:36px}.hero-progress>span{font-size:40px}.toolbar h2{font-size:25px}.stats-row strong{font-size:28px}.habit-main h3{font-size:15px}.meta{font-size:11px}.habit-name{font-size:11px}.modal-head h2{font-size:24px}.reward-hero h2{font-size:38px}.big-number{font-size:48px}}
 @media(max-width:430px){.hero-card h1{font-size:32px}.toolbar h2{font-size:23px}.stats-row strong{font-size:26px}.side-nav button{font-size:12px}}
+
+/* Habit-specific completion colors */
+.habit-card.complete .check.checked{background:var(--habit-color);border-color:var(--habit-color);color:#fff;box-shadow:0 8px 22px color-mix(in srgb,var(--habit-color) 34%,transparent)}
+.habit-card.complete .meta .dot{box-shadow:0 0 0 3px color-mix(in srgb,var(--habit-color) 15%,transparent)}
+.habit-card.complete .streak{background:color-mix(in srgb,var(--habit-color) 10%,var(--surface-strong));color:var(--habit-color);border-color:color-mix(in srgb,var(--habit-color) 30%,var(--line))}
+.calendar-section td.done{background:color-mix(in srgb,var(--habit-color) 14%,transparent)}
+.calendar-section td.done input[type="checkbox"]{accent-color:var(--habit-color)}
