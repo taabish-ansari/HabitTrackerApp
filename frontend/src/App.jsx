@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { habitsApi } from './services/api';
+import { habitsApi, gameApi } from './services/api';
 import { useHabits, useHabitLogs } from './hooks/useHabits';
 import { useSession, signIn, signUp } from './hooks/useSession';
 import { supabase } from './lib/supabase';
@@ -9,44 +9,127 @@ const colors = ['#10b981','#3b82f6','#f59e0b','#8b5cf6','#ef4444','#06b6d4','#ec
 
 function AuthScreen() {
   const [mode, setMode] = useState('login');
-  const [email,setEmail]=useState(''); const [password,setPassword]=useState(''); const [username,setUsername]=useState(''); const [error,setError]=useState(''); const [busy,setBusy]=useState(false);
-  const submit = async e => { e.preventDefault(); setBusy(true); setError(''); const result = mode === 'login' ? await signIn(email,password) : await signUp(email,password,username); setBusy(false); if (result.error) setError(result.error.message); else if (mode==='signup') setError('Check your email to confirm your account.'); };
-  return <main className="auth-shell"><section className="auth-card"><div className="brand-mark">HT</div><h1>HabitTracker</h1><p className="muted">Build consistency, one day at a time.</p><form onSubmit={submit}>{mode==='signup' && <label>Username<input value={username} onChange={e=>setUsername(e.target.value)} required minLength={2}/></label>}<label>Email<input type="email" value={email} onChange={e=>setEmail(e.target.value)} required/></label><label>Password<input type="password" value={password} onChange={e=>setPassword(e.target.value)} required minLength={6}/></label>{error && <div className="error">{error}</div>}<button className="primary" disabled={busy}>{busy ? 'Working…' : mode==='login' ? 'Log in' : 'Create account'}</button></form><button className="link-button" onClick={()=>{setMode(mode==='login'?'signup':'login');setError('')}}>{mode==='login'?'Need an account? Sign up':'Already have an account? Log in'}</button></section></main>;
+  const [email,setEmail] = useState('');
+  const [password,setPassword] = useState('');
+  const [username,setUsername] = useState('');
+  const [error,setError] = useState('');
+  const [busy,setBusy] = useState(false);
+
+  const submit = async (e) => {
+    e.preventDefault(); setBusy(true); setError('');
+    const result = mode === 'login' ? await signIn(email,password) : await signUp(email,password,username);
+    setBusy(false);
+    if (result.error) setError(result.error.message);
+    else if (mode === 'signup') setError('Account created. Check your email if confirmation is enabled.');
+  };
+
+  return <main className="auth-shell"><section className="auth-card">
+    <div className="brand-row"><div className="brand-mark">HT</div><span className="brand-label">HabitTracker</span></div>
+    <div className="auth-heading"><p className="eyebrow">Build consistency</p><h1>{mode === 'login' ? 'Welcome back.' : 'Start a better routine.'}</h1><p className="muted">Small wins, tracked clearly.</p></div>
+    <form onSubmit={submit}>
+      {mode === 'signup' && <label>Username<input value={username} onChange={e=>setUsername(e.target.value)} required minLength={2} maxLength={40} placeholder="Your name" /></label>}
+      <label>Email<input type="email" value={email} onChange={e=>setEmail(e.target.value)} required placeholder="you@example.com" /></label>
+      <label>Password<input type="password" value={password} onChange={e=>setPassword(e.target.value)} required minLength={6} placeholder="At least 6 characters" /></label>
+      {error && <div className="error">{error}</div>}
+      <button className="primary" disabled={busy}>{busy ? 'Please wait…' : mode === 'login' ? 'Log in' : 'Create account'}</button>
+    </form>
+    <button className="link-button" onClick={()=>{setMode(mode==='login'?'signup':'login');setError('')}}>{mode==='login' ? 'Need an account? Sign up' : 'Already have an account? Log in'}</button>
+  </section></main>;
 }
 
 function App() {
-  const { session, loading: authLoading } = useSession();
-  if (authLoading) return <div className="center">Loading…</div>;
-  if (!session) return <AuthScreen />;
-  return <Dashboard user={session.user} />;
+  const { session, loading } = useSession();
+  if (loading) return <div className="center"><div className="spinner"/>Loading your workspace…</div>;
+  return session ? <Dashboard user={session.user} /> : <AuthScreen />;
 }
 
 function Dashboard({ user }) {
   const today = new Date();
-  const [year,setYear]=useState(today.getFullYear()); const [month,setMonth]=useState(today.getMonth());
-  const [newHabitOpen,setNewHabitOpen]=useState(false); const [form,setForm]=useState({name:'',category:'Study',difficulty:1,color:colors[0]});
-  const { habits,loading,error,refresh } = useHabits();
-  const { logs,toggle,error:logError } = useHabitLogs(year,month);
+  const [year,setYear] = useState(today.getFullYear());
+  const [month,setMonth] = useState(today.getMonth());
+  const [view,setView] = useState('today');
+  const [showForm,setShowForm] = useState(false);
+  const [editing,setEditing] = useState(null);
+  const [query,setQuery] = useState('');
+  const [game,setGame] = useState(null);
+  const [gameError,setGameError] = useState('');
+  const { habits, loading, error, refresh } = useHabits();
+  const { logs, toggle, error: logError } = useHabitLogs(year,month);
+
   const days = useMemo(()=>Array.from({length:new Date(year,month+1,0).getDate()},(_,i)=>i+1),[year,month]);
   const monthName = new Date(year,month).toLocaleString(undefined,{month:'long',year:'numeric'});
-  const completed = habits.reduce((sum,h)=>sum + days.filter(d=>logs[`${h.id}-${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`]?.completed).length,0);
-  const total = habits.length * days.length; const progress = total ? Math.round(completed/total*100) : 0;
+  const getDate = day => `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+  const todayKey = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+  const filtered = habits.filter(h => `${h.name} ${h.category}`.toLowerCase().includes(query.toLowerCase()));
+  const completed = habits.reduce((sum,h)=>sum + days.reduce((n,d)=>n + (logs[`${h.id}-${getDate(d)}`]?.completed ? 1 : 0),0),0);
+  const possible = habits.length * days.length;
+  const progress = possible ? Math.round((completed/possible)*100) : 0;
+  const todayCompleted = habits.filter(h=>logs[`${h.id}-${todayKey}`]?.completed).length;
+  const currentStreak = Math.max(0,...habits.map(h=>h.streaks?.[0]?.current_streak || 0));
 
-  const addHabit = async e => { e.preventDefault(); try { await habitsApi.create(form); setForm({name:'',category:'Study',difficulty:1,color:colors[0]}); setNewHabitOpen(false); refresh(); } catch (e) { alert(e.response?.data?.error || e.message); } };
-  const removeHabit = async id => { if(confirm('Delete this habit and its history?')) { try { await habitsApi.remove(id); refresh(); } catch (e) { alert(e.response?.data?.error || e.message); } } };
-  const getDay = d => `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-  const prev = ()=> month===0 ? (setMonth(11),setYear(year-1)) : setMonth(month-1);
-  const next = ()=> month===11 ? (setMonth(0),setYear(year+1)) : setMonth(month+1);
+  const moveMonth = delta => { const next = new Date(year, month + delta, 1); setYear(next.getFullYear()); setMonth(next.getMonth()); };
+  const goToday = () => { setYear(today.getFullYear()); setMonth(today.getMonth()); };
+  const loadGame = async () => { setGameError(''); try { const {data}=await gameApi.get(); setGame(data); } catch(e){ setGameError(e.response?.data?.error || e.message); } };
+  const handleSave = async payload => { try { if(editing) await habitsApi.update(editing.id,payload); else await habitsApi.create(payload); setShowForm(false); setEditing(null); await refresh(); } catch(e) { throw e; } };
+  const handleDelete = async id => { if(!window.confirm('Delete this habit and its history?')) return; try { await habitsApi.remove(id); await refresh(); } catch(e){ alert(e.response?.data?.error || e.message); } };
 
-  return <div className="app-shell"><header className="topbar"><div><div className="eyebrow">Personal dashboard</div><h1>HabitTracker</h1></div><div className="top-actions"><span className="user-chip">{user.email}</span><button className="ghost" onClick={()=>supabase.auth.signOut()}>Log out</button></div></header>
+  return <div className="app-shell">
+    <aside className="sidebar">
+      <div className="brand-row"><div className="brand-mark">HT</div><div><strong>HabitTracker</strong><span>Personal system</span></div></div>
+      <nav className="side-nav"><button className={view==='today'?'active':''} onClick={()=>setView('today')}>◉ <span>Today</span></button><button className={view==='calendar'?'active':''} onClick={()=>setView('calendar')}>▦ <span>Calendar</span></button><button className={view==='insights'?'active':''} onClick={()=>setView('insights')}>◒ <span>Insights</span></button><button className={view==='rewards'?'active':''} onClick={()=>{setView('rewards');loadGame();}}>★ <span>Rewards</span></button></nav>
+      <div className="sidebar-bottom"><div className="mini-profile"><div className="avatar">{(user.email?.[0]||'U').toUpperCase()}</div><div><strong>{user.email?.split('@')[0]}</strong><span>{currentStreak} day best current streak</span></div></div><button className="ghost full" onClick={()=>supabase.auth.signOut()}>Log out</button></div>
+    </aside>
+
     <main className="content">
-      <section className="hero"><div><div className="eyebrow">Consistency over perfection</div><h2>Track habits. See patterns. Keep going.</h2><p className="muted">A clean rebuild focused on reliable data, useful feedback, and zero duplicate rewards.</p></div><div className="hero-stat"><span>{progress}%</span><small>month progress</small></div></section>
-      {(error||logError)&&<div className="error-banner">{error||logError}</div>}
-      <section className="toolbar"><div className="month-nav"><button onClick={prev}>←</button><strong>{monthName}</strong><button onClick={next}>→</button></div><button className="primary small" onClick={()=>setNewHabitOpen(v=>!v)}>＋ Add habit</button></section>
-      {newHabitOpen && <form className="habit-form" onSubmit={addHabit}><input placeholder="Habit name" value={form.name} onChange={e=>setForm({...form,name:e.target.value})} required/><select value={form.category} onChange={e=>setForm({...form,category:e.target.value})}>{categories.map(c=><option key={c}>{c}</option>)}</select><select value={form.difficulty} onChange={e=>setForm({...form,difficulty:Number(e.target.value)})}><option value={1}>Easy · 10 XP</option><option value={2}>Medium · 20 XP</option><option value={3}>Hard · 30 XP</option></select><div className="color-row">{colors.map(c=><button type="button" key={c} className={form.color===c?'selected':''} style={{background:c}} onClick={()=>setForm({...form,color:c})}/>)}</div><button className="primary" type="submit">Save habit</button></form>}
-      <section className="stats-row"><div><span>Habits</span><strong>{habits.length}</strong></div><div><span>Completed</span><strong>{completed}</strong></div><div><span>Progress</span><strong>{progress}%</strong></div></section>
-      <section className="table-card"><div className="table-scroll"><table><thead><tr><th className="habit-col">Habit</th>{days.map(d=><th key={d}>{d}</th>)}</tr></thead><tbody>{loading ? <tr><td colSpan={days.length+1} className="empty">Loading habits…</td></tr> : habits.length===0 ? <tr><td colSpan={days.length+1} className="empty">Add your first habit to start tracking.</td></tr> : habits.map(h=><tr key={h.id}><td className="habit-col"><div className="habit-name"><i style={{background:h.color}}/>{h.name}</div><div className="habit-meta">{h.category} · {h.difficulty}×</div><button className="delete-link" onClick={()=>removeHabit(h.id)}>delete</button></td>{days.map(d=>{const key=`${h.id}-${getDay(d)}`; const checked=!!logs[key]?.completed; return <td key={key} className={checked?'done':''}><input type="checkbox" checked={checked} onChange={()=>toggle(h.id,getDay(d))}/></td>})}</tr>)}</tbody></table></div></section>
-    </main></div>;
+      <header className="mobile-header"><div className="brand-row"><div className="brand-mark">HT</div><strong>HabitTracker</strong></div><button className="ghost" onClick={()=>supabase.auth.signOut()}>Log out</button></header>
+      {(error||logError||gameError)&&<div className="error-banner">{error||logError||gameError}</div>}
+
+      {view !== 'rewards' && <section className="hero-card">
+        <div><p className="eyebrow">{view === 'today' ? 'Daily focus' : view === 'calendar' ? 'Monthly planner' : 'Your patterns'}</p><h1>{view === 'today' ? 'Make today count.' : view === 'calendar' ? monthName : 'Consistency tells a story.'}</h1><p className="muted light">{view === 'today' ? `${todayCompleted} of ${habits.length} habits completed today.` : 'A calm, data-first view of your routine.'}</p></div>
+        <div className="hero-progress"><span>{progress}%</span><small>{monthName} progress</small><div className="progress-track"><i style={{width:`${progress}%`}}/></div></div>
+      </section>}
+
+      {view === 'today' && <>
+        <section className="toolbar"><div><p className="eyebrow">Focus</p><h2>Today</h2></div><div className="toolbar-actions"><input className="search" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search habits…"/><button className="primary small" onClick={()=>{setEditing(null);setShowForm(true)}}>＋ Add habit</button></div></section>
+        <section className="stats-row four"><div><span>Today</span><strong>{todayCompleted}<em>/{habits.length}</em></strong></div><div><span>Month progress</span><strong>{progress}%</strong></div><div><span>Active habits</span><strong>{habits.length}</strong></div><div><span>Best current streak</span><strong>{currentStreak}<em> days</em></strong></div></section>
+        <section className="habit-list">{loading ? <div className="empty">Loading habits…</div> : filtered.length === 0 ? <div className="empty"><strong>No habits found.</strong><span>Create a habit to start building your routine.</span></div> : filtered.map(h=>{const checked=!!logs[`${h.id}-${todayKey}`]?.completed; const streak=h.streaks?.[0]?.current_streak||0; return <article className={`habit-card ${checked?'complete':''}`} key={h.id}>
+          <div className="habit-main"><button aria-label={`Mark ${h.name} ${checked?'incomplete':'complete'}`} className={`check ${checked?'checked':''}`} onClick={()=>toggle(h.id,todayKey)}>{checked?'✓':''}</button><div><h3>{h.name}</h3><div className="meta"><span className="dot" style={{background:h.color}}/>{h.category}<span>•</span>{h.difficulty === 1 ? 'Easy' : h.difficulty === 2 ? 'Medium' : 'Hard'}<span>•</span>{h.difficulty*10} XP</div></div></div>
+          <div className="habit-right">{streak>0 && <span className="streak">🔥 {streak}</span>}<button className="icon-button" onClick={()=>{setEditing(h);setShowForm(true)}}>Edit</button><button className="icon-button danger" onClick={()=>handleDelete(h.id)}>Delete</button></div>
+        </article>})}</section>
+      </>}
+
+      {view === 'calendar' && <section className="calendar-section">
+        <div className="calendar-toolbar"><div className="month-nav"><button onClick={()=>moveMonth(-1)}>←</button><strong>{monthName}</strong><button onClick={()=>moveMonth(1)}>→</button></div><button className="ghost" onClick={goToday}>Today</button></div>
+        <div className="table-card"><div className="table-scroll"><table><thead><tr><th className="sticky-col">Habit</th>{days.map(d=><th key={d} className={getDate(d)===todayKey?'today-head':''}>{d}</th>)}</tr></thead><tbody>{habits.length===0?<tr><td colSpan={days.length+1} className="empty">Add a habit to see your calendar.</td></tr>:habits.map(h=><tr key={h.id}><td className="sticky-col"><div className="habit-name"><span className="dot" style={{background:h.color}}/>{h.name}</div></td>{days.map(d=>{const date=getDate(d);const checked=!!logs[`${h.id}-${date}`]?.completed;return <td key={date} className={`${checked?'done':''} ${date===todayKey?'today-cell':''}`}><input type="checkbox" checked={checked} onChange={()=>toggle(h.id,date)} aria-label={`${h.name} ${date}`}/></td>})}</tr>)}</tbody></table></div></div>
+      </section>}
+
+      {view === 'insights' && <Insights habits={habits} logs={logs} days={days} monthName={monthName}/>} 
+      {view === 'rewards' && <Rewards game={game}/>} 
+    </main>
+
+    {showForm && <HabitModal initial={editing} onClose={()=>{setShowForm(false);setEditing(null)}} onSave={handleSave}/>} 
+  </div>;
+}
+
+function HabitModal({ initial, onClose, onSave }) {
+  const [name,setName]=useState(initial?.name||'');
+  const [category,setCategory]=useState(initial?.category||'Study');
+  const [difficulty,setDifficulty]=useState(initial?.difficulty||1);
+  const [color,setColor]=useState(initial?.color||colors[0]);
+  const [busy,setBusy]=useState(false); const [error,setError]=useState('');
+  const submit=async e=>{e.preventDefault();setBusy(true);setError('');try{await onSave({name,category,difficulty:Number(difficulty),color});}catch(e){setError(e.response?.data?.error||e.message);setBusy(false)}};
+  return <div className="modal-backdrop" onMouseDown={e=>e.target===e.currentTarget&&onClose()}><form className="modal" onSubmit={submit}><div className="modal-head"><div><p className="eyebrow">{initial?'Edit habit':'New habit'}</p><h2>{initial?'Tune this habit.':'Start something worth repeating.'}</h2></div><button type="button" className="close" onClick={onClose}>×</button></div><label>Habit name<input value={name} onChange={e=>setName(e.target.value)} required maxLength={100} placeholder="e.g. Read 20 pages" autoFocus/></label><div className="form-grid"><label>Category<select value={category} onChange={e=>setCategory(e.target.value)}>{categories.map(c=><option key={c}>{c}</option>)}</select></label><label>Difficulty<select value={difficulty} onChange={e=>setDifficulty(e.target.value)}><option value={1}>Easy · 10 XP</option><option value={2}>Medium · 20 XP</option><option value={3}>Hard · 30 XP</option></select></label></div><label>Color<div className="color-row">{colors.map(c=><button type="button" key={c} className={`color-swatch ${color===c?'selected':''}`} style={{background:c}} onClick={()=>setColor(c)} aria-label={`Choose ${c}`}/>)}</div></label>{error&&<div className="error">{error}</div>}<div className="modal-actions"><button type="button" className="ghost" onClick={onClose}>Cancel</button><button className="primary" disabled={busy}>{busy?'Saving…':initial?'Save changes':'Create habit'}</button></div></form></div>;
+}
+
+function Insights({ habits, logs, days, monthName }) {
+  const stats = habits.map(h=>{const done=days.filter(d=>logs[`${h.id}-${new Date(days.length?new Date().getFullYear():0,0,1)}`]).length; const actual=days.reduce((n,d)=>n+(logs[`${h.id}-${new Date().toISOString().slice(0,7)}-${String(d).padStart(2,'0')}`]?.completed?1:0),0); return {h,actual};});
+  const total=stats.reduce((n,s)=>n+s.actual,0); const top=[...stats].sort((a,b)=>b.actual-a.actual)[0];
+  return <section className="insights-grid"><div className="insight-card large"><p className="eyebrow">{monthName}</p><h2>Your month at a glance.</h2><div className="big-number">{total}<span>completions</span></div><p className="muted">Track your strongest habits, then make the next month a little easier to win.</p></div><div className="insight-card"><p className="eyebrow">Top habit</p><h3>{top?.h.name||'—'}</h3><strong>{top?.actual||0}</strong><span>completed days</span></div><div className="insight-card wide"><p className="eyebrow">Habit breakdown</p>{stats.length===0?<p className="muted">No habits yet.</p>:stats.map(({h,actual})=><div className="bar-row" key={h.id}><div><span>{h.name}</span><strong>{actual}/{days.length}</strong></div><div className="bar"><i style={{width:`${days.length?Math.round(actual/days.length*100):0}%`,background:h.color}}/></div></div>)}</div></section>;
+}
+
+function Rewards({ game }) {
+  const stats=game?.stats; const xp=stats?.total_xp||0; const level=game?.level||Math.floor(xp/100)+1; const progress=xp%100;
+  return <section className="rewards"><div className="reward-hero"><div><p className="eyebrow">Momentum</p><h2>Level {level}</h2><p className="muted light">{xp} total XP • {100-progress} XP to the next level.</p></div><div className="level-ring"><span>{progress}%</span></div></div><div className="stats-row three"><div><span>Total XP</span><strong>{xp}</strong></div><div><span>Completions</span><strong>{stats?.total_completed||0}</strong></div><div><span>Badges</span><strong>{game?.badges?.length||0}</strong></div></div><div className="insight-card"><p className="eyebrow">Badges</p>{game?.badges?.length?<div className="badge-grid">{game.badges.map(b=><div className="badge" key={b.code}><span>★</span><div><strong>{b.name}</strong><small>{b.description}</small></div></div>)}</div>:<p className="muted">No badges yet. Keep a streak alive to unlock your first one.</p>}</div></section>;
 }
 
 export default App;
