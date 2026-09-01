@@ -31,7 +31,7 @@ async function requireUser(req, res, next) {
   if (!auth?.startsWith('Bearer ')) return res.status(401).json({ error: 'Authentication required' });
   const token = auth.slice(7);
   const supabase = userClient(token);
-  const { data, error } = await req.supabase.auth.getUser(token);
+  const { data, error } = await supabase.auth.getUser(token);
   if (error || !data.user) return res.status(401).json({ error: 'Invalid session' });
   req.user = data.user;
   req.supabase = supabase;
