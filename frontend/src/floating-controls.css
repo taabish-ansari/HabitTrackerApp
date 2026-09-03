@@ -1,0 +1,80 @@
+/* Floating controls polish — clearer separation from the navigation and a cleaner hardware-like theme switch. */
+.habit-schedule-launcher{
+  left:auto !important;
+  right:86px !important;
+  bottom:24px !important;
+  min-height:44px !important;
+  padding:0 14px !important;
+  border-radius:14px !important;
+  box-shadow:0 14px 34px rgba(15,23,42,.14), inset 0 1px 0 rgba(255,255,255,.10) !important;
+}
+
+.global-theme-control{
+  right:24px !important;
+  bottom:24px !important;
+  top:auto !important;
+  z-index:91 !important;
+}
+.global-theme-control .theme-toggle{
+  position:relative !important;
+  right:auto !important;
+  bottom:auto !important;
+  width:48px !important;
+  min-width:48px !important;
+  height:48px !important;
+  padding:0 !important;
+  display:grid !important;
+  place-items:center !important;
+  border-radius:15px !important;
+  border:1px solid color-mix(in srgb,var(--ui-border) 90%,transparent) !important;
+  background:color-mix(in srgb,var(--ui-surface) 94%,transparent) !important;
+  box-shadow:0 14px 34px rgba(15,23,42,.14), inset 0 1px 0 rgba(255,255,255,.65) !important;
+  backdrop-filter:blur(14px);
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease !important;
+}
+.global-theme-control .theme-toggle:hover{
+  transform:translateY(-2px) scale(1.02);
+  box-shadow:0 18px 42px rgba(15,23,42,.18), inset 0 1px 0 rgba(255,255,255,.65) !important;
+}
+.global-theme-control .theme-toggle:active{transform:scale(.95)}
+.global-theme-control .theme-icon{font-size:20px;line-height:1}
+.global-theme-control .theme-label{display:none !important}
+html[data-theme="dark"] .global-theme-control .theme-toggle{
+  background:color-mix(in srgb,#111827 94%,transparent) !important;
+  border-color:rgba(255,255,255,.10) !important;
+  box-shadow:0 14px 34px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.05) !important;
+}
+html[data-theme="dark"] .global-theme-control .theme-toggle:hover{box-shadow:0 18px 42px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.05) !important}
+
+@media(max-width:760px){
+  .habit-schedule-launcher{
+    right:60px !important;
+    bottom:82px !important;
+    min-height:38px !important;
+    padding:0 10px !important;
+    border-radius:12px !important;
+    font-size:10px !important;
+  }
+  .global-theme-control{
+    right:10px !important;
+    bottom:82px !important;
+    top:auto !important;
+  }
+  .global-theme-control .theme-toggle{
+    width:40px !important;
+    min-width:40px !important;
+    height:40px !important;
+    border-radius:13px !important;
+  }
+  .global-theme-control .theme-icon{font-size:17px}
+}
+
+@media(max-width:460px){
+  .habit-schedule-launcher{right:56px !important;bottom:78px !important}
+  .global-theme-control{right:9px !important;bottom:78px !important}
+  .global-theme-control .theme-toggle{width:38px !important;min-width:38px !important;height:38px !important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .global-theme-control .theme-toggle{transition:none !important}
+}
