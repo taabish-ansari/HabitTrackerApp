@@ -18,6 +18,7 @@ import './mobile-premium.css';
 import './mobile-compact.css';
 import './habit-detail.css';
 import './habit-schedule.css';
+import './floating-controls.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
