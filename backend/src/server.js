@@ -56,7 +56,7 @@ app.get('/api/habits', requireUser, async (req, res, next) => {
   try {
     const { data, error } = await req.supabase
       .from('habits')
-      .select('id,name,category,difficulty,color,position,created_at,streaks(current_streak,longest_streak,last_completed_date)')
+      .select('id,name,category,difficulty,color,position,created_at,schedule_type,schedule_days,streaks(current_streak,longest_streak,last_completed_date)')
       .eq('user_id', req.user.id)
       .order('position', { ascending: true })
       .order('created_at', { ascending: true });
@@ -73,7 +73,7 @@ app.post('/api/habits', requireUser, async (req, res, next) => {
     const { data, error } = await req.supabase
       .from('habits')
       .insert({ user_id: req.user.id, ...input, position })
-      .select('id,name,category,difficulty,color,position')
+      .select('id,name,category,difficulty,color,position,schedule_type,schedule_days')
       .single();
     if (error) throw error;
     res.status(201).json(data);
@@ -88,7 +88,7 @@ app.patch('/api/habits/:id', requireUser, async (req, res, next) => {
       .update({ ...input, updated_at: new Date().toISOString() })
       .eq('id', req.params.id)
       .eq('user_id', req.user.id)
-      .select('id,name,category,difficulty,color,position')
+      .select('id,name,category,difficulty,color,position,schedule_type,schedule_days')
       .maybeSingle();
     if (error) throw error;
     if (!data) return res.status(404).json({ error: 'Habit not found' });
