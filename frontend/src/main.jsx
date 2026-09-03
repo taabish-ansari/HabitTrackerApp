@@ -10,6 +10,7 @@ import './profile.css';
 import './habit-colors.css';
 import './today.css';
 import './mobile-font.css';
+import './completion-motion.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
