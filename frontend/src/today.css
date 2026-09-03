@@ -1,0 +1,203 @@
+/* Today v1 — focused, tactile daily routine experience */
+.content:has(.habit-list) .hero-card{
+  padding:34px;
+  border-radius:30px;
+  background:
+    radial-gradient(circle at 78% 18%,rgba(56,189,248,.13),transparent 24%),
+    radial-gradient(circle at 92% 86%,rgba(52,211,153,.10),transparent 22%),
+    linear-gradient(135deg,#0f172a 0%,#131f33 52%,#18283a 100%);
+  box-shadow:0 28px 70px rgba(2,8,23,.22);
+}
+.content:has(.habit-list) .hero-card h1{
+  font-size:clamp(46px,5vw,66px);
+  max-width:720px;
+  letter-spacing:-.07em;
+}
+.content:has(.habit-list) .hero-card .muted.light{font-size:15px;color:#b7c3d4}
+.content:has(.habit-list) .hero-progress{
+  width:320px;
+  min-height:150px;
+  padding:20px;
+  border-radius:22px;
+  background:rgba(255,255,255,.055);
+  border-color:rgba(255,255,255,.11);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+}
+.content:has(.habit-list) .hero-progress>span{font-size:52px}
+.content:has(.habit-list) .progress-track{height:9px}
+
+.content:has(.habit-list) .toolbar{
+  margin-top:34px;
+  margin-bottom:18px;
+  align-items:center;
+}
+.content:has(.habit-list) .toolbar h2{
+  font-size:32px;
+  letter-spacing:-.055em;
+}
+.content:has(.habit-list) .toolbar .eyebrow{font-size:11px}
+.content:has(.habit-list) .reorder-hint{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  margin-top:7px;
+  padding:5px 9px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:var(--surface-soft);
+  font-size:10px;
+}
+.content:has(.habit-list) .reorder-hint::before{
+  content:'↕';
+  font-size:12px;
+  color:var(--accent-strong);
+}
+.content:has(.habit-list) .toolbar-actions{align-items:center}
+.content:has(.habit-list) .search{
+  height:44px;
+  border-radius:14px;
+  padding-inline:15px;
+  box-shadow:0 8px 22px rgba(15,23,42,.05);
+}
+.content:has(.habit-list) .primary.small{
+  min-height:44px;
+  padding-inline:18px;
+  border-radius:14px;
+}
+
+.content:has(.habit-list) .stats-row.four{
+  gap:14px;
+  margin:0 0 20px;
+}
+.content:has(.habit-list) .stats-row.four>div{
+  position:relative;
+  min-height:108px;
+  padding:18px 19px;
+  overflow:hidden;
+  border-radius:20px;
+  box-shadow:0 8px 28px rgba(15,23,42,.05);
+}
+.content:has(.habit-list) .stats-row.four>div::after{
+  content:'';
+  position:absolute;
+  width:74px;
+  height:74px;
+  right:-28px;
+  top:-28px;
+  border:1px solid rgba(56,189,248,.12);
+  border-radius:50%;
+}
+.content:has(.habit-list) .stats-row.four>div:first-child::after{border-color:rgba(16,185,129,.18)}
+.content:has(.habit-list) .stats-row.four>div:nth-child(2)::after{border-color:rgba(59,130,246,.16)}
+.content:has(.habit-list) .stats-row.four>div:nth-child(3)::after{border-color:rgba(139,92,246,.16)}
+.content:has(.habit-list) .stats-row.four>div:nth-child(4)::after{border-color:rgba(245,158,11,.18)}
+.content:has(.habit-list) .stats-row.four span{font-size:11px}
+.content:has(.habit-list) .stats-row.four strong{font-size:34px}
+
+.content:has(.habit-list) .habit-list{
+  gap:11px;
+  margin-top:0;
+}
+.content:has(.habit-list) .habit-card{
+  position:relative;
+  min-height:78px;
+  padding:15px 17px;
+  border-radius:19px;
+  border-color:color-mix(in srgb,var(--habit-color) 18%,var(--line));
+  background:
+    linear-gradient(90deg,color-mix(in srgb,var(--habit-color) 3%,var(--surface-strong)),var(--surface));
+  box-shadow:0 7px 24px rgba(15,23,42,.04);
+  overflow:hidden;
+}
+.content:has(.habit-list) .habit-card::before{
+  content:'';
+  position:absolute;
+  left:0;
+  top:10px;
+  bottom:10px;
+  width:3px;
+  border-radius:0 999px 999px 0;
+  background:color-mix(in srgb,var(--habit-color) 65%,transparent);
+  opacity:.85;
+}
+.content:has(.habit-list) .habit-card:hover{
+  border-color:color-mix(in srgb,var(--habit-color) 36%,var(--line));
+  box-shadow:0 14px 34px color-mix(in srgb,var(--habit-color) 8%,rgba(15,23,42,.08));
+  transform:translateY(-2px);
+}
+.content:has(.habit-list) .habit-card.complete{
+  background:
+    radial-gradient(circle at 16% 50%,color-mix(in srgb,var(--habit-color) 12%,transparent),transparent 30%),
+    linear-gradient(90deg,color-mix(in srgb,var(--habit-color) 8%,var(--surface-strong)),var(--surface));
+  border-color:color-mix(in srgb,var(--habit-color) 48%,var(--line));
+}
+.content:has(.habit-list) .habit-main{gap:12px}
+.content:has(.habit-list) .drag-handle{width:19px;color:color-mix(in srgb,var(--habit-color) 45%,var(--text-soft));font-size:15px}
+.content:has(.habit-list) .check{
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  border-color:color-mix(in srgb,var(--habit-color) 26%,var(--line-strong));
+}
+.content:has(.habit-list) .check.checked{
+  background:var(--habit-color);
+  border-color:var(--habit-color);
+  box-shadow:0 8px 22px color-mix(in srgb,var(--habit-color) 28%,transparent),inset 0 1px 0 rgba(255,255,255,.22);
+  animation:today-check-pop .26s ease-out;
+}
+@keyframes today-check-pop{
+  0%{transform:scale(.86)}
+  70%{transform:scale(1.08)}
+  100%{transform:scale(1)}
+}
+.content:has(.habit-list) .habit-main h3{
+  font-size:16px;
+  margin-bottom:6px;
+  letter-spacing:-.025em;
+}
+.content:has(.habit-list) .meta{font-size:11px}
+.content:has(.habit-list) .habit-right{gap:4px}
+.content:has(.habit-list) .icon-button{padding:8px 7px;border-radius:9px}
+.content:has(.habit-list) .icon-button:hover{background:var(--surface-soft)}
+.content:has(.habit-list) .streak{
+  padding:7px 10px;
+  border-radius:999px;
+  background:color-mix(in srgb,var(--habit-color) 8%,var(--surface-strong));
+  border-color:color-mix(in srgb,var(--habit-color) 28%,var(--line));
+  color:color-mix(in srgb,var(--habit-color) 78%,var(--text));
+}
+
+html[data-theme="dark"] .content:has(.habit-list) .stats-row.four>div{
+  box-shadow:0 8px 28px rgba(0,0,0,.14);
+}
+html[data-theme="dark"] .content:has(.habit-list) .habit-card{
+  box-shadow:0 8px 28px rgba(0,0,0,.12);
+  background:linear-gradient(90deg,color-mix(in srgb,var(--habit-color) 5%,#111827),rgba(17,24,39,.93));
+}
+html[data-theme="dark"] .content:has(.habit-list) .habit-card.complete{
+  background:radial-gradient(circle at 12% 50%,color-mix(in srgb,var(--habit-color) 13%,transparent),transparent 31%),linear-gradient(90deg,color-mix(in srgb,var(--habit-color) 9%,#111827),rgba(17,24,39,.94));
+}
+html[data-theme="dark"] .content:has(.habit-list) .reorder-hint{background:#121c2d;border-color:#2b3850}
+
+@media(max-width:760px){
+  .content:has(.habit-list) .hero-card{padding:25px;border-radius:24px}
+  .content:has(.habit-list) .hero-card h1{font-size:clamp(38px,10vw,52px)}
+  .content:has(.habit-list) .hero-progress{width:100%;min-height:126px}
+  .content:has(.habit-list) .toolbar{margin-top:26px}
+  .content:has(.habit-list) .toolbar h2{font-size:29px}
+  .content:has(.habit-list) .stats-row.four{grid-template-columns:1fr 1fr}
+  .content:has(.habit-list) .habit-card{min-height:74px;padding:14px 13px}
+}
+@media(max-width:560px){
+  .content:has(.habit-list) .toolbar-actions{gap:8px}
+  .content:has(.habit-list) .habit-card{align-items:center}
+  .content:has(.habit-list) .habit-right .icon-button{font-size:11px;padding:7px 5px}
+  .content:has(.habit-list) .habit-main h3{font-size:15px}
+}
+@media(max-width:430px){
+  .content:has(.habit-list) .hero-card h1{font-size:34px}
+  .content:has(.habit-list) .stats-row.four{gap:9px}
+  .content:has(.habit-list) .stats-row.four>div{min-height:96px;padding:15px}
+  .content:has(.habit-list) .stats-row.four strong{font-size:28px}
+  .content:has(.habit-list) .drag-handle{display:none}
+}
