@@ -29,14 +29,8 @@ html[data-theme="dark"] .content:has(.habit-list) .stats-row.four>div{box-shadow
 .content:has(.habit-list){padding-top:34px}.content:has(.habit-list) .hero-card{min-height:270px;display:grid;grid-template-columns:minmax(0,1fr) 300px;align-items:end;gap:28px;padding:30px 32px}.content:has(.habit-list) .hero-card>div:first-child{align-self:center}.content:has(.habit-list) .hero-progress{width:auto;min-height:136px}
 .content:has(.habit-list) .toolbar{margin-top:24px}.content:has(.habit-list) .toolbar h2{font-size:30px}.content:has(.habit-list) .stats-row.four>div{background:linear-gradient(145deg,var(--surface-strong),var(--surface));}
 .content:has(.habit-list) .habit-card{min-height:84px;padding:15px 18px}.content:has(.habit-list) .habit-card .habit-main{padding-left:2px}.content:has(.habit-list) .habit-right{min-width:max-content}.content:has(.habit-list) .habit-main h3{font-size:17px}.content:has(.habit-list) .meta{font-size:12px}.content:has(.habit-list) .check{width:40px;height:40px;border-radius:13px}
-
-/* Desktop keeps generous negative space without making the daily routine feel tiny. */
 @media(min-width:1200px){.content:has(.habit-list){padding-top:26px}.content:has(.habit-list) .hero-card{min-height:255px}.content:has(.habit-list) .habit-list{max-width:1040px}.content:has(.habit-list) .stats-row.four{max-width:1040px}.content:has(.habit-list) .toolbar{max-width:1040px}}
-
-/* Tablet: compress the visual chrome before switching to mobile navigation. */
 @media(max-width:1080px){.content:has(.habit-list){padding-top:8px}.content:has(.habit-list) .hero-card{grid-template-columns:minmax(0,1fr) 250px;min-height:230px}.content:has(.habit-list) .hero-card h1{font-size:clamp(40px,6vw,58px)}}
-
-/* Mobile: treat the page as a phone product, not a shrunken desktop site. */
 @media(max-width:760px){
   .content:has(.habit-list){width:100%;padding:0 14px 96px}
   .content:has(.habit-list) .mobile-header{position:sticky;top:0;z-index:30;padding:12px 0 14px;background:linear-gradient(var(--bg) 75%,transparent);backdrop-filter:blur(10px)}
@@ -52,16 +46,12 @@ html[data-theme="dark"] .content:has(.habit-list) .stats-row.four>div{box-shadow
   .content:has(.habit-list) .toolbar-actions{display:grid;grid-template-columns:1fr auto;gap:9px}.content:has(.habit-list) .toolbar-actions .search{min-width:0;width:100%;height:46px}.content:has(.habit-list) .toolbar-actions .primary{width:auto;min-width:110px;height:46px;padding-inline:13px}
   .content:has(.habit-list) .stats-row.four{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:16px}.content:has(.habit-list) .stats-row.four>div{min-height:88px;padding:14px;border-radius:17px}.content:has(.habit-list) .stats-row.four span{font-size:10px}.content:has(.habit-list) .stats-row.four strong{font-size:28px}
   .content:has(.habit-list) .habit-list{gap:9px}.content:has(.habit-list) .habit-card{min-height:72px;padding:12px 12px;border-radius:17px}.content:has(.habit-list) .habit-main{gap:10px}.content:has(.habit-list) .drag-handle{display:none}.content:has(.habit-list) .check{width:39px;height:39px;flex-basis:39px;border-radius:12px}.content:has(.habit-list) .habit-main h3{font-size:15px;margin-bottom:4px}.content:has(.habit-list) .meta{font-size:10px;gap:5px}.content:has(.habit-list) .habit-right .icon-button{font-size:10px;padding:7px 4px}.content:has(.habit-list) .habit-right .streak{display:none}
-
-  /* Turn the existing sidebar into a phone bottom dock. */
   .sidebar{display:flex;position:fixed;left:10px;right:10px;bottom:10px;top:auto;height:70px;z-index:70;padding:0 8px;flex-direction:row;align-items:center;border:1px solid rgba(255,255,255,.08);border-radius:22px;background:rgba(15,23,42,.92);box-shadow:0 20px 50px rgba(0,0,0,.28);backdrop-filter:blur(16px)}
   .sidebar>.brand-row,.sidebar>.sidebar-bottom{display:none}.side-nav{display:flex;width:100%;margin:0;gap:4px;justify-content:space-around}.side-nav button{height:52px;justify-content:center;flex:1;flex-direction:column;gap:3px;padding:6px 4px;border-radius:15px;font-size:18px;color:#8fa0b7}.side-nav button span{font-size:9px;line-height:1}.side-nav button.active{background:#fff;color:#0f172a;box-shadow:none}
-  .global-theme-control{position:fixed!important;top:75px!important;right:14px!important;bottom:auto!important;z-index:65}
-  .theme-toggle{width:42px!important;min-width:42px!important;height:42px!important;padding:0!important;border-radius:14px!important;font-size:18px!important;box-shadow:0 10px 28px rgba(0,0,0,.18)!important}
+  .global-theme-control{position:fixed!important;top:75px!important;right:14px!important;bottom:auto!important;z-index:65}.theme-toggle{width:42px!important;min-width:42px!important;height:42px!important;padding:0!important;border-radius:14px!important;font-size:18px!important;box-shadow:0 10px 28px rgba(0,0,0,.18)!important}
 }
 @media(max-width:460px){
-  .content:has(.habit-list){padding-inline:12px;padding-bottom:92px}
-  .content:has(.habit-list) .mobile-header{padding-top:10px}
+  .content:has(.habit-list){padding-inline:12px;padding-bottom:92px}.content:has(.habit-list) .mobile-header{padding-top:10px}
   .content:has(.habit-list) .hero-card{padding:19px;border-radius:22px}.content:has(.habit-list) .hero-card h1{font-size:32px}.content:has(.habit-list) .hero-progress{min-height:112px}.content:has(.habit-list) .hero-progress>span{font-size:38px}
   .content:has(.habit-list) .toolbar-actions{grid-template-columns:1fr}.content:has(.habit-list) .toolbar-actions .primary{width:100%}.content:has(.habit-list) .toolbar h2{font-size:26px}
   .content:has(.habit-list) .stats-row.four>div{min-height:84px}.content:has(.habit-list) .stats-row.four strong{font-size:26px}
@@ -69,3 +59,45 @@ html[data-theme="dark"] .content:has(.habit-list) .stats-row.four>div{box-shadow
   .side-nav button{font-size:17px}.side-nav button span{font-size:8px}
 }
 @media(prefers-reduced-motion:reduce){.content:has(.habit-list) .check.checked{animation:none}}
+
+/* Mobile v3 typography/box scale — overrides Today v2 only. Desktop is untouched. */
+@media (max-width:760px){
+  .content:has(.habit-list) .hero-card{padding:18px;border-radius:21px;gap:13px}
+  .content:has(.habit-list) .hero-card h1{font-size:28px;letter-spacing:-.055em}
+  .content:has(.habit-list) .hero-card .muted.light{font-size:12px}
+  .content:has(.habit-list) .hero-progress{min-height:96px;padding:13px;border-radius:16px}
+  .content:has(.habit-list) .hero-progress>span{font-size:31px}
+  .content:has(.habit-list) .hero-progress small{font-size:9px;margin:3px 0 8px}
+  .content:has(.habit-list) .progress-track{height:7px}
+  .content:has(.habit-list) .toolbar{gap:10px;margin:18px 0 12px}
+  .content:has(.habit-list) .toolbar h2{font-size:23px}
+  .content:has(.habit-list) .reorder-hint{font-size:9px;padding:4px 7px;margin-top:5px}
+  .content:has(.habit-list) .toolbar-actions{gap:7px}
+  .content:has(.habit-list) .toolbar-actions .search,.content:has(.habit-list) .toolbar-actions .primary{height:40px;font-size:11px}
+  .content:has(.habit-list) .toolbar-actions .primary{min-width:96px;padding-inline:10px}
+  .content:has(.habit-list) .stats-row.four{gap:8px;margin-bottom:12px}
+  .content:has(.habit-list) .stats-row.four>div{min-height:70px;padding:11px;border-radius:14px}
+  .content:has(.habit-list) .stats-row.four span{font-size:9px}
+  .content:has(.habit-list) .stats-row.four strong{font-size:23px}
+  .content:has(.habit-list) .habit-list{gap:7px}
+  .content:has(.habit-list) .habit-card{min-height:62px;padding:9px 10px;border-radius:14px}
+  .content:has(.habit-list) .habit-main{gap:8px}
+  .content:has(.habit-list) .check{width:33px;height:33px;flex-basis:33px;border-radius:10px}
+  .content:has(.habit-list) .habit-main h3{font-size:13px;margin-bottom:3px}
+  .content:has(.habit-list) .meta{font-size:8px;gap:4px}
+  .content:has(.habit-list) .habit-right .icon-button{font-size:9px;padding:5px 3px}
+  .content:has(.habit-list) .sidebar{height:64px}
+  .content:has(.habit-list) .side-nav button{height:48px;font-size:15px}
+  .content:has(.habit-list) .side-nav button span{font-size:8px}
+}
+@media (max-width:500px){
+  .content:has(.habit-list) .hero-card h1{font-size:26px}
+  .content:has(.habit-list) .hero-progress>span{font-size:29px}
+  .content:has(.habit-list) .toolbar h2{font-size:21px}
+  .content:has(.habit-list) .stats-row.four>div{min-height:66px;padding:10px}
+  .content:has(.habit-list) .stats-row.four strong{font-size:21px}
+  .content:has(.habit-list) .habit-card{min-height:58px;padding:8px 9px}
+  .content:has(.habit-list) .check{width:31px;height:31px;flex-basis:31px}
+  .content:has(.habit-list) .habit-main h3{font-size:12px}
+  .content:has(.habit-list) .meta{font-size:7.5px}
+}
