@@ -11,6 +11,7 @@ import './habit-colors.css';
 import './today.css';
 import './mobile-font.css';
 import './completion-motion.css';
+import './reorder.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
