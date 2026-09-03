@@ -1,0 +1,25 @@
+.unscheduled-cell {
+  background: color-mix(in srgb, var(--surface-soft) 88%, transparent);
+}
+
+.unscheduled-cell input[type="checkbox"] {
+  opacity: .28;
+  cursor: not-allowed;
+}
+
+.future-cell input[type="checkbox"] {
+  opacity: .24;
+  cursor: not-allowed;
+}
+
+.unscheduled-cell.done {
+  opacity: .62;
+}
+
+.unscheduled-today {
+  opacity: .7;
+}
+
+.unscheduled-today .check {
+  opacity: .48;
+}
