@@ -1,0 +1,45 @@
+/* Habit reorder affordance — keeps desktop drag-and-drop and makes the grip usable on touch layouts. */
+.content:has(.habit-list) .drag-handle{
+  display:grid;
+  place-items:center;
+  width:24px;
+  min-width:24px;
+  height:34px;
+  margin-left:-3px;
+  border-radius:9px;
+  color:color-mix(in srgb,var(--habit-color) 52%,var(--text-soft));
+  background:color-mix(in srgb,var(--habit-color) 6%,transparent);
+  font-size:15px;
+  line-height:1;
+  letter-spacing:-3px;
+  cursor:grab;
+  user-select:none;
+  -webkit-user-select:none;
+  -webkit-user-drag:element;
+  touch-action:none;
+  transition:background .18s ease,color .18s ease,transform .18s ease;
+}
+.content:has(.habit-list) .drag-handle:hover{
+  color:var(--habit-color);
+  background:color-mix(in srgb,var(--habit-color) 12%,transparent);
+}
+.content:has(.habit-list) .drag-handle:active{cursor:grabbing;transform:scale(.94)}
+.content:has(.habit-list) .drag-handle.disabled{opacity:.35;cursor:not-allowed}
+.content:has(.habit-list) .habit-card.is-dragging{opacity:.55;transform:scale(.99);box-shadow:0 18px 44px rgba(15,23,42,.12)}
+.content:has(.habit-list) .habit-card.drag-over{border-color:var(--habit-color);box-shadow:0 0 0 2px color-mix(in srgb,var(--habit-color) 18%,transparent),0 14px 34px color-mix(in srgb,var(--habit-color) 10%,rgba(15,23,42,.08))}
+@media(max-width:760px){
+  .content:has(.habit-list) .drag-handle{
+    display:grid;
+    width:28px;
+    min-width:28px;
+    height:38px;
+    margin-left:-4px;
+    border-radius:10px;
+    font-size:16px;
+  }
+  .content:has(.habit-list) .habit-card{touch-action:manipulation}
+  .content:has(.habit-list) .habit-main{min-width:0}
+}
+@media(max-width:460px){
+  .content:has(.habit-list) .drag-handle{width:26px;min-width:26px;height:36px;font-size:15px}
+}
