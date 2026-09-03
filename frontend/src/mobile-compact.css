@@ -1,0 +1,72 @@
+/* Final mobile density pass — deliberately compact. Desktop is untouched. */
+@media (max-width: 760px){
+  .content:has(.habit-list){padding-inline:10px;padding-bottom:86px}
+  .content:has(.habit-list) .mobile-header{padding:6px 0 10px}
+  .content:has(.habit-list) .mobile-header .brand-row{gap:8px}
+  .content:has(.habit-list) .mobile-header .brand-mark{width:32px;height:32px;border-radius:10px;font-size:11px}
+  .content:has(.habit-list) .mobile-header strong{font-size:12px}
+  .content:has(.habit-list) .mobile-header .ghost{padding:7px 9px;font-size:10px;border-radius:10px}
+
+  .content:has(.habit-list) .hero-card{
+    margin-top:2px;
+    gap:12px;
+    padding:16px;
+    border-radius:18px;
+  }
+  .content:has(.habit-list) .hero-card .eyebrow{font-size:9px;letter-spacing:.14em}
+  .content:has(.habit-list) .hero-card h1{font-size:26px;line-height:1.05;letter-spacing:-.045em;margin-top:4px}
+  .content:has(.habit-list) .hero-card .muted.light{font-size:11px;line-height:1.35}
+  .content:has(.habit-list) .hero-progress{min-height:84px;padding:12px;border-radius:15px}
+  .content:has(.habit-list) .hero-progress>span{font-size:30px}
+  .content:has(.habit-list) .hero-progress small{font-size:8px}
+  .content:has(.habit-list) .progress-track{height:6px;margin-top:7px}
+
+  .content:has(.habit-list) .toolbar{gap:9px;margin:18px 0 11px}
+  .content:has(.habit-list) .toolbar .eyebrow{font-size:9px}
+  .content:has(.habit-list) .toolbar h2{font-size:21px;line-height:1.05}
+  .content:has(.habit-list) .reorder-hint{font-size:8px;padding:4px 7px;margin-top:4px}
+  .content:has(.habit-list) .toolbar-actions{gap:7px}
+  .content:has(.habit-list) .toolbar-actions .search,
+  .content:has(.habit-list) .toolbar-actions .primary{height:40px;min-height:40px;font-size:10px;border-radius:11px}
+  .content:has(.habit-list) .toolbar-actions .primary{min-width:98px;padding-inline:10px}
+
+  .content:has(.habit-list) .stats-row.four{gap:8px;margin-bottom:11px}
+  .content:has(.habit-list) .stats-row.four>div{min-height:67px;padding:10px;border-radius:13px}
+  .content:has(.habit-list) .stats-row.four span{font-size:8px}
+  .content:has(.habit-list) .stats-row.four strong{font-size:20px;line-height:1.05}
+  .content:has(.habit-list) .stats-row.four em{font-size:9px}
+
+  .content:has(.habit-list) .habit-list{gap:7px}
+  .content:has(.habit-list) .habit-card{min-height:61px;padding:9px 10px;border-radius:14px}
+  .content:has(.habit-list) .habit-main{gap:7px}
+  .content:has(.habit-list) .drag-handle{width:22px;min-width:22px;height:32px;font-size:13px}
+  .content:has(.habit-list) .check{width:32px;height:32px;flex-basis:32px;border-radius:10px}
+  .content:has(.habit-list) .habit-main h3{font-size:12px;line-height:1.15;margin-bottom:3px}
+  .content:has(.habit-list) .meta{font-size:8px;line-height:1.15;gap:4px}
+  .content:has(.habit-list) .habit-right{gap:2px}
+  .content:has(.habit-list) .habit-right .icon-button{font-size:8px;padding:5px 3px;border-radius:7px}
+
+  .sidebar{left:8px;right:8px;bottom:8px;height:62px;padding:0 6px;border-radius:18px}
+  .side-nav button{height:47px;border-radius:13px;font-size:15px;gap:2px}
+  .side-nav button span{font-size:7px}
+  .global-theme-control{top:66px!important;right:10px!important}
+  .theme-toggle{width:38px!important;min-width:38px!important;height:38px!important;border-radius:12px!important;font-size:16px!important}
+}
+
+@media (max-width: 460px){
+  .content:has(.habit-list){padding-inline:9px;padding-bottom:82px}
+  .content:has(.habit-list) .hero-card{padding:14px;border-radius:17px}
+  .content:has(.habit-list) .hero-card h1{font-size:24px}
+  .content:has(.habit-list) .hero-progress{min-height:79px;padding:11px}
+  .content:has(.habit-list) .hero-progress>span{font-size:28px}
+  .content:has(.habit-list) .toolbar{margin-top:16px}
+  .content:has(.habit-list) .toolbar h2{font-size:20px}
+  .content:has(.habit-list) .stats-row.four>div{min-height:63px;padding:9px}
+  .content:has(.habit-list) .stats-row.four strong{font-size:19px}
+  .content:has(.habit-list) .habit-card{min-height:58px;padding:8px 9px}
+  .content:has(.habit-list) .drag-handle{width:20px;min-width:20px;height:30px;font-size:12px}
+  .content:has(.habit-list) .check{width:30px;height:30px;flex-basis:30px;border-radius:9px}
+  .content:has(.habit-list) .habit-main h3{font-size:11.5px}
+  .content:has(.habit-list) .meta{font-size:7.5px}
+  .content:has(.habit-list) .habit-right .icon-button{font-size:7.5px}
+}
