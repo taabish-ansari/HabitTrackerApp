@@ -13,6 +13,7 @@ import './mobile-font.css';
 import './completion-motion.css';
 import './reorder.css';
 import './mobile-premium.css';
+import './mobile-compact.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
