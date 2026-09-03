@@ -1,0 +1,34 @@
+/* Mobile-only typography tuning. Desktop is intentionally untouched. */
+@media (max-width: 980px){
+  .content{font-size:14px}
+  .mobile-header strong{font-size:14px}
+  .mobile-header .ghost{font-size:12px}
+}
+
+@media (max-width: 760px){
+  .side-nav button{font-size:9px}
+  .hero-card h1{font-size:clamp(28px,8.6vw,38px)}
+  .hero-card .muted{font-size:13px}
+  .hero-progress>span{font-size:36px}
+  .hero-progress small{font-size:10px}
+  .toolbar h2{font-size:25px}
+  .toolbar-actions input,.toolbar-actions button{font-size:12px}
+  .reorder-hint{font-size:10px}
+  .stats-row span{font-size:10px}
+  .stats-row strong{font-size:26px}
+  .stats-row em{font-size:11px}
+  .habit-main h3{font-size:14px}
+  .meta{font-size:9px}
+  .icon-button{font-size:10px}
+}
+
+@media (max-width: 500px){
+  .hero-card h1{font-size:30px}
+  .hero-progress>span{font-size:34px}
+  .hero-progress small{font-size:9px}
+  .toolbar h2{font-size:23px}
+  .stats-row strong{font-size:23px}
+  .habit-main h3{font-size:13px}
+  .meta{font-size:8.5px}
+  .mobile-header .brand-row strong{font-size:14px}
+}
