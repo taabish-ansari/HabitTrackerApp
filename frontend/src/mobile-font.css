@@ -1,34 +1,36 @@
-/* Mobile-only typography tuning. Desktop is intentionally untouched. */
+/* Mobile-only typography and compact sizing. Desktop is intentionally untouched. */
 @media (max-width: 980px){
-  .content{font-size:14px}
-  .mobile-header strong{font-size:14px}
-  .mobile-header .ghost{font-size:12px}
+  .content{font-size:13px}
+  .mobile-header strong{font-size:13px}
+  .mobile-header .ghost{font-size:11px}
 }
 
 @media (max-width: 760px){
-  .side-nav button{font-size:9px}
-  .hero-card h1{font-size:clamp(28px,8.6vw,38px)}
-  .hero-card .muted{font-size:13px}
-  .hero-progress>span{font-size:36px}
-  .hero-progress small{font-size:10px}
-  .toolbar h2{font-size:25px}
-  .toolbar-actions input,.toolbar-actions button{font-size:12px}
-  .reorder-hint{font-size:10px}
-  .stats-row span{font-size:10px}
-  .stats-row strong{font-size:26px}
-  .stats-row em{font-size:11px}
-  .habit-main h3{font-size:14px}
-  .meta{font-size:9px}
-  .icon-button{font-size:10px}
+  .side-nav button{font-size:16px}
+  .side-nav button span{font-size:8px}
+  .hero-card h1{font-size:clamp(26px,7.6vw,34px)}
+  .hero-card .muted{font-size:12px}
+  .hero-progress>span{font-size:32px}
+  .hero-progress small{font-size:9px}
+  .toolbar h2{font-size:22px}
+  .toolbar-actions input,.toolbar-actions button{font-size:11px}
+  .reorder-hint{font-size:9px}
+  .stats-row span{font-size:9px}
+  .stats-row strong{font-size:23px}
+  .stats-row em{font-size:10px}
+  .habit-main h3{font-size:13px}
+  .meta{font-size:8.5px}
+  .icon-button{font-size:9px}
 }
 
 @media (max-width: 500px){
-  .hero-card h1{font-size:30px}
-  .hero-progress>span{font-size:34px}
-  .hero-progress small{font-size:9px}
-  .toolbar h2{font-size:23px}
-  .stats-row strong{font-size:23px}
-  .habit-main h3{font-size:13px}
-  .meta{font-size:8.5px}
-  .mobile-header .brand-row strong{font-size:14px}
+  .mobile-header .brand-row strong{font-size:13px}
+  .hero-card h1{font-size:28px}
+  .hero-progress>span{font-size:31px}
+  .hero-progress small{font-size:8.5px}
+  .toolbar h2{font-size:21px}
+  .stats-row span{font-size:8.5px}
+  .stats-row strong{font-size:22px}
+  .habit-main h3{font-size:12.5px}
+  .meta{font-size:8px}
 }
