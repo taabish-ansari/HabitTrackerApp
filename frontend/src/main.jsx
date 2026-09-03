@@ -9,6 +9,7 @@ import './premium.css';
 import './profile.css';
 import './habit-colors.css';
 import './today.css';
+import './mobile-font.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
