@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { habitsApi, gameApi } from './services/api';
 import { useHabits, useHabitLogs } from './hooks/useHabits';
 import { useSession, signIn, signUp } from './hooks/useSession';
@@ -7,6 +7,16 @@ import ProfileOverlay from './components/ProfileOverlay';
 
 const categories = ['Health', 'Study', 'Fitness', 'Work', 'Finance', 'Personal', 'Other'];
 const colors = ['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6', '#ef4444', '#06b6d4', '#ec4899'];
+
+function isHabitScheduled(habit, dateKey) {
+  const scheduleType = habit.schedule_type || 'daily';
+  if (scheduleType === 'daily') return true;
+  const [year, month, day] = dateKey.split('-').map(Number);
+  const weekday = new Date(year, month - 1, day).getDay();
+  if (scheduleType === 'weekdays') return weekday >= 1 && weekday <= 5;
+  if (scheduleType === 'custom') return (habit.schedule_days || []).map(Number).includes(weekday);
+  return true;
+}
 
 function AuthScreen() {
   const [mode, setMode] = useState('login');
@@ -82,6 +92,12 @@ function Dashboard({ user }) {
   const getDate = (day) => `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
   const todayKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
   const filtered = habits.filter((habit) => `${habit.name} ${habit.category}`.toLowerCase().includes(query.toLowerCase()));
+
+  useEffect(() => {
+    const handleScheduleUpdate = () => refresh();
+    window.addEventListener('habit-schedule-updated', handleScheduleUpdate);
+    return () => window.removeEventListener('habit-schedule-updated', handleScheduleUpdate);
+  }, [refresh]);
 
   const completed = habits.reduce((sum, habit) => sum + days.reduce((count, day) => count + (logs[`${habit.id}-${getDate(day)}`]?.completed ? 1 : 0), 0), 0);
   const possible = habits.length * days.length;
@@ -189,9 +205,10 @@ function Dashboard({ user }) {
                 const checked = !!logs[`${habit.id}-${todayKey}`]?.completed;
                 const streak = habit.streaks?.[0]?.current_streak || 0;
                 const canDrag = !query.trim();
+                const scheduledToday = isHabitScheduled(habit, todayKey);
                 return (
-                  <article className={`habit-card ${checked ? 'complete' : ''} ${draggedId === habit.id ? 'is-dragging' : ''} ${dragOverId === habit.id ? 'drag-over' : ''}`} style={{ '--habit-color': habit.color }} key={habit.id} draggable={canDrag} onDragStart={(event) => handleDragStart(event, habit.id)} onDragOver={(event) => handleDragOver(event, habit.id)} onDrop={(event) => handleDrop(event, habit.id)} onDragEnd={handleDragEnd}>
-                    <div className="habit-main"><span className={`drag-handle ${canDrag ? '' : 'disabled'}`} title={canDrag ? 'Drag to reorder' : 'Clear search to reorder'} aria-hidden="true">⋮⋮</span><button aria-label={`Mark ${habit.name} ${checked ? 'incomplete' : 'complete'}`} className={`check ${checked ? 'checked' : ''}`} onClick={() => toggle(habit.id, todayKey)}>{checked ? '✓' : ''}</button><div><h3>{habit.name}</h3><div className="meta"><span className="dot" style={{ background: habit.color }} />{habit.category}<span>•</span>{habit.difficulty === 1 ? 'Easy' : habit.difficulty === 2 ? 'Medium' : 'Hard'}<span>•</span>{habit.difficulty * 10} XP</div></div></div>
+                  <article className={`habit-card ${checked ? 'complete' : ''} ${!scheduledToday ? 'unscheduled-today' : ''} ${draggedId === habit.id ? 'is-dragging' : ''} ${dragOverId === habit.id ? 'drag-over' : ''}`} style={{ '--habit-color': habit.color }} key={habit.id} draggable={canDrag} onDragStart={(event) => handleDragStart(event, habit.id)} onDragOver={(event) => handleDragOver(event, habit.id)} onDrop={(event) => handleDrop(event, habit.id)} onDragEnd={handleDragEnd}>
+                    <div className="habit-main"><span className={`drag-handle ${canDrag ? '' : 'disabled'}`} title={canDrag ? 'Drag to reorder' : 'Clear search to reorder'} aria-hidden="true">⋮⋮</span><button disabled={!scheduledToday} aria-label={`Mark ${habit.name} ${checked ? 'incomplete' : 'complete'}`} className={`check ${checked ? 'checked' : ''}`} onClick={() => { if (scheduledToday) toggle(habit.id, todayKey); }}>{checked ? '✓' : ''}</button><div><h3>{habit.name}</h3><div className="meta"><span className="dot" style={{ background: habit.color }} />{habit.category}<span>•</span>{habit.difficulty === 1 ? 'Easy' : habit.difficulty === 2 ? 'Medium' : 'Hard'}<span>•</span>{habit.difficulty * 10} XP</div></div></div>
                     <div className="habit-right">{streak > 0 && <span className="streak">🔥 {streak}</span>}<button className="icon-button" onClick={() => { setEditing(habit); setShowForm(true); }}>Edit</button><button className="icon-button danger" onClick={() => handleDelete(habit.id)}>Delete</button></div>
                   </article>
                 );
@@ -204,7 +221,7 @@ function Dashboard({ user }) {
           <section className="calendar-section">
             <div className="calendar-toolbar"><div className="month-nav"><button onClick={() => moveMonth(-1)}>←</button><strong>{monthName}</strong><button onClick={() => moveMonth(1)}>→</button></div><button className="ghost" onClick={goToday}>Today</button></div>
             <div className="table-card"><div className="table-scroll"><table><thead><tr><th className="sticky-col">Habit</th>{days.map((day) => <th key={day} className={`${getDate(day) === todayKey ? 'today-head' : ''} ${getDate(day) > todayKey ? 'future-head' : ''}`}>{day}</th>)}</tr></thead><tbody>
-              {habits.length === 0 ? <tr><td colSpan={days.length + 1} className="empty">Add a habit to see your calendar.</td></tr> : habits.map((habit) => <tr key={habit.id}><td className="sticky-col"><div className="habit-name"><span className="dot" style={{ background: habit.color }} />{habit.name}</div></td>{days.map((day) => { const date = getDate(day); const checked = !!logs[`${habit.id}-${date}`]?.completed; const isFuture = date > todayKey; return <td key={date} className={`${checked ? 'done' : ''} ${date === todayKey ? 'today-cell' : ''} ${isFuture ? 'future-cell' : ''}`} style={{ '--habit-color': habit.color }}><input type="checkbox" checked={checked} disabled={isFuture} onChange={() => { if (!isFuture) toggle(habit.id, date); }} aria-label={`${habit.name} ${date}`} /></td>; })}</tr>)}
+              {habits.length === 0 ? <tr><td colSpan={days.length + 1} className="empty">Add a habit to see your calendar.</td></tr> : habits.map((habit) => <tr key={habit.id}><td className="sticky-col"><div className="habit-name"><span className="dot" style={{ background: habit.color }} />{habit.name}</div></td>{days.map((day) => { const date = getDate(day); const checked = !!logs[`${habit.id}-${date}`]?.completed; const isFuture = date > todayKey; const scheduled = isHabitScheduled(habit, date); const unavailable = isFuture || !scheduled; return <td key={date} className={`${checked ? 'done' : ''} ${date === todayKey ? 'today-cell' : ''} ${isFuture ? 'future-cell' : ''} ${!scheduled ? 'unscheduled-cell' : ''}`} style={{ '--habit-color': habit.color }}><input type="checkbox" checked={checked} disabled={unavailable} onChange={() => { if (!unavailable) toggle(habit.id, date); }} aria-label={`${habit.name} ${date}${!scheduled ? ' (not scheduled)' : isFuture ? ' (future)' : ''}`} /></td>; })}</tr>)}
             </tbody></table></div></div>
           </section>
         )}
