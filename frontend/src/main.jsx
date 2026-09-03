@@ -4,6 +4,7 @@ import App from './App';
 import ThemeToggle from './components/ThemeToggle';
 import ProfileOverlay from './components/ProfileOverlay';
 import HabitDetailOverlay from './components/HabitDetailOverlay';
+import HabitScheduleManager from './components/HabitScheduleManager';
 import './styles.css';
 import './responsive.css';
 import './premium.css';
@@ -16,12 +17,14 @@ import './reorder.css';
 import './mobile-premium.css';
 import './mobile-compact.css';
 import './habit-detail.css';
+import './habit-schedule.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <App />
     <ProfileOverlay />
     <HabitDetailOverlay />
+    <HabitScheduleManager />
     <div className="global-theme-control">
       <ThemeToggle compact />
     </div>
