@@ -1,0 +1,70 @@
+/* Phase 1 — Step 2: premium completion feedback */
+.content:has(.habit-list) .habit-card{
+  transition:transform .22s cubic-bezier(.22,1,.36,1),box-shadow .28s ease,border-color .24s ease,background .28s ease;
+}
+
+.content:has(.habit-list) .habit-card::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  opacity:0;
+  background:radial-gradient(circle at 12% 50%,color-mix(in srgb,var(--habit-color) 18%,transparent),transparent 34%);
+}
+
+.content:has(.habit-list) .habit-card.complete::after{
+  animation:completion-wash .6s ease-out both;
+}
+
+.content:has(.habit-list) .habit-card.complete .habit-main h3{
+  color:var(--habit-color);
+  transition:color .25s ease;
+}
+
+.content:has(.habit-list) .habit-card.complete .meta .dot{
+  box-shadow:0 0 0 4px color-mix(in srgb,var(--habit-color) 12%,transparent);
+}
+
+.content:has(.habit-list) .check.checked{
+  position:relative;
+  overflow:visible;
+  animation:completion-check-pop .34s cubic-bezier(.22,1.3,.36,1) both;
+}
+
+.content:has(.habit-list) .check.checked::after{
+  content:'';
+  position:absolute;
+  inset:-7px;
+  border:2px solid color-mix(in srgb,var(--habit-color) 48%,transparent);
+  border-radius:15px;
+  opacity:0;
+  animation:completion-ring .5s ease-out both;
+}
+
+@keyframes completion-check-pop{
+  0%{transform:scale(.78)}
+  55%{transform:scale(1.12)}
+  100%{transform:scale(1)}
+}
+
+@keyframes completion-ring{
+  0%{transform:scale(.72);opacity:.7}
+  100%{transform:scale(1.28);opacity:0}
+}
+
+@keyframes completion-wash{
+  0%{opacity:0;transform:scale(.98)}
+  28%{opacity:.95}
+  100%{opacity:0;transform:scale(1.03)}
+}
+
+@media(max-width:760px){
+  .content:has(.habit-list) .habit-card.complete .habit-main h3{color:var(--habit-color)}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .content:has(.habit-list) .check.checked,
+  .content:has(.habit-list) .check.checked::after,
+  .content:has(.habit-list) .habit-card.complete::after{animation:none!important}
+}
