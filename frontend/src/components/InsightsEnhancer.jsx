@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { habitsApi, logsApi } from '../services/api';
+import { getBehaviorInsights } from '../utils/behaviorInsights';
 
 function monthRangeFromLabel(label) {
   const parsed = new Date(`${label} 1, 12:00:00`);
@@ -118,7 +119,8 @@ export default function InsightsEnhancer() {
     const weekPossible = habits.length * week.filter(item => !item.future).length;
     const weekCompleted = week.reduce((sum, item) => sum + item.count, 0);
     const weekScore = weekPossible ? Math.round((weekCompleted / weekPossible) * 100) : 0;
-    return { totalPossible, totalCompleted, score, habitStats, bestDay, activeDays, week, weekScore };
+    const behaviorInsights = getBehaviorInsights(habits, logs, range.year, range.month, todayKey);
+    return { totalPossible, totalCompleted, score, habitStats, bestDay, activeDays, week, weekScore, behaviorInsights };
   }, [habits, logs, range]);
 
   if (!active || !contentRoot) return null;
@@ -142,6 +144,29 @@ export default function InsightsEnhancer() {
             <div><span>Best habit</span><strong>{analysis.habitStats[0]?.rate || 0}%</strong><small>{analysis.habitStats[0]?.habit.name || 'No habits yet'}</small></div>
             <div><span>Best day</span><strong>{analysis.bestDay?.count || 0}</strong><small>{analysis.bestDay ? formatDate(analysis.bestDay.date) : 'No data yet'}</small></div>
           </div>
+
+          {analysis.behaviorInsights.length > 0 && (
+            <section className="behavior-insights-panel">
+              <div className="behavior-insights-head">
+                <div>
+                  <p className="eyebrow">What we are noticing</p>
+                  <h2>Your routine has a pattern.</h2>
+                </div>
+                <span>Based on your scheduled days</span>
+              </div>
+              <div className="behavior-insights-grid">
+                {analysis.behaviorInsights.map((insight) => (
+                  <article className="behavior-insight" key={`${insight.type}-${insight.title}`} style={{ '--behavior-color': insight.color || '#0ea5e9' }}>
+                    <span className="behavior-insight-mark" />
+                    <div>
+                      <h3>{insight.title}</h3>
+                      <p>{insight.body}</p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </section>
+          )}
 
           <div className="insights-enhancer-grid">
             <div className="insights-enhancer-panel wide">
