@@ -40,13 +40,13 @@
 @media(max-width:760px){
   .calendar-section{gap:11px}
   .calendar-toolbar{padding-inline:1px}
-  .month-nav strong{min-width:118px;text-align:center;font-size:15px}
+  .month-nav strong{min-width:118px;text-align:center;font-size:17px}
   .calendar-section .table-card{border-radius:17px}
   .calendar-section table{min-width:760px}
   .calendar-section th,.calendar-section td{height:46px}
   .calendar-section .sticky-col{min-width:170px;width:170px;padding:8px 10px}
-  .calendar-section .habit-name{font-size:14px}
-  .calendar-section th.sticky-col{font-size:13px}
+  .calendar-section .habit-name{font-size:16px}
+  .calendar-section th.sticky-col{font-size:15px}
   .calendar-section thead th:not(.sticky-col){font-size:13px}
   .calendar-section td input[type="checkbox"]{width:17px;height:17px}
   .side-nav button{font-size:15px}
