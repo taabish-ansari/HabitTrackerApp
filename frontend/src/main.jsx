@@ -25,6 +25,7 @@ import './floating-controls.css';
 import './typography.css';
 import './insights.css';
 import './insights-enhancer.css';
+import './rewards.css';
 import './insights-scroll-reset.js';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
