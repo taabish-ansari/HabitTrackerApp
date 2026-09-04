@@ -1,0 +1,9 @@
+.daily-score-card{display:flex;align-items:center;justify-content:space-between;gap:22px;margin:14px 0 18px;padding:20px 22px;border:1px solid rgba(17,24,39,.08);border-radius:22px;background:linear-gradient(135deg,rgba(255,255,255,.78),rgba(248,250,252,.62));box-shadow:0 10px 34px rgba(17,24,39,.05)}
+.daily-score-copy{min-width:0}.daily-score-copy h2{margin:3px 0 4px;font-size:42px;line-height:1;letter-spacing:-.045em}.daily-score-copy h2 span{margin-left:5px;font-size:16px;color:#94a3b8;letter-spacing:0}.daily-score-copy .muted{margin:0;font-size:11px}
+.daily-score-orb{width:82px;height:82px;flex:none;border-radius:50%;display:grid;place-items:center;align-content:center;gap:3px;background:conic-gradient(#14b8a6 var(--score),rgba(148,163,184,.22) 0);position:relative;box-shadow:0 10px 24px rgba(20,184,166,.12)}
+.daily-score-orb::before{content:"";position:absolute;inset:7px;border-radius:50%;background:#f8fafc}.daily-score-orb strong,.daily-score-orb span{position:relative;z-index:1}.daily-score-orb strong{font-size:10px;letter-spacing:.04em}.daily-score-orb span{font-size:8px;color:#64748b}
+html[data-theme="dark"] .daily-score-card{background:rgba(17,24,39,.72);border-color:rgba(255,255,255,.075);box-shadow:0 12px 36px rgba(0,0,0,.14)}
+html[data-theme="dark"] .daily-score-copy .muted,html[data-theme="dark"] .daily-score-copy h2 span{color:#94a3b8}
+html[data-theme="dark"] .daily-score-orb::before{background:#111827}.daily-score-orb strong{color:#0f172a}html[data-theme="dark"] .daily-score-orb strong{color:#f8fafc}
+@media (max-width:760px){.daily-score-card{padding:16px;gap:14px;border-radius:17px;margin:10px 0 13px}.daily-score-copy h2{font-size:34px}.daily-score-orb{width:68px;height:68px}.daily-score-orb::before{inset:6px}}
+@media (max-width:430px){.daily-score-card{padding:14px}.daily-score-copy h2{font-size:30px}.daily-score-copy .muted{font-size:9px}.daily-score-orb{width:61px;height:61px}.daily-score-orb strong{font-size:8px}}
