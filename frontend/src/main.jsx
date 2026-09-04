@@ -19,6 +19,7 @@ import './mobile-compact.css';
 import './habit-detail.css';
 import './habit-schedule.css';
 import './schedule-calendar.css';
+import './calendar-upgrade.css';
 import './floating-controls.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
