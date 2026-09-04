@@ -29,6 +29,7 @@ import './insights-enhancer.css';
 import './rewards.css';
 import './reward-celebration.css';
 import './daily-score.css';
+import './personalized-recommendations.css';
 import './insights-scroll-reset.js';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
