@@ -1,11 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { habitsApi, logsApi } from '../services/api';
 import { getPersonalizedRoutine } from '../utils/personalizedRoutine';
-
-function todayKey(date = new Date()) {
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-}
 
 function monthRange(date = new Date()) {
   const year = date.getFullYear();
@@ -23,6 +19,7 @@ export default function PersonalizedRoutine() {
   const [habits, setHabits] = useState([]);
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(false);
+  const listSignatureRef = useRef('');
 
   useEffect(() => {
     const syncMount = () => {
@@ -34,7 +31,14 @@ export default function PersonalizedRoutine() {
 
       if (!isToday) {
         setMount(null);
+        listSignatureRef.current = '';
         return;
+      }
+
+      const signature = list.textContent || '';
+      if (signature !== listSignatureRef.current) {
+        listSignatureRef.current = signature;
+        window.dispatchEvent(new Event('habittracker:routine-refresh'));
       }
 
       let target = document.querySelector('.personalized-routine-mount');
@@ -79,20 +83,37 @@ export default function PersonalizedRoutine() {
     };
 
     load();
-    const refresh = () => load();
-    window.addEventListener('habittracker:completion', refresh);
-    window.addEventListener('habit-schedule-updated', refresh);
+    window.addEventListener('habittracker:completion', load);
+    window.addEventListener('habit-schedule-updated', load);
+    window.addEventListener('habittracker:routine-refresh', load);
     return () => {
       cancelled = true;
-      window.removeEventListener('habittracker:completion', refresh);
-      window.removeEventListener('habit-schedule-updated', refresh);
+      window.removeEventListener('habittracker:completion', load);
+      window.removeEventListener('habit-schedule-updated', load);
+      window.removeEventListener('habittracker:routine-refresh', load);
     };
   }, [active]);
 
   if (!active || !mount || loading) return null;
 
   const routine = getPersonalizedRoutine(habits, logs, new Date());
-  if (routine.restDay || routine.steps.length === 0) return null;
+  if (routine.restDay) return null;
+
+  if (routine.complete) {
+    return createPortal(
+      <section className="personalized-routine-card personalized-routine-complete" aria-labelledby="personalized-routine-title">
+        <div className="personalized-routine-head">
+          <div>
+            <p className="eyebrow">Personalized routine</p>
+            <h2 id="personalized-routine-title">Today’s routine is clear.</h2>
+            <p>You completed every habit scheduled for today. Keep tomorrow just as simple.</p>
+          </div>
+          <span>{routine.completedCount}/{routine.dueCount} done ✓</span>
+        </div>
+      </section>,
+      mount,
+    );
+  }
 
   return createPortal(
     <section className="personalized-routine-card" aria-labelledby="personalized-routine-title">
@@ -107,15 +128,13 @@ export default function PersonalizedRoutine() {
 
       <div className="personalized-routine-steps">
         {routine.steps.map((step, index) => (
-          <article className={`personalized-routine-step ${step.completed ? 'is-done' : ''}`} key={`${step.type}-${step.habit.id}`}>
+          <article className="personalized-routine-step" key={`${step.type}-${step.habit.id}`}>
             <div className="personalized-routine-number">{index + 1}</div>
             <div className="personalized-routine-body">
               <span>{step.label}</span>
               <strong>{step.habit.name}</strong>
             </div>
-            <div className="personalized-routine-status" style={{ '--routine-color': step.habit.color || '#10b981' }}>
-              {step.completed ? '✓' : '•'}
-            </div>
+            <div className="personalized-routine-status" style={{ '--routine-color': step.habit.color || '#10b981' }}>•</div>
           </article>
         ))}
       </div>
