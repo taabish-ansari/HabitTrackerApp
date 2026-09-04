@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, useCallback } from 'react';
-import { habitsApi, logsApi } from '../services/api';
+import { habitsApi, logsApi, gameApi } from '../services/api';
 
 const normalizeHabit = habit => ({
   ...habit,
@@ -62,8 +62,21 @@ export function useHabitLogs(year, month) {
     setLogs(current => ({ ...current, [key]: { ...(previous || {}), habit_id: habitId, date, completed } }));
     try {
       const { data } = await logsApi.toggle({ habitId, date, completed });
-      setLogs(current => ({ ...current, [key]: data }));
+      setLogs(current => ({ ...current, [key]: data?.log ?? data }));
       setError('');
+
+      let gamification = null;
+      try {
+        const response = await gameApi.get();
+        gamification = response.data;
+      } catch {
+        // Reward feedback is best-effort and must never break a saved check-in.
+      }
+
+      window.dispatchEvent(new CustomEvent('habittracker:completion', {
+        detail: { habitId, date, completed, gamification },
+      }));
+      return { log: data?.log ?? data, gamification };
     } catch (e) {
       setLogs(current => {
         const copy = { ...current };
@@ -71,6 +84,7 @@ export function useHabitLogs(year, month) {
         return copy;
       });
       setError(e.response?.data?.error || e.message || 'Could not save that check-in.');
+      return null;
     }
   };
 
