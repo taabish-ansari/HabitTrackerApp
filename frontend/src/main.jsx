@@ -5,6 +5,7 @@ import ThemeToggle from './components/ThemeToggle';
 import ProfileOverlay from './components/ProfileOverlay';
 import HabitDetailOverlay from './components/HabitDetailOverlay';
 import HabitScheduleManager from './components/HabitScheduleManager';
+import InsightsEnhancer from './components/InsightsEnhancer';
 import './styles.css';
 import './responsive.css';
 import './premium.css';
@@ -23,6 +24,7 @@ import './calendar-upgrade.css';
 import './floating-controls.css';
 import './typography.css';
 import './insights.css';
+import './insights-enhancer.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -30,6 +32,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <ProfileOverlay />
     <HabitDetailOverlay />
     <HabitScheduleManager />
+    <InsightsEnhancer />
     <div className="global-theme-control">
       <ThemeToggle compact />
     </div>
