@@ -22,6 +22,34 @@ function userClient(token) {
   });
 }
 
+function xpRequiredForLevel(level) {
+  const safeLevel = Math.max(1, Math.floor(Number(level) || 1));
+  const completedLevels = safeLevel - 1;
+  return 100 * completedLevels + (50 * completedLevels * (completedLevels + 1)) / 2;
+}
+
+function getLevelProgress(totalXp) {
+  const xp = Math.max(0, Math.floor(Number(totalXp) || 0));
+  let level = 1;
+  while (xp >= xpRequiredForLevel(level + 1)) level += 1;
+
+  const currentLevelXp = xpRequiredForLevel(level);
+  const nextLevelXp = xpRequiredForLevel(level + 1);
+  const progressXp = xp - currentLevelXp;
+  const requiredXp = nextLevelXp - currentLevelXp;
+  const progressPercent = Math.min(100, Math.floor((progressXp / requiredXp) * 100));
+
+  return {
+    level,
+    currentLevelXp,
+    nextLevelXp,
+    progressXp,
+    requiredXp,
+    progressPercent,
+    xpToNextLevel: Math.max(0, nextLevelXp - xp),
+  };
+}
+
 const habitInput = z.object({
   name: z.string().trim().min(1).max(100),
   category: z.string().trim().min(1).max(40),
@@ -165,7 +193,8 @@ app.get('/api/gamification', requireUser, async (req, res, next) => {
     ]);
     if (statsError) throw statsError;
     if (badgesError) throw badgesError;
-    res.json({ stats, level: Math.floor((stats?.total_xp ?? 0) / 100) + 1, badges: badges ?? [] });
+    const levelProgress = getLevelProgress(stats?.total_xp ?? 0);
+    res.json({ stats, ...levelProgress, badges: badges ?? [] });
   } catch (error) { next(error); }
 });
 
