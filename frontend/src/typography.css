@@ -1,0 +1,62 @@
+/* Readability pass: cleaner office-style typography with slightly larger calendar labels. */
+:root,
+body,
+button,
+input,
+select,
+textarea {
+  font-family: Calibri, Candara, "Segoe UI", Arial, sans-serif;
+}
+
+.calendar-toolbar,
+.month-nav,
+.month-nav strong,
+.table-card,
+.table-card table,
+.table-card th,
+.table-card td,
+.table-card input[type="checkbox"] {
+  font-family: Calibri, Candara, "Segoe UI", Arial, sans-serif;
+}
+
+.month-nav strong {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.table-card th {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.table-card .sticky-col {
+  font-size: 12px;
+}
+
+.table-card .habit-name {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+}
+
+.table-card td {
+  font-size: 12px;
+}
+
+.table-card td input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+}
+
+@media (max-width: 760px) {
+  .table-card th {
+    font-size: 10px;
+  }
+
+  .table-card .sticky-col,
+  .table-card .habit-name {
+    font-size: 11px;
+  }
+}
