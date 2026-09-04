@@ -87,7 +87,11 @@ export default function InsightsEnhancer() {
     if (!range) return null;
     const now = new Date();
     const sameMonth = range.year === now.getFullYear() && range.month === now.getMonth();
-    const elapsed = sameMonth ? now.getDate() : range.year < now.getFullYear() || (range.year === now.getFullYear() && range.month < now.getMonth()) ? new Date(range.year, range.month + 1, 0).getDate() : 0;
+    const elapsed = sameMonth
+      ? now.getDate()
+      : range.year < now.getFullYear() || (range.year === now.getFullYear() && range.month < now.getMonth())
+        ? new Date(range.year, range.month + 1, 0).getDate()
+        : 0;
     const keys = Array.from({ length: elapsed }, (_, i) => `${range.year}-${String(range.month + 1).padStart(2, '0')}-${String(i + 1).padStart(2, '0')}`);
     const lookup = new Map(logs.map(log => [`${log.habit_id}-${log.date}`, log]));
     const totalPossible = habits.length * keys.length;
@@ -114,7 +118,7 @@ export default function InsightsEnhancer() {
     const weekPossible = habits.length * week.filter(item => !item.future).length;
     const weekCompleted = week.reduce((sum, item) => sum + item.count, 0);
     const weekScore = weekPossible ? Math.round((weekCompleted / weekPossible) * 100) : 0;
-    return { totalPossible, totalCompleted, score, habitStats, daily, bestDay, activeDays, week, weekScore };
+    return { totalPossible, totalCompleted, score, habitStats, bestDay, activeDays, week, weekScore };
   }, [habits, logs, range]);
 
   if (!active || !contentRoot) return null;
@@ -153,15 +157,6 @@ export default function InsightsEnhancer() {
               <p className="eyebrow">Performance</p>
               <h2>Most reliable habits</h2>
               {analysis.habitStats.length === 0 ? <p className="insights-muted">Create a habit to start seeing patterns.</p> : <div className="insights-rank-list">{analysis.habitStats.slice(0, 6).map(({ habit, completed, rate }, index) => <div className="insights-rank" key={habit.id}><span className="rank-dot" style={{ background: habit.color }} /><div><strong>{index + 1}. {habit.name}</strong><small>{completed} completed · {rate}% consistency</small><div><i style={{ width: `${rate}%`, background: habit.color }} /></div></div></div>)}</div>}
-            </div>
-
-            <div className="insights-enhancer-panel wide">
-              <p className="eyebrow">Daily rhythm</p>
-              <h2>How your month unfolded.</h2>
-              <div className="insights-calendar-strip">
-                {analysis.daily.map(item => <div className={item.count ? 'active' : ''} key={item.date} title={`${formatDate(item.date)} · ${item.count}/${habits.length} completed`}><i style={{ opacity: Math.max(.12, item.count / Math.max(1, habits.length)) }} /></div>)}
-              </div>
-              <p className="insights-muted">Each square is a day. More filled days means stronger momentum.</p>
             </div>
           </div>
         </>
