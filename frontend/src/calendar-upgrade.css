@@ -10,7 +10,7 @@
 .calendar-section table{min-width:960px;border-spacing:0}
 .calendar-section th,.calendar-section td{height:54px;transition:background .16s ease}
 .calendar-section th{font-weight:800;letter-spacing:.02em}
-.calendar-section thead th:not(.sticky-col){background:linear-gradient(180deg,#fbfcfe,#f5f8fb);font-size:11px}
+.calendar-section thead th:not(.sticky-col){background:linear-gradient(180deg,#fbfcfe,#f5f8fb);font-size:12px}
 .calendar-section tbody tr:hover td:not(.sticky-col){background:color-mix(in srgb,var(--accent) 3%,transparent)}
 .calendar-section .sticky-col{min-width:235px;width:235px;box-shadow:7px 0 14px rgba(15,23,42,.035)}
 .calendar-section tbody .sticky-col{font-weight:800}
@@ -24,33 +24,33 @@
 .calendar-section th.future-head{color:#a1adbd;background:#f5f7fa}
 .calendar-section td input[type="checkbox"]{position:relative;z-index:2;width:19px;height:19px;transform:scale(.95);transition:transform .15s ease,filter .15s ease}
 .calendar-section td input[type="checkbox"]:hover{transform:scale(1.08);filter:saturate(1.08)}
-.calendar-section .habit-name{font-size:13px;line-height:1.2;letter-spacing:-.01em}
+.calendar-section .habit-name{font-size:14px;line-height:1.2;letter-spacing:-.01em}
 .calendar-section .habit-name .dot{width:9px;height:9px;border-radius:3px;box-shadow:0 0 0 3px color-mix(in srgb,var(--habit-color) 9%,transparent)}
-.calendar-section th.sticky-col{font-size:12px}
+.calendar-section th.sticky-col{font-size:13px}
 
 /* Secondary UI text: easier to read without making the interface bulky. */
-.side-nav button{font-size:13px}
-.sidebar .ghost.full{font-size:12.5px}
-.sidebar .mini-profile strong{font-size:12px}
-.sidebar .mini-profile span{font-size:10px}
-.habit-schedule-launcher{font-size:13px}
+.side-nav button{font-size:14px}
+.sidebar .ghost.full{font-size:13.5px}
+.sidebar .mini-profile strong{font-size:13px}
+.sidebar .mini-profile span{font-size:11px}
+.habit-schedule-launcher{font-size:14px}
 .habit-schedule-launcher span{font-size:18px}
-.calendar-toolbar>.ghost{font-size:12.5px}
+.calendar-toolbar>.ghost{font-size:13.5px}
 
 @media(max-width:760px){
   .calendar-section{gap:11px}
   .calendar-toolbar{padding-inline:1px}
-  .month-nav strong{min-width:118px;text-align:center;font-size:12.5px}
+  .month-nav strong{min-width:118px;text-align:center;font-size:13px}
   .calendar-section .table-card{border-radius:17px}
   .calendar-section table{min-width:760px}
   .calendar-section th,.calendar-section td{height:46px}
   .calendar-section .sticky-col{min-width:170px;width:170px;padding:8px 10px}
-  .calendar-section .habit-name{font-size:11.5px}
-  .calendar-section th.sticky-col{font-size:10px}
-  .calendar-section thead th:not(.sticky-col){font-size:10px}
+  .calendar-section .habit-name{font-size:12px}
+  .calendar-section th.sticky-col{font-size:11px}
+  .calendar-section thead th:not(.sticky-col){font-size:11px}
   .calendar-section td input[type="checkbox"]{width:17px;height:17px}
   .side-nav button{font-size:15px}
-  .side-nav button span{font-size:9px}
-  .habit-schedule-launcher{font-size:11px}
-  .sidebar .ghost.full{font-size:11px}
+  .side-nav button span{font-size:10px}
+  .habit-schedule-launcher{font-size:12px}
+  .sidebar .ghost.full{font-size:12px}
 }
