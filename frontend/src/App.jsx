@@ -4,6 +4,7 @@ import { useHabits, useHabitLogs } from './hooks/useHabits';
 import { useSession, signIn, signUp } from './hooks/useSession';
 import { supabase } from './lib/supabase';
 import ProfileOverlay from './components/ProfileOverlay';
+import RewardsView from './components/RewardsView';
 
 const categories = ['Health', 'Study', 'Fitness', 'Work', 'Finance', 'Personal', 'Other'];
 const colors = ['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6', '#ef4444', '#06b6d4', '#ec4899'];
@@ -210,7 +211,7 @@ function Dashboard({ user }) {
         )}
 
         {view === 'insights' && <Insights habits={habits} logs={logs} days={days} year={year} month={month} monthName={monthName} />}
-        {view === 'rewards' && <Rewards game={game} />}
+        {view === 'rewards' && <RewardsView game={game} />}
       </main>
 
       {showForm && <HabitModal initial={editing} onClose={() => { setShowForm(false); setEditing(null); }} onSave={handleSave} />}
