@@ -36,7 +36,7 @@ function getMonthPerformance(habit, lookup, today) {
 
 export function getPersonalizedRoutine(habits, logs, today = new Date()) {
   const todayHabits = (habits || []).filter((habit) => isScheduledOnDate(habit, today));
-  if (!todayHabits.length) return { steps: [], restDay: true };
+  if (!todayHabits.length) return { steps: [], restDay: true, complete: false };
 
   const lookup = buildLogLookup(logs);
   const performance = todayHabits.map((habit, index) => ({
@@ -47,7 +47,11 @@ export function getPersonalizedRoutine(habits, logs, today = new Date()) {
   }));
 
   const incomplete = performance.filter((item) => !item.completedToday);
-  const completed = performance.filter((item) => item.completedToday);
+  const completedCount = performance.length - incomplete.length;
+  if (!incomplete.length) {
+    return { steps: [], restDay: false, complete: true, dueCount: performance.length, completedCount };
+  }
+
   const steps = [];
   const used = new Set();
 
@@ -56,7 +60,7 @@ export function getPersonalizedRoutine(habits, logs, today = new Date()) {
     .sort((a, b) => b.rate - a.rate || a.index - b.index)[0];
 
   if (quickWin) {
-    steps.push({ type: 'start', label: 'Start with a quick win', habit: quickWin.habit, completed: false });
+    steps.push({ type: 'start', label: 'Start with a quick win', habit: quickWin.habit });
     used.add(quickWin.habit.id);
   }
 
@@ -65,7 +69,11 @@ export function getPersonalizedRoutine(habits, logs, today = new Date()) {
     .sort((a, b) => a.rate - b.rate || b.difficulty - a.difficulty || a.index - b.index)[0];
 
   if (priority) {
-    steps.push({ type: 'focus', label: priority.rate < 0.7 ? 'Then protect your weak spot' : 'Then keep your momentum', habit: priority.habit, completed: false });
+    steps.push({
+      type: 'focus',
+      label: priority.rate < 0.7 ? 'Then protect your weak spot' : 'Then keep your momentum',
+      habit: priority.habit,
+    });
     used.add(priority.habit.id);
   }
 
@@ -73,20 +81,14 @@ export function getPersonalizedRoutine(habits, logs, today = new Date()) {
     .filter((item) => !used.has(item.habit.id))
     .sort((a, b) => a.index - b.index)
     .forEach((item) => {
-      steps.push({ type: 'finish', label: 'Finish the rest', habit: item.habit, completed: false });
-      used.add(item.habit.id);
-    });
-
-  [...completed]
-    .sort((a, b) => a.index - b.index)
-    .forEach((item) => {
-      steps.push({ type: 'done', label: 'Already done', habit: item.habit, completed: true });
+      if (steps.length < 3) steps.push({ type: 'finish', label: 'Finish with this', habit: item.habit });
     });
 
   return {
-    steps: steps.slice(0, 5),
+    steps,
     restDay: false,
+    complete: false,
     dueCount: performance.length,
-    completedCount: completed.length,
+    completedCount,
   };
 }
