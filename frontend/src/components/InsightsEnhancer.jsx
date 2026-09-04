@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { habitsApi, logsApi } from '../services/api';
 
@@ -31,6 +31,7 @@ export default function InsightsEnhancer() {
   const [logs, setLogs] = useState([]);
   const [range, setRange] = useState(null);
   const [loading, setLoading] = useState(false);
+  const rangeKeyRef = useRef('');
 
   useEffect(() => {
     const sync = () => {
@@ -39,9 +40,17 @@ export default function InsightsEnhancer() {
       const root = document.querySelector('.content');
       setActive(Boolean(isInsights));
       setContentRoot(root || null);
-      if (isInsights) {
-        const label = document.querySelector('.insights-grid .insight-card.large .eyebrow')?.textContent?.trim();
-        const nextRange = monthRangeFromLabel(label || '');
+
+      if (!isInsights) {
+        rangeKeyRef.current = '';
+        return;
+      }
+
+      const label = document.querySelector('.insights-grid .insight-card.large .eyebrow')?.textContent?.trim();
+      const nextRange = monthRangeFromLabel(label || '');
+      const nextKey = nextRange ? `${nextRange.from}|${nextRange.to}` : '';
+      if (nextKey && nextKey !== rangeKeyRef.current) {
+        rangeKeyRef.current = nextKey;
         setRange(nextRange);
       }
     };
