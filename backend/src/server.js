@@ -187,14 +187,19 @@ app.put('/api/logs', requireUser, async (req, res, next) => {
 
 app.get('/api/gamification', requireUser, async (req, res, next) => {
   try {
-    const [{ data: stats, error: statsError }, { data: badges, error: badgesError }] = await Promise.all([
+    const [{ data: stats, error: statsError }, { data: badges, error: badgesError }, { count: habitCount, error: habitCountError }, { data: streakRows, error: streakError }] = await Promise.all([
       req.supabase.from('user_stats').select('total_xp,total_completed').eq('user_id', req.user.id).single(),
       req.supabase.from('badges').select('code,name,description,earned_at').eq('user_id', req.user.id).order('earned_at', { ascending: false }),
+      req.supabase.from('habits').select('id', { count: 'exact', head: true }).eq('user_id', req.user.id),
+      req.supabase.from('streaks').select('longest_streak,habits!inner(user_id)').eq('habits.user_id', req.user.id),
     ]);
     if (statsError) throw statsError;
     if (badgesError) throw badgesError;
+    if (habitCountError) throw habitCountError;
+    if (streakError) throw streakError;
     const levelProgress = getLevelProgress(stats?.total_xp ?? 0);
-    res.json({ stats, ...levelProgress, badges: badges ?? [] });
+    const bestLongestStreak = Math.max(0, ...(streakRows ?? []).map(row => Number(row.longest_streak) || 0));
+    res.json({ stats, ...levelProgress, habitCount: habitCount ?? 0, bestLongestStreak, badges: badges ?? [] });
   } catch (error) { next(error); }
 });
 
