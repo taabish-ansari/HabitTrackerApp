@@ -22,6 +22,7 @@ import './schedule-calendar.css';
 import './calendar-upgrade.css';
 import './floating-controls.css';
 import './typography.css';
+import './insights.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
