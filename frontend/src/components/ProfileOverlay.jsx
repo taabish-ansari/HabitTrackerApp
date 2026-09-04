@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
+import { getLevelProgress } from '../utils/progression';
 
 export default function ProfileOverlay() {
   const [open, setOpen] = useState(false);
@@ -58,8 +59,7 @@ export default function ProfileOverlay() {
   const username = profile?.username || 'User';
   const initials = username.split(/\s+/).map((part) => part[0]).join('').slice(0, 2).toUpperCase();
   const xp = stats?.total_xp || 0;
-  const level = Math.floor(xp / 100) + 1;
-  const levelProgress = xp % 100;
+  const levelProgress = getLevelProgress(xp);
   const joined = profile?.created_at ? new Date(profile.created_at).toLocaleDateString(undefined, { month: 'long', year: 'numeric' }) : '—';
 
   return <div className="profile-overlay" role="dialog" aria-modal="true" aria-label="Your profile" onMouseDown={(event) => { if (event.target === event.currentTarget) setOpen(false); }}>
@@ -74,11 +74,11 @@ export default function ProfileOverlay() {
           <section className="profile-grid">
             <div className="profile-card profile-card-wide"><span>Username</span><strong>{username}</strong><small>Your identity in HabitTracker</small></div>
             <div className="profile-card profile-card-wide"><span>Email</span><strong className="profile-email">{profile?.email || '—'}</strong><small>Your account email</small></div>
-            <div className="profile-card"><span>Total XP</span><strong>{xp}</strong><small>Level {level}</small></div>
+            <div className="profile-card"><span>Total XP</span><strong>{xp}</strong><small>Level {levelProgress.level}</small></div>
             <div className="profile-card"><span>Completed</span><strong>{stats?.total_completed || 0}</strong><small>Habit check-ins</small></div>
             <div className="profile-card"><span>Member since</span><strong>{joined}</strong><small>Keep building consistency</small></div>
           </section>
-          <section className="profile-progress-card"><div><p className="eyebrow">Current momentum</p><h2>Level {level}</h2><p>{levelProgress} / 100 XP toward your next level</p></div><div className="profile-progress-ring" style={{ '--profile-progress': `${levelProgress * 3.6}deg` }}><div><strong>{levelProgress}%</strong></div></div></section>
+          <section className="profile-progress-card"><div><p className="eyebrow">Current momentum</p><h2>Level {levelProgress.level}</h2><p>{levelProgress.progressXp} / {levelProgress.requiredXp} XP toward your next level</p><small>{levelProgress.xpToNextLevel} XP to Level {levelProgress.level + 1}</small></div><div className="profile-progress-ring" style={{ '--profile-progress': `${levelProgress.progressPercent * 3.6}deg` }}><div><strong>{levelProgress.progressPercent}%</strong></div></div></section>
         </>}
       </div>
     </div>
