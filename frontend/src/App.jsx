@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState } from 'react';
 import { habitsApi, gameApi } from './services/api';
 import { useHabits, useHabitLogs } from './hooks/useHabits';
 import { useUsageStreak } from './hooks/useUsageStreak';
@@ -11,7 +11,6 @@ import { getPersonalizedRecommendations } from './utils/personalizedRecommendati
 
 const categories = ['Health', 'Study', 'Fitness', 'Work', 'Finance', 'Personal', 'Other'];
 const colors = ['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6', '#ef4444', '#06b6d4', '#ec4899'];
-const dashboardViews = new Set(['today', 'calendar', 'insights', 'rewards']);
 
 function AuthScreen() {
   const [mode, setMode] = useState('login');
@@ -54,17 +53,9 @@ function App() {
 
 function Dashboard({ user }) {
   const today = new Date();
-  const viewStorageKey = `habittracker:last-view:${user.id}`;
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth());
-  const [view, setView] = useState(() => {
-    try {
-      const savedView = window.localStorage.getItem(viewStorageKey);
-      return dashboardViews.has(savedView) ? savedView : 'today';
-    } catch {
-      return 'today';
-    }
-  });
+  const [view, setView] = useState('today');
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState(null);
   const [query, setQuery] = useState('');
@@ -73,14 +64,6 @@ function Dashboard({ user }) {
   const [reorderError, setReorderError] = useState('');
   const [game, setGame] = useState(null);
   const [gameError, setGameError] = useState('');
-
-  useEffect(() => {
-    try {
-      window.localStorage.setItem(viewStorageKey, view);
-    } catch {
-      // Page persistence is a convenience; ignore storage restrictions or failures.
-    }
-  }, [view, viewStorageKey]);
 
   const { habits, setHabits, loading, error, refresh } = useHabits();
   const { logs, toggle, error: logError } = useHabitLogs(year, month);
@@ -106,17 +89,28 @@ function Dashboard({ user }) {
   const handleDrop = async (event, targetId) => { event.preventDefault(); setDragOverId(null); if (!draggedId || draggedId === targetId || query.trim()) return; const from = habits.findIndex((habit) => habit.id === draggedId); const to = habits.findIndex((habit) => habit.id === targetId); if (from < 0 || to < 0) return; const next = [...habits]; const [moved] = next.splice(from, 1); next.splice(to, 0, moved); setHabits(next); setDraggedId(null); try { await habitsApi.reorder(next.map((habit) => habit.id)); } catch (e) { setReorderError(e.response?.data?.error || e.message || 'Could not save habit order.'); await refresh(); } };
   const handleDragEnd = () => { setDraggedId(null); setDragOverId(null); };
 
+  const navigate = (nextView) => {
+    setView(nextView);
+    if (nextView === 'rewards') loadGame();
+  };
+
   return <div className="app-shell">
     <aside className="sidebar"><div className="brand-row"><div className="brand-mark">HT</div><div><strong>HabitTracker</strong><span>Personal system</span></div></div>
       <nav className="side-nav">
-        <button className={view === 'today' ? 'active' : ''} onClick={() => setView('today')}>◉ <span>Today</span></button>
-        <button className={view === 'calendar' ? 'active' : ''} onClick={() => setView('calendar')}>▦ <span>Calendar</span></button>
-        <button className={view === 'insights' ? 'active' : ''} onClick={() => setView('insights')}>◒ <span>Insights</span></button>
-        <button className={view === 'rewards' ? 'active' : ''} onClick={() => { setView('rewards'); loadGame(); }}>★ <span>Rewards</span></button>
+        <button className={view === 'today' ? 'active' : ''} onClick={() => navigate('today')}>◉ <span>Today</span></button>
+        <button className={view === 'calendar' ? 'active' : ''} onClick={() => navigate('calendar')}>▦ <span>Calendar</span></button>
+        <button className={view === 'insights' ? 'active' : ''} onClick={() => navigate('insights')}>◒ <span>Insights</span></button>
+        <button className={view === 'rewards' ? 'active' : ''} onClick={() => navigate('rewards')}>★ <span>Rewards</span></button>
       </nav>
       <div className="sidebar-bottom"><div className="mini-profile" tabIndex={0} role="button"><div className="avatar">{(user.email?.[0] || 'U').toUpperCase()}</div><div><strong>{user.user_metadata?.username || user.email?.split('@')[0]}</strong><span>{usageStreak} day app streak</span></div></div><button className="ghost full" onClick={() => supabase.auth.signOut()}>Log out</button></div>
     </aside>
     <main className="content"><header className="mobile-header"><div className="brand-row"><div className="brand-mark">HT</div><strong>HabitTracker</strong></div><button className="ghost" onClick={() => supabase.auth.signOut()}>Log out</button></header>
+      <nav className="mobile-nav" aria-label="Dashboard navigation">
+        <button className={view === 'today' ? 'active' : ''} onClick={() => navigate('today')} aria-label="Today">◉<span>Today</span></button>
+        <button className={view === 'calendar' ? 'active' : ''} onClick={() => navigate('calendar')} aria-label="Calendar">▦<span>Calendar</span></button>
+        <button className={view === 'insights' ? 'active' : ''} onClick={() => navigate('insights')} aria-label="Insights">◒<span>Insights</span></button>
+        <button className={view === 'rewards' ? 'active' : ''} onClick={() => navigate('rewards')} aria-label="Rewards">★<span>Rewards</span></button>
+      </nav>
       {(error || logError || gameError || reorderError) && <div className="error-banner">{error || logError || gameError || reorderError}</div>}
       {view !== 'rewards' && <section className="hero-card"><div><p className="eyebrow">{view === 'today' ? 'Daily focus' : view === 'calendar' ? 'Monthly planner' : 'Your patterns'}</p><h1>{view === 'today' ? 'Make today count.' : view === 'calendar' ? monthName : 'Consistency tells a story.'}</h1><p className="muted light">{view === 'today' ? `${todayCompleted} of ${habits.length} habits completed today.` : 'A calm, data-first view of your routine.'}</p></div><div className="hero-progress"><span>{progress}%</span><small>{monthName} progress</small><div className="progress-track"><i style={{ width: `${progress}%` }} /></div></div></section>}
       {view === 'today' && <><section className="toolbar"><div><p className="eyebrow">Focus</p><h2>Today</h2>{habits.length > 1 && <p className="reorder-hint">Drag habits to set your order.</p>}</div><div className="toolbar-actions"><input className="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search habits…" /><button className="primary small" onClick={() => { setEditing(null); setShowForm(true); }}>＋ Add habit</button></div></section>
@@ -137,14 +131,9 @@ function Insights({ habits, logs, days, year, month, monthName, todayKey }) {
   const stats = habits.map((habit) => ({ habit, actual: days.reduce((count, day) => count + (logs[`${habit.id}-${dateForDay(day)}`]?.completed ? 1 : 0), 0) }));
   const total = stats.reduce((sum, item) => sum + item.actual, 0);
   const top = [...stats].sort((a, b) => b.actual - a.actual)[0];
-  const recommendations = getPersonalizedRecommendations(habits, logs, days, year, month, todayKey, { score: null, dueCount: 0, completedCount: 0, remainingCount: 0 });
+  const recommendations = getPersonalizedRecommendations(habits, logs, days, year, month, todayKey, null);
 
-  return <section className="insights-grid">
-    <div className="insight-card large"><p className="eyebrow">{monthName}</p><h2>Your month at a glance.</h2><div className="big-number">{total}<span>completions</span></div><p className="muted light">Track your strongest habits, then make the next month a little easier to win.</p></div>
-    <div className="insight-card"><p className="eyebrow">Top habit</p><h3>{top?.habit.name || '—'}</h3><strong>{top?.actual || 0}</strong><span>completed days</span></div>
-    <div className="insight-card wide"><p className="eyebrow">Habit breakdown</p>{stats.length === 0 ? <p className="muted">No habits yet.</p> : stats.map(({ habit, actual }) => <div className="bar-row" key={habit.id}><div><span>{habit.name}</span><strong>{actual}/{days.length}</strong></div><div className="bar"><i style={{ width: `${days.length ? Math.round((actual / days.length) * 100) : 0}%`, background: habit.color }} /></div></div>)}</div>
-    <section className="recommendations-panel"><div className="recommendations-head"><div><p className="eyebrow">Personalized</p><h2>Recommendations for you</h2></div><span>Based on your recent pattern</span></div><div className="recommendations-grid">{recommendations.map((recommendation) => <article className="recommendation-card" key={`${recommendation.type}-${recommendation.title}`} style={{ '--recommendation-color': recommendation.color || '#94a3b8' }}><span className="recommendation-label">{recommendation.label}</span><h3>{recommendation.title}</h3><p>{recommendation.body}</p></article>)}</div></section>
-  </section>;
+  return <section className="insights-grid"><div className="insight-card large"><p className="eyebrow">{monthName}</p><h2>Your month at a glance.</h2><div className="big-number">{total}<span>completions</span></div><p className="muted light">Track your strongest habits, then make the next month a little easier to win.</p></div><div className="insight-card"><p className="eyebrow">Top habit</p><h3>{top?.habit.name || '—'}</h3><strong>{top?.actual || 0}</strong><span>completed days</span></div><div className="insight-card wide"><p className="eyebrow">Habit breakdown</p>{stats.length === 0 ? <p className="muted">No habits yet.</p> : stats.map(({ habit, actual }) => <div className="bar-row" key={habit.id}><div><span>{habit.name}</span><strong>{actual}/{days.length}</strong></div><div className="bar"><i style={{ width: `${days.length ? Math.round((actual / days.length) * 100) : 0}%`, background: habit.color }} /></div></div>)}</div><section className="recommendations-panel"><div className="recommendations-head"><div><p className="eyebrow">Personalized</p><h2>Recommendations for you</h2></div><span>Based on your recent pattern</span></div><div className="recommendations-grid">{recommendations.map((recommendation) => <article className="recommendation-card" key={`${recommendation.type}-${recommendation.title}`} style={{ '--recommendation-color': recommendation.color || '#94a3b8' }}><span className="recommendation-label">{recommendation.label}</span><h3>{recommendation.title}</h3><p>{recommendation.body}</p></article>)}</div></section></section>;
 }
 
 export default App;
