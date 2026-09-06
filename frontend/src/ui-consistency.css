@@ -1,0 +1,192 @@
+/* Phase 5 — shared visual language.
+   Loaded last so the existing feature styles stay intact while common surfaces
+   share the same spacing, radii, borders, controls, and typography rhythm.
+*/
+
+:root {
+  --ui-radius-sm: 10px;
+  --ui-radius-md: 14px;
+  --ui-radius-lg: 19px;
+  --ui-radius-xl: 24px;
+  --ui-border: rgba(17,24,39,.09);
+  --ui-border-strong: rgba(17,24,39,.14);
+  --ui-control-h: 42px;
+  --ui-focus: 0 0 0 4px rgba(14,165,233,.12);
+  --ui-shadow-card: 0 8px 28px rgba(17,24,39,.05);
+}
+
+/* Shared controls */
+button,
+input,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 0;
+  box-shadow: var(--ui-focus);
+}
+
+.primary,
+.ghost {
+  min-height: var(--ui-control-h);
+}
+
+.primary {
+  border-radius: var(--ui-radius-md) !important;
+}
+
+.ghost {
+  border-radius: var(--ui-radius-md) !important;
+}
+
+input,
+select {
+  min-height: var(--ui-control-h);
+  border-radius: var(--ui-radius-md) !important;
+}
+
+/* Shared card language */
+.stats-row > div,
+.habit-card,
+.table-card,
+.insight-card,
+.daily-score-card,
+.personalized-routine-card,
+.recommendations-panel,
+.behavior-insights-panel,
+.reward-stat-card,
+.achievements-panel {
+  border-radius: var(--ui-radius-lg) !important;
+}
+
+.stats-row > div,
+.habit-card,
+.table-card,
+.recommendations-panel,
+.behavior-insights-panel,
+.personalized-routine-card,
+.reward-stat-card,
+.achievements-panel {
+  border-color: var(--ui-border) !important;
+}
+
+/* Consistent section rhythm */
+.toolbar,
+.calendar-toolbar,
+.rewards-heading,
+.insights-enhancer-head,
+.behavior-insights-head,
+.personalized-routine-head,
+.recommendations-head,
+.achievements-panel-head {
+  letter-spacing: normal;
+}
+
+.toolbar h2,
+.behavior-insights-head h2,
+.personalized-routine-head h2,
+.recommendations-head h2,
+.achievements-panel-head h2 {
+  line-height: 1.15;
+}
+
+/* Metadata and labels should use one visual scale */
+.eyebrow {
+  font-size: 10px !important;
+  line-height: 1.2;
+  letter-spacing: .16em !important;
+}
+
+.meta,
+.insights-muted,
+.personalized-routine-head p:not(.eyebrow),
+.behavior-insight p,
+.recommendation-card p,
+.achievement-main p {
+  line-height: 1.5;
+}
+
+/* Shared interactive polish */
+.habit-card,
+.stats-row > div,
+.insight-card,
+.reward-stat-card,
+.achievement-card,
+.personalized-routine-step,
+.recommendation-card {
+  transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease, background .16s ease;
+}
+
+.habit-card:hover,
+.achievement-card:hover,
+.personalized-routine-step:hover,
+.recommendation-card:hover {
+  transform: translateY(-1px);
+}
+
+/* Calendar controls match the rest of the app */
+.month-nav button,
+.close,
+.profile-close,
+.habit-schedule-close {
+  border-radius: var(--ui-radius-sm) !important;
+}
+
+/* Keep dense layouts from feeling cramped */
+.stats-row,
+.insights-grid,
+.reward-stat-grid,
+.achievement-grid,
+.behavior-insights-grid,
+.personalized-routine-steps,
+.recommendations-grid {
+  align-items: stretch;
+}
+
+/* Dark mode keeps the same hierarchy instead of introducing new surfaces. */
+html[data-theme="dark"] {
+  --ui-border: rgba(255,255,255,.075);
+  --ui-border-strong: rgba(255,255,255,.11);
+  --ui-shadow-card: 0 12px 36px rgba(0,0,0,.14);
+}
+
+html[data-theme="dark"] .primary,
+html[data-theme="dark"] .ghost {
+  box-shadow: none;
+}
+
+/* Small screens: one spacing language across all feature cards. */
+@media (max-width: 760px) {
+  :root {
+    --ui-control-h: 40px;
+  }
+
+  .stats-row,
+  .insights-grid,
+  .reward-stat-grid,
+  .achievement-grid,
+  .behavior-insights-grid,
+  .personalized-routine-steps,
+  .recommendations-grid {
+    gap: 10px !important;
+  }
+
+  .toolbar {
+    gap: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .habit-card,
+  .stats-row > div,
+  .insight-card,
+  .reward-stat-card,
+  .achievement-card,
+  .personalized-routine-step,
+  .recommendation-card {
+    transition: none !important;
+  }
+}
