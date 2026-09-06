@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { habitsApi, gameApi } from './services/api';
 import { useHabits, useHabitLogs } from './hooks/useHabits';
 import { useUsageStreak } from './hooks/useUsageStreak';
@@ -11,6 +11,7 @@ import { getPersonalizedRecommendations } from './utils/personalizedRecommendati
 
 const categories = ['Health', 'Study', 'Fitness', 'Work', 'Finance', 'Personal', 'Other'];
 const colors = ['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6', '#ef4444', '#06b6d4', '#ec4899'];
+const dashboardViews = new Set(['today', 'calendar', 'insights', 'rewards']);
 
 function AuthScreen() {
   const [mode, setMode] = useState('login');
@@ -53,9 +54,17 @@ function App() {
 
 function Dashboard({ user }) {
   const today = new Date();
+  const viewStorageKey = `habittracker:last-view:${user.id}`;
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth());
-  const [view, setView] = useState('today');
+  const [view, setView] = useState(() => {
+    try {
+      const savedView = window.localStorage.getItem(viewStorageKey);
+      return dashboardViews.has(savedView) ? savedView : 'today';
+    } catch {
+      return 'today';
+    }
+  });
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState(null);
   const [query, setQuery] = useState('');
@@ -64,6 +73,14 @@ function Dashboard({ user }) {
   const [reorderError, setReorderError] = useState('');
   const [game, setGame] = useState(null);
   const [gameError, setGameError] = useState('');
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(viewStorageKey, view);
+    } catch {
+      // Page persistence is a convenience; ignore storage restrictions or failures.
+    }
+  }, [view, viewStorageKey]);
 
   const { habits, setHabits, loading, error, refresh } = useHabits();
   const { logs, toggle, error: logError } = useHabitLogs(year, month);
@@ -120,8 +137,7 @@ function Insights({ habits, logs, days, year, month, monthName, todayKey }) {
   const stats = habits.map((habit) => ({ habit, actual: days.reduce((count, day) => count + (logs[`${habit.id}-${dateForDay(day)}`]?.completed ? 1 : 0), 0) }));
   const total = stats.reduce((sum, item) => sum + item.actual, 0);
   const top = [...stats].sort((a, b) => b.actual - a.actual)[0];
-  const dailyScore = getDailyScore(habits, logs, todayKey, new Date());
-  const recommendations = getPersonalizedRecommendations(habits, logs, days, year, month, todayKey, dailyScore);
+  const recommendations = getPersonalizedRecommendations(habits, logs, days, year, month, todayKey, { score: null, dueCount: 0, completedCount: 0, remainingCount: 0 });
 
   return <section className="insights-grid">
     <div className="insight-card large"><p className="eyebrow">{monthName}</p><h2>Your month at a glance.</h2><div className="big-number">{total}<span>completions</span></div><p className="muted light">Track your strongest habits, then make the next month a little easier to win.</p></div>
