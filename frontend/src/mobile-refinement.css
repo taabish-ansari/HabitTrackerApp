@@ -1,0 +1,102 @@
+/* Phase 5 — Step 21: mobile refinement. */
+
+@media (max-width: 760px) {
+  .app-shell { display:block; min-height:100svh; }
+  .sidebar { display:none !important; }
+  .content { width:calc(100% - 20px) !important; margin:0 auto; padding:12px 0 82px !important; }
+  .mobile-header { display:flex !important; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; padding:4px 2px; }
+  .mobile-header .brand-row { min-width:0; }
+  .mobile-header .brand-mark { width:34px; height:34px; border-radius:10px; }
+  .mobile-header .ghost { min-height:38px; padding:8px 10px; }
+
+  .hero-card { display:grid; grid-template-columns:1fr; gap:14px; padding:20px !important; border-radius:22px !important; }
+  .hero-card h1 { max-width:none; margin-top:6px; }
+  .hero-card .muted { font-size:12px; }
+  .hero-progress { width:100% !important; min-height:104px; padding:14px; }
+  .hero-progress > span { font-size:36px !important; }
+
+  .toolbar { align-items:stretch !important; flex-direction:column; gap:11px !important; margin:22px 0 12px !important; }
+  .toolbar h2 { font-size:24px !important; }
+  .toolbar-actions { width:100%; display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; }
+  .toolbar-actions .search { min-width:0 !important; width:100%; }
+  .toolbar-actions .primary { white-space:nowrap; }
+
+  .stats-row.four { grid-template-columns:repeat(2,minmax(0,1fr)) !important; }
+  .stats-row > div { min-height:82px !important; padding:13px !important; }
+  .stats-row strong { font-size:25px !important; }
+  .stats-row span { font-size:9px; }
+
+  .habit-card { align-items:flex-start; gap:9px; padding:12px !important; }
+  .habit-main { min-width:0; flex:1; gap:9px !important; }
+  .drag-handle { display:none; }
+  .habit-right { flex:none; max-width:116px; }
+  .habit-right .icon-button { padding:6px 4px; }
+  .habit-main h3 { font-size:13px !important; }
+  .meta { gap:5px; font-size:9.5px !important; }
+  .check { width:33px !important; height:33px !important; flex:0 0 33px; }
+  .streak { padding:5px 7px; font-size:9px; }
+
+  .calendar-section { gap:10px; }
+  .calendar-toolbar { gap:8px; }
+  .month-nav { min-width:0; gap:7px; }
+  .month-nav strong { font-size:13px; }
+  .month-nav button { width:34px; height:34px; }
+  .calendar-toolbar > .ghost { min-height:34px; padding:7px 9px; }
+  .table-card { border-radius:18px !important; }
+  table { min-width:700px; }
+  .sticky-col { min-width:170px; width:170px; padding:9px 11px; }
+  th, td { height:44px; }
+  th { font-size:9px; }
+  .habit-name { font-size:10px; }
+
+  .daily-score-card,
+  .personalized-routine-card,
+  .recommendations-panel,
+  .behavior-insights-panel,
+  .onboarding-empty { margin-top:10px !important; }
+
+  .modal-backdrop { align-items:end; padding:10px; }
+  .modal { width:100%; max-height:calc(100svh - 20px); overflow:auto; padding:20px !important; border-radius:22px 22px 16px 16px !important; }
+  .modal-head h2 { font-size:23px !important; }
+  .form-grid { grid-template-columns:1fr !important; }
+
+  .profile-overlay { align-items:flex-end !important; padding:0 !important; }
+  .profile-panel { width:100% !important; max-height:92svh; overflow:auto; border-radius:24px 24px 0 0 !important; }
+  .profile-body { padding:16px !important; }
+  .profile-grid { grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:9px !important; }
+  .profile-card { padding:12px !important; }
+  .profile-card strong { font-size:16px !important; }
+  .profile-progress-card { margin-top:12px; }
+
+  .rewards-heading { margin-top:2px; }
+  .reward-hero-main { gap:12px !important; }
+  .reward-stat-grid { grid-template-columns:1fr 1fr !important; }
+  .achievement-grid { grid-template-columns:1fr !important; }
+}
+
+@media (max-width: 430px) {
+  .content { width:calc(100% - 14px) !important; }
+  .hero-card { padding:18px !important; }
+  .hero-card h1 { font-size:31px !important; }
+  .toolbar-actions { grid-template-columns:1fr; }
+  .toolbar-actions .primary { width:100%; }
+  .stats-row.four { gap:8px !important; }
+  .stats-row > div { min-height:78px !important; padding:12px !important; }
+  .stats-row strong { font-size:23px !important; }
+  .habit-card { padding:10px !important; }
+  .habit-right { max-width:96px; }
+  .habit-right .danger { display:none; }
+  .habit-main h3 { font-size:12px !important; }
+  .meta { font-size:9px !important; }
+  .profile-grid { grid-template-columns:1fr 1fr !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-header,
+  .hero-card,
+  .toolbar,
+  .stats-row > div,
+  .habit-card,
+  .modal,
+  .profile-panel { animation:none !important; }
+}
