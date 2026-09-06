@@ -36,6 +36,7 @@ import './personalized-routine.css';
 import './ui-consistency.css';
 import './onboarding.css';
 import './micro-interactions.css';
+import './accessibility.css';
 import './insights-scroll-reset.js';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
