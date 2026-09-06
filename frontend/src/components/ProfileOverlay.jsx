@@ -7,7 +7,11 @@ export default function ProfileOverlay() {
   const [profile, setProfile] = useState(null);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [editing, setEditing] = useState(false);
   const [error, setError] = useState('');
+  const [saved, setSaved] = useState(false);
+  const [draft, setDraft] = useState({ username: '', age: '' });
 
   useEffect(() => {
     const handleClick = (event) => {
@@ -26,6 +30,11 @@ export default function ProfileOverlay() {
 
   useEffect(() => {
     document.body.classList.toggle('profile-open', open);
+    if (!open) {
+      setEditing(false);
+      setSaved(false);
+      setError('');
+    }
     return () => document.body.classList.remove('profile-open');
   }, [open]);
 
@@ -35,6 +44,7 @@ export default function ProfileOverlay() {
     const loadProfile = async () => {
       setLoading(true);
       setError('');
+      setSaved(false);
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
         setError('Your session has expired. Please log in again.');
@@ -42,18 +52,70 @@ export default function ProfileOverlay() {
         return;
       }
       const [{ data: profileData, error: profileError }, { data: statsData, error: statsError }] = await Promise.all([
-        supabase.from('profiles').select('username,email,created_at').eq('id', user.id).single(),
+        supabase.from('profiles').select('username,email,age,created_at').eq('id', user.id).single(),
         supabase.from('user_stats').select('total_xp,total_completed').eq('user_id', user.id).single(),
       ]);
       if (cancelled) return;
       if (profileError || statsError) setError(profileError?.message || statsError?.message || 'Could not load your profile.');
-      setProfile(profileData || { username: user.user_metadata?.username || user.email?.split('@')[0], email: user.email, created_at: user.created_at });
+      const nextProfile = profileData || {
+        username: user.user_metadata?.username || user.email?.split('@')[0],
+        email: user.email,
+        age: null,
+        created_at: user.created_at,
+      };
+      setProfile(nextProfile);
+      setDraft({ username: nextProfile.username || '', age: nextProfile.age ?? '' });
       setStats(statsData || { total_xp: 0, total_completed: 0 });
       setLoading(false);
     };
     loadProfile();
     return () => { cancelled = true; };
   }, [open]);
+
+  const saveProfile = async (event) => {
+    event.preventDefault();
+    const username = draft.username.trim();
+    const ageText = String(draft.age).trim();
+    const age = ageText === '' ? null : Number(ageText);
+
+    if (username.length < 2 || username.length > 40) {
+      setError('Username must be between 2 and 40 characters.');
+      return;
+    }
+    if (age !== null && (!Number.isInteger(age) || age < 13 || age > 120)) {
+      setError('Age must be a whole number between 13 and 120.');
+      return;
+    }
+
+    setSaving(true);
+    setError('');
+    setSaved(false);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Your session has expired. Please log in again.');
+
+      const { data, error: profileError } = await supabase
+        .from('profiles')
+        .update({ username, age })
+        .eq('id', user.id)
+        .select('username,email,age,created_at')
+        .single();
+      if (profileError) throw profileError;
+
+      const { error: authError } = await supabase.auth.updateUser({ data: { username } });
+      if (authError) throw authError;
+
+      setProfile(data);
+      setDraft({ username: data.username || '', age: data.age ?? '' });
+      setEditing(false);
+      setSaved(true);
+      window.dispatchEvent(new Event('profile-updated'));
+    } catch (e) {
+      setError(e.message || 'Could not save your profile.');
+    } finally {
+      setSaving(false);
+    }
+  };
 
   if (!open) return null;
   const username = profile?.username || 'User';
@@ -71,13 +133,27 @@ export default function ProfileOverlay() {
         <div className="profile-intro"><p className="eyebrow">Your profile</p><h1>{username}</h1><p>{profile?.email || '—'}</p></div>
         {loading ? <div className="profile-loading"><span className="spinner"/>Loading your details…</div> : <>
           {error && <div className="error-banner">{error}</div>}
-          <section className="profile-grid">
-            <div className="profile-card profile-card-wide"><span>Username</span><strong>{username}</strong><small>Your identity in HabitTracker</small></div>
-            <div className="profile-card profile-card-wide"><span>Email</span><strong className="profile-email">{profile?.email || '—'}</strong><small>Your account email</small></div>
-            <div className="profile-card"><span>Total XP</span><strong>{xp}</strong><small>Level {levelProgress.level}</small></div>
-            <div className="profile-card"><span>Completed</span><strong>{stats?.total_completed || 0}</strong><small>Habit check-ins</small></div>
-            <div className="profile-card"><span>Member since</span><strong>{joined}</strong><small>Keep building consistency</small></div>
-          </section>
+          {saved && <div className="profile-saved">Profile updated successfully.</div>}
+
+          {!editing ? <>
+            <section className="profile-grid">
+              <div className="profile-card"><span>Username</span><strong>{username}</strong><small>Your identity in HabitTracker</small></div>
+              <div className="profile-card"><span>Age</span><strong>{profile?.age ?? 'Not set'}</strong><small>{profile?.age ? 'Your profile age' : 'Add your age whenever you are ready'}</small></div>
+              <div className="profile-card"><span>Total XP</span><strong>{xp}</strong><small>Level {levelProgress.level}</small></div>
+              <div className="profile-card"><span>Completed</span><strong>{stats?.total_completed || 0}</strong><small>Habit check-ins</small></div>
+              <div className="profile-card"><span>Member since</span><strong>{joined}</strong><small>Keep building consistency</small></div>
+              <div className="profile-card"><span>Email</span><strong className="profile-email">{profile?.email || '—'}</strong><small>Your account email</small></div>
+            </section>
+            <button className="profile-edit-button" type="button" onClick={() => { setSaved(false); setError(''); setDraft({ username, age: profile?.age ?? '' }); setEditing(true); }}>Edit profile</button>
+          </> : <form className="profile-edit-form" onSubmit={saveProfile}>
+            <div className="profile-edit-head"><div><p className="eyebrow">Personal details</p><h2>Edit your profile</h2><p>Update these details whenever you like.</p></div><button className="profile-edit-cancel" type="button" onClick={() => { setEditing(false); setError(''); setSaved(false); setDraft({ username, age: profile?.age ?? '' }); }}>Cancel</button></div>
+            <div className="profile-edit-fields">
+              <label><span>Username</span><input value={draft.username} onChange={(event) => setDraft(current => ({ ...current, username: event.target.value }))} minLength={2} maxLength={40} required autoComplete="name" /></label>
+              <label><span>Age</span><input type="number" min="13" max="120" step="1" value={draft.age} onChange={(event) => setDraft(current => ({ ...current, age: event.target.value }))} placeholder="Optional" inputMode="numeric" /></label>
+            </div>
+            <button className="profile-save-button" type="submit" disabled={saving}>{saving ? 'Saving…' : 'Save changes'}</button>
+          </form>}
+
           <section className="profile-progress-card"><div><p className="eyebrow">Current momentum</p><h2>Level {levelProgress.level}</h2><p>{levelProgress.progressXp} / {levelProgress.requiredXp} XP toward your next level</p><small>{levelProgress.xpToNextLevel} XP to Level {levelProgress.level + 1}</small></div><div className="profile-progress-ring" style={{ '--profile-progress': `${levelProgress.progressPercent * 3.6}deg` }}><div><strong>{levelProgress.progressPercent}%</strong></div></div></section>
         </>}
       </div>
