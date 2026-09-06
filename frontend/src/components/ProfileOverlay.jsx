@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { getLevelProgress } from '../utils/progression';
+import { getUsageStreak } from '../hooks/useUsageStreak';
 
 export default function ProfileOverlay() {
   const [open, setOpen] = useState(false);
   const [profile, setProfile] = useState(null);
   const [stats, setStats] = useState(null);
+  const [usageStreak, setUsageStreak] = useState(0);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [editing, setEditing] = useState(false);
@@ -51,12 +53,13 @@ export default function ProfileOverlay() {
         setLoading(false);
         return;
       }
-      const [{ data: profileData, error: profileError }, { data: statsData, error: statsError }] = await Promise.all([
+      const [{ data: profileData, error: profileError }, { data: statsData, error: statsError }, { data: activityData, error: activityError }] = await Promise.all([
         supabase.from('profiles').select('username,email,age,created_at').eq('id', user.id).single(),
         supabase.from('user_stats').select('total_xp,total_completed').eq('user_id', user.id).single(),
+        supabase.from('user_activity').select('active_date').eq('user_id', user.id).order('active_date', { ascending: false }),
       ]);
       if (cancelled) return;
-      if (profileError || statsError) setError(profileError?.message || statsError?.message || 'Could not load your profile.');
+      if (profileError || statsError || activityError) setError(profileError?.message || statsError?.message || activityError?.message || 'Could not load your profile.');
       const nextProfile = profileData || {
         username: user.user_metadata?.username || user.email?.split('@')[0],
         email: user.email,
@@ -66,6 +69,7 @@ export default function ProfileOverlay() {
       setProfile(nextProfile);
       setDraft({ username: nextProfile.username || '', age: nextProfile.age ?? '' });
       setStats(statsData || { total_xp: 0, total_completed: 0 });
+      setUsageStreak(getUsageStreak((activityData ?? []).map((item) => item.active_date)));
       setLoading(false);
     };
     loadProfile();
@@ -139,6 +143,7 @@ export default function ProfileOverlay() {
             <section className="profile-grid">
               <div className="profile-card"><span>Username</span><strong>{username}</strong><small>Your identity in HabitTracker</small></div>
               <div className="profile-card"><span>Age</span><strong>{profile?.age ?? 'Not set'}</strong><small>{profile?.age ? 'Your profile age' : 'Add your age whenever you are ready'}</small></div>
+              <div className="profile-card"><span>App streak</span><strong>{usageStreak} day{usageStreak === 1 ? '' : 's'}</strong><small>Days you used HabitTracker</small></div>
               <div className="profile-card"><span>Total XP</span><strong>{xp}</strong><small>Level {levelProgress.level}</small></div>
               <div className="profile-card"><span>Completed</span><strong>{stats?.total_completed || 0}</strong><small>Habit check-ins</small></div>
               <div className="profile-card"><span>Member since</span><strong>{joined}</strong><small>Keep building consistency</small></div>
