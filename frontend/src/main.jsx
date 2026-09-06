@@ -33,6 +33,7 @@ import './daily-score.css';
 import './personalized-recommendations.css';
 import './behavior-insights.css';
 import './personalized-routine.css';
+import './ui-consistency.css';
 import './insights-scroll-reset.js';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
