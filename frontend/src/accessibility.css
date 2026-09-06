@@ -1,0 +1,63 @@
+/* Phase 5 — Step 20: accessibility polish */
+
+/* Strong, consistent keyboard focus without changing the visual language. */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+a:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--accent, #0ea5e9);
+  outline-offset: 3px;
+}
+
+/* Keep decorative interactive affordances from becoming keyboard noise. */
+button[aria-hidden="true"]:focus-visible,
+[aria-hidden="true"]:focus-visible {
+  outline: none;
+}
+
+/* Interactive cards remain clear when reached by keyboard. */
+.mini-profile:focus-visible,
+.habit-card:focus-within,
+.personalized-routine-step:focus-within,
+.recommendation-card:focus-within,
+.achievement-card:focus-within {
+  border-color: color-mix(in srgb, var(--accent, #0ea5e9) 38%, var(--line, #e4e9f1));
+}
+
+/* A screen-reader-only helper class for future labels/live regions. */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Avoid relying on hover as the only source of information. */
+@media (hover: none) {
+  .habit-card:hover,
+  .achievement-card:hover,
+  .personalized-routine-step:hover,
+  .recommendation-card:hover {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+}
+
+html[data-theme="dark"] button:focus-visible,
+html[data-theme="dark"] input:focus-visible,
+html[data-theme="dark"] select:focus-visible,
+html[data-theme="dark"] a:focus-visible,
+html[data-theme="dark"] [tabindex]:focus-visible {
+  outline-color: #67e8f9;
+}
