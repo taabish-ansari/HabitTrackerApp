@@ -17,6 +17,7 @@ export default function ProfileOverlay() {
 
   useEffect(() => {
     const handleClick = (event) => {
+      if (event.target.closest('.profile-overlay')) return;
       if (event.target.closest('.mini-profile')) setOpen(true);
     };
     const handleKey = (event) => {
@@ -132,10 +133,11 @@ export default function ProfileOverlay() {
   const xp = stats?.total_xp || 0;
   const levelProgress = getLevelProgress(xp);
   const joined = profile?.created_at ? new Date(profile.created_at).toLocaleDateString(undefined, { month: 'long', year: 'numeric' }) : '—';
+  const closeProfile = () => setOpen(false);
 
-  return <div className="profile-overlay" role="dialog" aria-modal="true" aria-labelledby="profile-title" onMouseDown={(event) => { if (event.target === event.currentTarget) setOpen(false); }}>
+  return <div className="profile-overlay" role="dialog" aria-modal="true" aria-labelledby="profile-title" onClick={(event) => { if (event.target === event.currentTarget) closeProfile(); }}>
     <div className="profile-panel">
-      <button className="profile-close" onClick={() => setOpen(false)} aria-label="Close profile">×</button>
+      <button className="profile-close" type="button" onPointerDown={(event) => { event.preventDefault(); event.stopPropagation(); closeProfile(); }} onClick={(event) => { event.preventDefault(); event.stopPropagation(); closeProfile(); }} aria-label="Close profile">×</button>
       <div className="profile-cover" aria-hidden="true"><div className="profile-orb profile-orb-one"/><div className="profile-orb profile-orb-two"/></div>
       <div className="profile-body">
         <div className="profile-avatar-large" aria-hidden="true">{initials}</div>
