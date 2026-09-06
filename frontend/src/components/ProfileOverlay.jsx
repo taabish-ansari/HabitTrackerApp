@@ -21,6 +21,11 @@ export default function ProfileOverlay() {
     };
     const handleKey = (event) => {
       if (event.key === 'Escape') setOpen(false);
+      const active = document.activeElement;
+      if (active?.matches('.mini-profile') && (event.key === 'Enter' || event.key === ' ')) {
+        event.preventDefault();
+        setOpen(true);
+      }
     };
     document.addEventListener('click', handleClick);
     document.addEventListener('keydown', handleKey);
@@ -128,19 +133,19 @@ export default function ProfileOverlay() {
   const levelProgress = getLevelProgress(xp);
   const joined = profile?.created_at ? new Date(profile.created_at).toLocaleDateString(undefined, { month: 'long', year: 'numeric' }) : '—';
 
-  return <div className="profile-overlay" role="dialog" aria-modal="true" aria-label="Your profile" onMouseDown={(event) => { if (event.target === event.currentTarget) setOpen(false); }}>
+  return <div className="profile-overlay" role="dialog" aria-modal="true" aria-labelledby="profile-title" onMouseDown={(event) => { if (event.target === event.currentTarget) setOpen(false); }}>
     <div className="profile-panel">
       <button className="profile-close" onClick={() => setOpen(false)} aria-label="Close profile">×</button>
-      <div className="profile-cover"><div className="profile-orb profile-orb-one"/><div className="profile-orb profile-orb-two"/></div>
+      <div className="profile-cover" aria-hidden="true"><div className="profile-orb profile-orb-one"/><div className="profile-orb profile-orb-two"/></div>
       <div className="profile-body">
-        <div className="profile-avatar-large">{initials}</div>
-        <div className="profile-intro"><p className="eyebrow">Your profile</p><h1>{username}</h1><p>{profile?.email || '—'}</p></div>
-        {loading ? <div className="profile-loading"><span className="spinner"/>Loading your details…</div> : <>
-          {error && <div className="error-banner">{error}</div>}
-          {saved && <div className="profile-saved">Profile updated successfully.</div>}
+        <div className="profile-avatar-large" aria-hidden="true">{initials}</div>
+        <div className="profile-intro"><p className="eyebrow">Your profile</p><h1 id="profile-title">{username}</h1><p>{profile?.email || '—'}</p></div>
+        {loading ? <div className="profile-loading" role="status" aria-live="polite"><span className="spinner"/>Loading your details…</div> : <>
+          {error && <div className="error-banner" role="alert">{error}</div>}
+          {saved && <div className="profile-saved" role="status" aria-live="polite">Profile updated successfully.</div>}
 
           {!editing ? <>
-            <section className="profile-grid">
+            <section className="profile-grid" aria-label="Profile details">
               <div className="profile-card"><span>Username</span><strong>{username}</strong><small>Your identity in HabitTracker</small></div>
               <div className="profile-card"><span>Age</span><strong>{profile?.age ?? 'Not set'}</strong><small>{profile?.age ? 'Your profile age' : 'Add your age whenever you are ready'}</small></div>
               <div className="profile-card"><span>App streak</span><strong>{usageStreak} day{usageStreak === 1 ? '' : 's'}</strong><small>Days you used HabitTracker</small></div>
@@ -150,16 +155,16 @@ export default function ProfileOverlay() {
               <div className="profile-card"><span>Email</span><strong className="profile-email">{profile?.email || '—'}</strong><small>Your account email</small></div>
             </section>
             <button className="profile-edit-button" type="button" onClick={() => { setSaved(false); setError(''); setDraft({ username, age: profile?.age ?? '' }); setEditing(true); }}>Edit profile</button>
-          </> : <form className="profile-edit-form" onSubmit={saveProfile}>
-            <div className="profile-edit-head"><div><p className="eyebrow">Personal details</p><h2>Edit your profile</h2><p>Update these details whenever you like.</p></div><button className="profile-edit-cancel" type="button" onClick={() => { setEditing(false); setError(''); setSaved(false); setDraft({ username, age: profile?.age ?? '' }); }}>Cancel</button></div>
+          </> : <form className="profile-edit-form" onSubmit={saveProfile} aria-labelledby="profile-edit-title">
+            <div className="profile-edit-head"><div><p className="eyebrow">Personal details</p><h2 id="profile-edit-title">Edit your profile</h2><p>Update these details whenever you like.</p></div><button className="profile-edit-cancel" type="button" onClick={() => { setEditing(false); setError(''); setSaved(false); setDraft({ username, age: profile?.age ?? '' }); }}>Cancel</button></div>
             <div className="profile-edit-fields">
               <label><span>Username</span><input value={draft.username} onChange={(event) => setDraft(current => ({ ...current, username: event.target.value }))} minLength={2} maxLength={40} required autoComplete="name" /></label>
               <label><span>Age</span><input type="number" min="13" max="120" step="1" value={draft.age} onChange={(event) => setDraft(current => ({ ...current, age: event.target.value }))} placeholder="Optional" inputMode="numeric" /></label>
             </div>
-            <button className="profile-save-button" type="submit" disabled={saving}>{saving ? 'Saving…' : 'Save changes'}</button>
+            <button className="profile-save-button" type="submit" disabled={saving} aria-busy={saving}>{saving ? 'Saving…' : 'Save changes'}</button>
           </form>}
 
-          <section className="profile-progress-card"><div><p className="eyebrow">Current momentum</p><h2>Level {levelProgress.level}</h2><p>{levelProgress.progressXp} / {levelProgress.requiredXp} XP toward your next level</p><small>{levelProgress.xpToNextLevel} XP to Level {levelProgress.level + 1}</small></div><div className="profile-progress-ring" style={{ '--profile-progress': `${levelProgress.progressPercent * 3.6}deg` }}><div><strong>{levelProgress.progressPercent}%</strong></div></div></section>
+          <section className="profile-progress-card" aria-label="Current level progress"><div><p className="eyebrow">Current momentum</p><h2>Level {levelProgress.level}</h2><p>{levelProgress.progressXp} / {levelProgress.requiredXp} XP toward your next level</p><small>{levelProgress.xpToNextLevel} XP to Level {levelProgress.level + 1}</small></div><div className="profile-progress-ring" style={{ '--profile-progress': `${levelProgress.progressPercent * 3.6}deg` }} aria-label={`${levelProgress.progressPercent}% level progress`} role="img"><div><strong>{levelProgress.progressPercent}%</strong></div></div></section>
         </>}
       </div>
     </div>
