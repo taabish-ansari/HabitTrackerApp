@@ -1,4 +1,4 @@
-/* Floating controls polish — clearer separation from the navigation and a cleaner hardware-like theme switch. */
+/* Floating controls polish — keep the schedule launcher paired with the remaining theme control. */
 .habit-schedule-launcher{
   left:auto !important;
   right:86px !important;
@@ -49,15 +49,15 @@ html[data-theme="dark"] .global-theme-control .theme-toggle:hover{box-shadow:0 1
 @media(max-width:760px){
   .habit-schedule-launcher{
     right:60px !important;
-    bottom:82px !important;
-    min-height:38px !important;
+    bottom:14px !important;
+    min-height:40px !important;
     padding:0 10px !important;
     border-radius:12px !important;
     font-size:10px !important;
   }
   .global-theme-control{
     right:10px !important;
-    bottom:82px !important;
+    bottom:14px !important;
     top:auto !important;
   }
   .global-theme-control .theme-toggle{
@@ -70,8 +70,8 @@ html[data-theme="dark"] .global-theme-control .theme-toggle:hover{box-shadow:0 1
 }
 
 @media(max-width:460px){
-  .habit-schedule-launcher{right:56px !important;bottom:78px !important}
-  .global-theme-control{right:9px !important;bottom:78px !important}
+  .habit-schedule-launcher{right:56px !important;bottom:14px !important}
+  .global-theme-control{right:9px !important;bottom:14px !important}
   .global-theme-control .theme-toggle{width:38px !important;min-width:38px !important;height:38px !important}
 }
 
