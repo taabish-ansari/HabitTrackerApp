@@ -102,7 +102,13 @@ function Dashboard({ user }) {
         <button className={view === 'insights' ? 'active' : ''} onClick={() => navigate('insights')}>◒ <span>Insights</span></button>
         <button className={view === 'rewards' ? 'active' : ''} onClick={() => navigate('rewards')}>★ <span>Rewards</span></button>
       </nav>
-      <div className="sidebar-bottom"><div className="mini-profile" tabIndex={0} role="button"><div className="avatar">{(user.email?.[0] || 'U').toUpperCase()}</div><div><strong>{user.user_metadata?.username || user.email?.split('@')[0]}</strong><span>{usageStreak} day app streak</span></div></div><button className="ghost full" onClick={() => supabase.auth.signOut()}>Log out</button></div>
+      <div className="sidebar-bottom"><div className="mini-profile" tabIndex={0} role="button"><div className="avatar">
+  {user.user_metadata?.avatar_url ? (
+    <img src={user.user_metadata.avatar_url} alt="" />
+  ) : (
+    (user.email?.[0] || 'U').toUpperCase()
+  )}
+</div><div><strong>{user.user_metadata?.username || user.email?.split('@')[0]}</strong><span>{usageStreak} day app streak</span></div></div><button className="ghost full" onClick={() => supabase.auth.signOut()}>Log out</button></div>
     </aside>
     <main className="content"><header className="mobile-header"><div className="brand-row"><div className="brand-mark">HT</div><strong>HabitTracker</strong></div><button className="ghost" onClick={() => supabase.auth.signOut()}>Log out</button></header>
       <nav className="mobile-nav" aria-label="Dashboard navigation">
