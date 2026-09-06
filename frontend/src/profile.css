@@ -3,3 +3,16 @@
 @keyframes profileFade{from{opacity:0}to{opacity:1}}@keyframes profileRise{from{opacity:0;transform:translateY(12px) scale(.985)}to{opacity:1;transform:none}}
 @media(max-width:760px){.profile-overlay{padding:12px}.profile-panel{max-height:calc(100vh - 24px);border-radius:24px}.profile-cover{height:145px}.profile-body{padding:0 20px 22px}.profile-grid{grid-template-columns:1fr 1fr}.profile-progress-card{align-items:flex-start;padding:18px}.profile-close{right:14px;top:14px}.profile-avatar-wrap{margin-top:-41px}.profile-avatar-large{width:82px;height:82px;border-radius:24px;font-size:26px}.profile-edit-fields{grid-template-columns:1fr}}
 @media(max-width:500px){.profile-grid{grid-template-columns:1fr}.profile-card{min-height:auto}.profile-progress-card{flex-direction:column}.profile-progress-ring{width:76px;height:76px}.profile-intro h1{font-size:34px}.profile-edit-form{padding:16px}.profile-edit-head{flex-direction:column}.profile-edit-cancel{align-self:flex-start}}
+.mini-profile .avatar {
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+.mini-profile .avatar img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: 50%;
+}
