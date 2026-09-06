@@ -3,6 +3,9 @@ import { supabase } from '../lib/supabase';
 import { getLevelProgress } from '../utils/progression';
 import { getUsageStreak } from '../hooks/useUsageStreak';
 
+const AVATAR_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+const MAX_AVATAR_SIZE = 5 * 1024 * 1024;
+
 export default function ProfileOverlay() {
   const [open, setOpen] = useState(false);
   const [profile, setProfile] = useState(null);
@@ -10,6 +13,7 @@ export default function ProfileOverlay() {
   const [usageStreak, setUsageStreak] = useState(0);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [editing, setEditing] = useState(false);
   const [error, setError] = useState('');
   const [saved, setSaved] = useState(false);
@@ -60,7 +64,7 @@ export default function ProfileOverlay() {
         return;
       }
       const [{ data: profileData, error: profileError }, { data: statsData, error: statsError }, { data: activityData, error: activityError }] = await Promise.all([
-        supabase.from('profiles').select('username,email,age,created_at').eq('id', user.id).single(),
+        supabase.from('profiles').select('username,email,age,avatar_url,created_at').eq('id', user.id).single(),
         supabase.from('user_stats').select('total_xp,total_completed').eq('user_id', user.id).single(),
         supabase.from('user_activity').select('active_date').eq('user_id', user.id).order('active_date', { ascending: false }),
       ]);
@@ -70,6 +74,7 @@ export default function ProfileOverlay() {
         username: user.user_metadata?.username || user.email?.split('@')[0],
         email: user.email,
         age: null,
+        avatar_url: user.user_metadata?.avatar_url || null,
         created_at: user.created_at,
       };
       setProfile(nextProfile);
@@ -81,6 +86,57 @@ export default function ProfileOverlay() {
     loadProfile();
     return () => { cancelled = true; };
   }, [open]);
+
+  const uploadAvatar = async (event) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+    if (!AVATAR_TYPES.includes(file.type)) {
+      setError('Please choose a JPG, PNG, WebP, or GIF image.');
+      return;
+    }
+    if (file.size > MAX_AVATAR_SIZE) {
+      setError('Profile pictures must be 5 MB or smaller.');
+      return;
+    }
+
+    setUploading(true);
+    setError('');
+    setSaved(false);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Your session has expired. Please log in again.');
+      const extension = file.name.split('.').pop()?.toLowerCase() || 'jpg';
+      const filePath = `${user.id}/${crypto.randomUUID()}.${extension}`;
+      const { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, file, {
+        cacheControl: '3600',
+        contentType: file.type,
+        upsert: false,
+      });
+      if (uploadError) throw uploadError;
+
+      const { data: publicData } = supabase.storage.from('avatars').getPublicUrl(filePath);
+      const avatarUrl = publicData.publicUrl;
+      const { data, error: profileError } = await supabase
+        .from('profiles')
+        .update({ avatar_url: avatarUrl })
+        .eq('id', user.id)
+        .select('username,email,age,avatar_url,created_at')
+        .single();
+      if (profileError) throw profileError;
+
+      const { error: authError } = await supabase.auth.updateUser({ data: { avatar_url: avatarUrl } });
+      if (authError) throw authError;
+
+      setProfile(data);
+      setSaved(true);
+      window.dispatchEvent(new Event('profile-updated'));
+    } catch (e) {
+      setError(e.message || 'Could not upload your profile picture.');
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const saveProfile = async (event) => {
     event.preventDefault();
@@ -108,7 +164,7 @@ export default function ProfileOverlay() {
         .from('profiles')
         .update({ username, age })
         .eq('id', user.id)
-        .select('username,email,age,created_at')
+        .select('username,email,age,avatar_url,created_at')
         .single();
       if (profileError) throw profileError;
 
@@ -140,7 +196,15 @@ export default function ProfileOverlay() {
       <button className="profile-close" type="button" onPointerDown={(event) => { event.preventDefault(); event.stopPropagation(); closeProfile(); }} onClick={(event) => { event.preventDefault(); event.stopPropagation(); closeProfile(); }} aria-label="Close profile">×</button>
       <div className="profile-cover" aria-hidden="true"><div className="profile-orb profile-orb-one"/><div className="profile-orb profile-orb-two"/></div>
       <div className="profile-body">
-        <div className="profile-avatar-large" aria-hidden="true">{initials}</div>
+        <div className="profile-avatar-wrap">
+          <div className="profile-avatar-large" aria-label={`${username} profile picture`}>
+            {profile?.avatar_url ? <img className="profile-avatar-image" src={profile.avatar_url} alt={`${username} profile`} /> : initials}
+          </div>
+          <label className={`profile-avatar-upload${uploading ? ' is-uploading' : ''}`} htmlFor="profile-avatar-input">
+            {uploading ? 'Uploading…' : profile?.avatar_url ? 'Change photo' : 'Add photo'}
+          </label>
+          <input id="profile-avatar-input" className="profile-avatar-input" type="file" accept="image/jpeg,image/png,image/webp,image/gif" onChange={uploadAvatar} disabled={uploading} />
+        </div>
         <div className="profile-intro"><p className="eyebrow">Your profile</p><h1 id="profile-title">{username}</h1><p>{profile?.email || '—'}</p></div>
         {loading ? <div className="profile-loading" role="status" aria-live="polite"><span className="spinner"/>Loading your details…</div> : <>
           {error && <div className="error-banner" role="alert">{error}</div>}
