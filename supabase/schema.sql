@@ -2,6 +2,7 @@ create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   username text not null check (char_length(username) between 2 and 40),
   email text not null unique,
+  age smallint check (age is null or age between 13 and 120),
   created_at timestamptz not null default now()
 );
 
@@ -169,6 +170,7 @@ alter table public.user_stats enable row level security;
 alter table public.badges enable row level security;
 
 create policy "profiles own" on public.profiles for select using (auth.uid() = id);
+create policy "profiles own update" on public.profiles for update using (auth.uid() = id) with check (auth.uid() = id);
 create policy "habits own" on public.habits for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
 create policy "habit logs own" on public.habit_logs for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
 create policy "streaks own" on public.streaks for select using (exists (select 1 from public.habits h where h.id = streaks.habit_id and h.user_id = auth.uid()));
