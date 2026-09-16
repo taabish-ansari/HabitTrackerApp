@@ -54,27 +54,16 @@ html[data-theme="dark"] #root {
   color: #f5f5f5 !important;
 }
 
-html[data-theme="dark"] .app-shell {
-  background: #070707 !important;
-}
+html[data-theme="dark"] .app-shell { background: #070707 !important; }
 
-/* Chrome / navigation */
 html[data-theme="dark"] .sidebar {
   background: linear-gradient(180deg, #0a0a0a 0%, #050505 100%) !important;
   border-right-color: #1d1d1d !important;
   box-shadow: 10px 0 34px rgba(0,0,0,.32) !important;
 }
 
-html[data-theme="dark"] .side-nav button {
-  color: #8a8a8a !important;
-  background: transparent !important;
-}
-
-html[data-theme="dark"] .side-nav button:hover {
-  color: #ffffff !important;
-  background: #171717 !important;
-}
-
+html[data-theme="dark"] .side-nav button { color: #8a8a8a !important; background: transparent !important; }
+html[data-theme="dark"] .side-nav button:hover { color: #ffffff !important; background: #171717 !important; }
 html[data-theme="dark"] .side-nav button.active {
   color: #0b0b0b !important;
   background: #f1f1f1 !important;
@@ -88,24 +77,10 @@ html[data-theme="dark"] .mobile-header .brand-mark {
   color: #ffffff !important;
   box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 8px 20px rgba(0,0,0,.32) !important;
 }
+html[data-theme="dark"] .sidebar .mini-profile { border-color: #252525 !important; background: #0d0d0d !important; }
+html[data-theme="dark"] .sidebar .ghost { background: #111111 !important; border-color: #2a2a2a !important; color: #d6d6d6 !important; }
+html[data-theme="dark"] .sidebar .ghost:hover { background: #1b1b1b !important; border-color: #3a3a3a !important; }
 
-html[data-theme="dark"] .sidebar .mini-profile {
-  border-color: #252525 !important;
-  background: #0d0d0d !important;
-}
-
-html[data-theme="dark"] .sidebar .ghost {
-  background: #111111 !important;
-  border-color: #2a2a2a !important;
-  color: #d6d6d6 !important;
-}
-
-html[data-theme="dark"] .sidebar .ghost:hover {
-  background: #1b1b1b !important;
-  border-color: #3a3a3a !important;
-}
-
-/* Dark heroes become neutral black/graphite, never blue/navy. */
 html[data-theme="dark"] .hero-card,
 html[data-theme="dark"] .insight-hero,
 html[data-theme="dark"] .insights-enhancer-head,
@@ -119,38 +94,25 @@ html[data-theme="dark"] .insight-card.large {
   border-color: #2a2a2a !important;
   box-shadow: 0 22px 52px rgba(0,0,0,.40) !important;
 }
-
 html[data-theme="dark"] .hero-card h1,
 html[data-theme="dark"] .reward-hero-main h2,
 html[data-theme="dark"] .insights-enhancer-head h1,
-html[data-theme="dark"] .insight-hero h2 {
-  color: #fafafa !important;
-}
-
+html[data-theme="dark"] .insight-hero h2 { color: #fafafa !important; }
 html[data-theme="dark"] .hero-card .eyebrow,
 html[data-theme="dark"] .insight-hero .eyebrow,
 html[data-theme="dark"] .insights-enhancer-head .eyebrow,
-html[data-theme="dark"] .eyebrow {
-  color: #e5e5e5 !important;
-}
+html[data-theme="dark"] .eyebrow { color: #e5e5e5 !important; }
 
 html[data-theme="dark"] .hero-progress,
 html[data-theme="dark"] .reward-progress-wrap {
   background: rgba(255,255,255,.045) !important;
   border-color: #2a2a2a !important;
 }
-
 html[data-theme="dark"] .progress-track,
-html[data-theme="dark"] .reward-progress-track {
-  background: #292929 !important;
-}
-
+html[data-theme="dark"] .reward-progress-track { background: #292929 !important; }
 html[data-theme="dark"] .progress-track i,
-html[data-theme="dark"] .reward-progress-track i {
-  background: linear-gradient(90deg, #f0f0f0, #8a8a8a) !important;
-}
+html[data-theme="dark"] .reward-progress-track i { background: linear-gradient(90deg, #f0f0f0, #8a8a8a) !important; }
 
-/* Surfaces */
 html[data-theme="dark"] .stats-row > div,
 html[data-theme="dark"] .habit-card,
 html[data-theme="dark"] .table-card,
@@ -169,16 +131,8 @@ html[data-theme="dark"] .rewards-count {
   border-color: #262626 !important;
   box-shadow: 0 5px 18px rgba(0,0,0,.28) !important;
 }
-
-html[data-theme="dark"] .habit-card:hover {
-  border-color: #3a3a3a !important;
-  box-shadow: 0 16px 34px rgba(0,0,0,.34) !important;
-}
-
-html[data-theme="dark"] .habit-card.complete {
-  background: color-mix(in srgb, var(--habit-color) 10%, #101010) !important;
-  border-color: color-mix(in srgb, var(--habit-color) 25%, #303030) !important;
-}
+html[data-theme="dark"] .habit-card:hover { border-color: #3a3a3a !important; box-shadow: 0 16px 34px rgba(0,0,0,.34) !important; }
+html[data-theme="dark"] .habit-card.complete { background: color-mix(in srgb, var(--habit-color) 10%, #101010) !important; border-color: color-mix(in srgb, var(--habit-color) 25%, #303030) !important; }
 
 html[data-theme="dark"] .check,
 html[data-theme="dark"] .ghost,
@@ -191,87 +145,72 @@ html[data-theme="dark"] .theme-toggle {
   color: #f2f2f2 !important;
   border-color: #343434 !important;
 }
-
 html[data-theme="dark"] .ghost:hover:not(:disabled),
 html[data-theme="dark"] .month-nav button:hover,
 html[data-theme="dark"] input:hover,
-html[data-theme="dark"] select:hover {
-  background: #1a1a1a !important;
-}
-
-html[data-theme="dark"] input::placeholder {
-  color: #707070 !important;
-}
-
+html[data-theme="dark"] select:hover { background: #1a1a1a !important; }
+html[data-theme="dark"] input::placeholder { color: #707070 !important; }
 html[data-theme="dark"] input:focus,
-html[data-theme="dark"] select:focus {
-  border-color: #8a8a8a !important;
-  box-shadow: 0 0 0 4px rgba(255,255,255,.08) !important;
-}
+html[data-theme="dark"] select:focus { border-color: #8a8a8a !important; box-shadow: 0 0 0 4px rgba(255,255,255,.08) !important; }
+html[data-theme="dark"] .primary { background: linear-gradient(145deg, #f2f2f2, #bcbcbc) !important; color: #090909 !important; box-shadow: 0 10px 24px rgba(0,0,0,.35) !important; }
+html[data-theme="dark"] .primary:hover:not(:disabled) { background: linear-gradient(145deg, #ffffff, #d6d6d6) !important; }
 
-html[data-theme="dark"] .primary {
-  background: linear-gradient(145deg, #f2f2f2, #bcbcbc) !important;
-  color: #090909 !important;
-  box-shadow: 0 10px 24px rgba(0,0,0,.35) !important;
-}
-
-html[data-theme="dark"] .primary:hover:not(:disabled) {
-  background: linear-gradient(145deg, #ffffff, #d6d6d6) !important;
-}
-
-/* Calendar becomes black/gray while preserving habit identity colors. */
-html[data-theme="dark"] th {
-  background: #161616 !important;
-  color: #8f8f8f !important;
-  border-color: #252525 !important;
-}
-
+html[data-theme="dark"] th { background: #161616 !important; color: #8f8f8f !important; border-color: #252525 !important; }
 html[data-theme="dark"] td,
 html[data-theme="dark"] .sticky-col,
-html[data-theme="dark"] table {
-  background: #101010 !important;
-  color: #ededed !important;
-  border-color: #252525 !important;
-}
+html[data-theme="dark"] table { background: #101010 !important; color: #ededed !important; border-color: #252525 !important; }
+html[data-theme="dark"] .today-head { color: #f0f0f0 !important; background: #202020 !important; }
+html[data-theme="dark"] .today-cell { background: #181818 !important; box-shadow: inset 0 0 0 2px rgba(255,255,255,.18) !important; }
+html[data-theme="dark"] .done { background: color-mix(in srgb, var(--habit-color) 13%, #101010) !important; }
 
-html[data-theme="dark"] .today-head {
-  color: #f0f0f0 !important;
-  background: #202020 !important;
-}
-
-html[data-theme="dark"] .today-cell {
-  background: #181818 !important;
-  box-shadow: inset 0 0 0 2px rgba(255,255,255,.18) !important;
-}
-
-html[data-theme="dark"] .done {
-  background: color-mix(in srgb, var(--habit-color) 13%, #101010) !important;
-}
-
-/* Neutralize blue-specific insight/reward visualizations. */
-html[data-theme="dark"] .insights-score-ring {
-  background: conic-gradient(#e5e5e5 var(--insight-score), #2a2a2a 0) !important;
-}
-
+html[data-theme="dark"] .insights-score-ring { background: conic-gradient(#e5e5e5 var(--insight-score), #2a2a2a 0) !important; }
 html[data-theme="dark"] .insights-week-bar i,
-html[data-theme="dark"] .week-bar i {
-  background: linear-gradient(180deg, #eeeeee, #666666) !important;
-}
-
+html[data-theme="dark"] .week-bar i { background: linear-gradient(180deg, #eeeeee, #666666) !important; }
 html[data-theme="dark"] .achievement-card,
 html[data-theme="dark"] .rank-row,
-html[data-theme="dark"] .best-day {
-  background: #161616 !important;
-  border-color: #282828 !important;
+html[data-theme="dark"] .best-day { background: #161616 !important; border-color: #282828 !important; }
+html[data-theme="dark"] .achievement-card.earned { background: #191919 !important; border-color: #3a3a3a !important; }
+html[data-theme="dark"] .theme-toggle { background: #141414 !important; color: #f0f0f0 !important; border-color: #363636 !important; }
+
+/* Remove the remaining blue/navy pockets from Insights and Rewards. */
+html[data-theme="dark"] .recommendation-card,
+html[data-theme="dark"] .recommendations-head > span,
+html[data-theme="dark"] .milestone-panel,
+html[data-theme="dark"] .milestone-panel-head > span,
+html[data-theme="dark"] .milestone-next,
+html[data-theme="dark"] .milestone-next-progress,
+html[data-theme="dark"] .milestone-node,
+html[data-theme="dark"] .achievement-icon,
+html[data-theme="dark"] .achievements-panel-head > span,
+html[data-theme="dark"] .rewards-count {
+  background: #111111 !important;
+  color: #bdbdbd !important;
+  border-color: #292929 !important;
 }
 
-html[data-theme="dark"] .achievement-card.earned {
-  background: #191919 !important;
-  border-color: #3a3a3a !important;
+html[data-theme="dark"] .milestone-next {
+  background: linear-gradient(145deg, #0d0d0d, #181818) !important;
+  color: #f5f5f5 !important;
 }
+html[data-theme="dark"] .milestone-next-progress { background: rgba(255,255,255,.035) !important; }
+html[data-theme="dark"] .milestone-progress-track { background: #292929 !important; }
+html[data-theme="dark"] .milestone-progress-track i { background: linear-gradient(90deg, #f0f0f0, #8a8a8a) !important; }
+html[data-theme="dark"] .milestone-step:not(:last-child)::after { background: #2b2b2b !important; }
+html[data-theme="dark"] .milestone-node { background: #1a1a1a !important; border-color: #333333 !important; color: #a8a8a8 !important; box-shadow: none !important; }
+html[data-theme="dark"] .milestone-step.reached .milestone-node { background: #e5e5e5 !important; border-color: #e5e5e5 !important; color: #111111 !important; box-shadow: 0 6px 16px rgba(0,0,0,.30) !important; }
+html[data-theme="dark"] .milestone-step.current .milestone-node { border-color: #666666 !important; box-shadow: 0 0 0 5px rgba(255,255,255,.06) !important; }
+html[data-theme="dark"] .achievement-card.earned .achievement-icon { background: linear-gradient(145deg, #303030, #171717) !important; color: #f5f5f5 !important; box-shadow: none !important; }
+html[data-theme="dark"] .achievement-mini-progress { background: #292929 !important; }
+html[data-theme="dark"] .achievement-mini-progress i { background: linear-gradient(90deg, #8a8a8a, #bdbdbd) !important; }
+html[data-theme="dark"] .recommendation-card { background: #111111 !important; }
+html[data-theme="dark"] .recommendation-label { background: #1b1b1b !important; color: #bdbdbd !important; }
+html[data-theme="dark"] .behavior-insight { background: #121212 !important; border-color: #292929 !important; }
 
-html[data-theme="dark"] .theme-toggle {
-  background: #141414 !important;
-  color: #f0f0f0 !important;
-  border-color: #363636 !important;
+/* Neutral status marks remain semantic; only the theme chrome is neutralized. */
+html[data-theme="dark"] .streak { background: #1b1b1b !important; border-color: #3a3a3a !important; color: #e0e0e0 !important; }
+
+@media (max-width:760px) {
+  html[data-theme="dark"] .mobile-nav { background: #0c0c0c !important; border-color: #252525 !important; }
+  html[data-theme="dark"] .mobile-nav button { color: #8e8e8e !important; }
+  html[data-theme="dark"] .mobile-nav button.active { color: #f4f4f4 !important; background: #181818 !important; }
 }
