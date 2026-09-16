@@ -4,7 +4,6 @@ import App from './App';
 import ProfileOverlay from './components/ProfileOverlay';
 import HabitDetailOverlay from './components/HabitDetailOverlay';
 import HabitScheduleManager from './components/HabitScheduleManager';
-import InsightsEnhancer from './components/InsightsEnhancer';
 import RewardCelebration from './components/RewardCelebration';
 import './styles.css';
 import './responsive.css';
@@ -24,7 +23,6 @@ import './calendar-upgrade.css';
 import './floating-controls.css';
 import './typography.css';
 import './insights.css';
-import './insights-enhancer.css';
 import './rewards.css';
 import './reward-celebration.css';
 import './daily-score.css';
@@ -38,8 +36,6 @@ import './accessibility.css';
 import './mobile-refinement.css';
 import './uiux-rewrite.css';
 import './theme-consistency.css';
-import './figma-first-three.css';
-import './insights-scroll-reset.js';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -47,7 +43,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <ProfileOverlay />
     <HabitDetailOverlay />
     <HabitScheduleManager />
-    <InsightsEnhancer />
     <RewardCelebration />
   </React.StrictMode>
 );
