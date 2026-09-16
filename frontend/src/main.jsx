@@ -37,6 +37,7 @@ import './micro-interactions.css';
 import './accessibility.css';
 import './mobile-refinement.css';
 import './uiux-rewrite.css';
+import './theme-consistency.css';
 import './insights-scroll-reset.js';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
