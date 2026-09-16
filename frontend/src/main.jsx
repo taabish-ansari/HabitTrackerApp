@@ -38,6 +38,7 @@ import './accessibility.css';
 import './mobile-refinement.css';
 import './uiux-rewrite.css';
 import './theme-consistency.css';
+import './figma-first-three.css';
 import './insights-scroll-reset.js';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
