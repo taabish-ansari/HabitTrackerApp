@@ -1,0 +1,706 @@
+/* HabitTracker — Figma first three screens
+   Applies the approved Today / Calendar / Insights visual system only.
+   Rewards is intentionally left untouched. */
+
+/* =========================
+   Shared light / dark shell
+   ========================= */
+.app-shell,
+.content {
+  background: #f5f7fb !important;
+}
+
+.content {
+  width: min(1180px, calc(100% - 58px)) !important;
+}
+
+.sidebar {
+  background: linear-gradient(180deg, #111827 0%, #0f172a 100%) !important;
+  border-right-color: rgba(255,255,255,.06) !important;
+}
+
+.side-nav button.active {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #ffffff !important;
+}
+
+.side-nav button:hover {
+  background: rgba(255,255,255,.06) !important;
+}
+
+@media (min-width: 761px) {
+  .mobile-nav { display: none !important; }
+}
+
+/* =========================
+   Today + Calendar hero
+   ========================= */
+.hero-card {
+  padding: 28px !important;
+  border: 1px solid #e4e9f1 !important;
+  border-radius: 22px !important;
+  background: #ffffff !important;
+  color: #18212f !important;
+  box-shadow: 0 8px 28px rgba(15,23,42,.05) !important;
+  min-height: 164px !important;
+}
+
+.hero-card h1 {
+  color: #18212f !important;
+  margin: 7px 0 8px !important;
+  font-size: clamp(34px,4.5vw,48px) !important;
+  letter-spacing: -.045em !important;
+}
+
+.hero-card .eyebrow {
+  color: #0284c7 !important;
+}
+
+.hero-card .muted.light {
+  color: #64748b !important;
+}
+
+/* Figma Calendar copy */
+.content:has(.calendar-section) > .hero-card .muted.light {
+  font-size: 0 !important;
+}
+
+.content:has(.calendar-section) > .hero-card .muted.light::after {
+  content: "A clear view of what you completed and where your routine has gaps.";
+  font-size: 13px;
+  line-height: 1.55;
+  color: #64748b;
+}
+
+.hero-progress {
+  width: min(266px,100%) !important;
+  padding: 17px !important;
+  border: 1px solid #e4e9f1 !important;
+  border-radius: 18px !important;
+  background: #f8fafc !important;
+  box-shadow: none !important;
+}
+
+.hero-progress > span {
+  color: #18212f !important;
+  font-size: 38px !important;
+}
+
+.hero-progress small {
+  color: #64748b !important;
+}
+
+.progress-track {
+  height: 8px !important;
+  background: #e3e8ef !important;
+}
+
+.progress-track i {
+  background: #10b981 !important;
+}
+
+/* =========================
+   Today
+   ========================= */
+.content:has(.habit-list) .toolbar {
+  margin: 28px 0 16px !important;
+}
+
+.content:has(.habit-list) .toolbar h2 {
+  color: #18212f !important;
+  font-size: 26px !important;
+}
+
+.content:has(.habit-list) .toolbar .eyebrow {
+  color: #0284c7 !important;
+}
+
+.content:has(.habit-list) .reorder-hint {
+  color: #64748b !important;
+}
+
+.content:has(.habit-list) .search,
+.content:has(.habit-list) .ghost,
+.content:has(.habit-list) input,
+.content:has(.habit-list) select {
+  background: #ffffff !important;
+  color: #18212f !important;
+  border-color: #d6dde8 !important;
+}
+
+.content:has(.habit-list) .primary.small {
+  background: #0f172a !important;
+  color: #ffffff !important;
+}
+
+.content:has(.habit-list) .stats-row {
+  gap: 12px !important;
+  margin: 16px 0 !important;
+}
+
+.content:has(.habit-list) .stats-row > div {
+  min-height: 92px !important;
+  padding: 16px 17px !important;
+  border: 1px solid #e4e9f1 !important;
+  border-radius: 18px !important;
+  background: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(15,23,42,.045) !important;
+}
+
+.content:has(.habit-list) .stats-row span {
+  color: #64748b !important;
+}
+
+.content:has(.habit-list) .stats-row strong {
+  color: #18212f !important;
+}
+
+.content:has(.habit-list) .stats-row em {
+  color: #94a3b8 !important;
+}
+
+.content:has(.habit-list) .habit-list {
+  gap: 9px !important;
+}
+
+.content:has(.habit-list) .habit-card {
+  min-height: 76px !important;
+  padding: 14px 15px !important;
+  border: 1px solid #e4e9f1 !important;
+  border-radius: 18px !important;
+  background: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(15,23,42,.045) !important;
+}
+
+.content:has(.habit-list) .habit-card:hover {
+  border-color: #d6dde8 !important;
+  box-shadow: 0 10px 26px rgba(15,23,42,.07) !important;
+}
+
+.content:has(.habit-list) .habit-main h3 {
+  color: #18212f !important;
+}
+
+.content:has(.habit-list) .meta,
+.content:has(.habit-list) .drag-handle,
+.content:has(.habit-list) .icon-button {
+  color: #64748b !important;
+}
+
+.content:has(.habit-list) .check {
+  background: #ffffff !important;
+  border-color: #cfd7e3 !important;
+}
+
+.content:has(.habit-list) .habit-card.complete {
+  background: color-mix(in srgb, var(--habit-color) 8%, #ffffff) !important;
+  border-color: color-mix(in srgb, var(--habit-color) 26%, #e4e9f1) !important;
+}
+
+.content:has(.habit-list) .habit-card.complete .habit-main h3 {
+  color: #18212f !important;
+}
+
+.content:has(.habit-list) .streak {
+  background: #fff8ed !important;
+  border-color: #f3d39b !important;
+  color: #a85608 !important;
+}
+
+/* =========================
+   Calendar
+   ========================= */
+.calendar-section {
+  gap: 14px !important;
+  margin-top: 12px !important;
+}
+
+.calendar-toolbar {
+  gap: 10px !important;
+}
+
+.month-nav strong {
+  color: #18212f !important;
+}
+
+.month-nav button,
+.calendar-toolbar > .ghost {
+  background: #ffffff !important;
+  color: #18212f !important;
+  border-color: #d6dde8 !important;
+  box-shadow: none !important;
+}
+
+.table-card {
+  border: 1px solid #e4e9f1 !important;
+  border-radius: 20px !important;
+  background: #ffffff !important;
+  box-shadow: 0 6px 24px rgba(15,23,42,.05) !important;
+}
+
+table {
+  background: #ffffff !important;
+}
+
+th {
+  background: #f8fafc !important;
+  color: #64748b !important;
+  border-color: #e8edf3 !important;
+}
+
+td {
+  background: #ffffff !important;
+  color: #18212f !important;
+  border-color: #e8edf3 !important;
+}
+
+.sticky-col {
+  background: #ffffff !important;
+}
+
+.habit-name {
+  color: #18212f !important;
+}
+
+.today-head {
+  color: #0284c7 !important;
+  background: #eef8ff !important;
+}
+
+.today-cell {
+  background: #f6fbff !important;
+  box-shadow: inset 0 0 0 2px rgba(14,165,233,.20) !important;
+}
+
+.done {
+  background: color-mix(in srgb, var(--habit-color) 10%, #ffffff) !important;
+}
+
+td.done input[type="checkbox"] {
+  accent-color: color-mix(in srgb, var(--habit-color) 72%, #ffffff) !important;
+}
+
+.future-cell,
+.future-head {
+  opacity: .48 !important;
+}
+
+/* =========================
+   Insights — Figma screen
+   ========================= */
+.content:has(.figma-insights) > .hero-card {
+  display: none !important;
+}
+
+.content:has(.figma-insights) {
+  padding-top: 28px !important;
+}
+
+.content:has(.figma-insights) > .insights-grid {
+  display: none !important;
+}
+
+.figma-insights {
+  display: grid;
+  gap: 16px;
+  padding: 0 0 70px;
+}
+
+.figma-insights > * {
+  width: 100%;
+}
+
+.figma-insights-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 28px;
+  border: 1px solid #e4e9f1;
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 6px 24px rgba(15,23,42,.04);
+}
+
+.figma-insights-header h1 {
+  margin: 7px 0 8px;
+  color: #18212f;
+  font-size: clamp(36px,4.3vw,50px);
+  line-height: 1.02;
+  letter-spacing: -.045em;
+}
+
+.figma-insights-header > div:first-child > p:last-child {
+  margin: 0;
+  max-width: 620px;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.figma-insights-headstats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(150px,1fr));
+  gap: 10px;
+  min-width: 312px;
+}
+
+.figma-insights-headstat {
+  padding: 14px 16px;
+  border: 1px solid #e4e9f1;
+  border-radius: 14px;
+  background: #f8fafc;
+}
+
+.figma-insights-headstat strong,
+.figma-insights-headstat span {
+  display: block;
+}
+
+.figma-insights-headstat strong {
+  color: #18212f;
+  font-size: 27px;
+  line-height: 1;
+  letter-spacing: -.035em;
+}
+
+.figma-insights-headstat span {
+  margin-top: 7px;
+  color: #64748b;
+  font-size: 10px;
+}
+
+.figma-insights-section-label {
+  margin: 8px 0 -7px;
+}
+
+.figma-insights-section-title {
+  margin: 0 0 -3px;
+  color: #18212f;
+  font-size: 25px;
+  letter-spacing: -.035em;
+}
+
+.figma-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap: 12px;
+}
+
+.figma-kpi-card {
+  min-height: 106px;
+  padding: 17px;
+  border: 1px solid #e4e9f1;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(15,23,42,.045);
+}
+
+.figma-kpi-card strong,
+.figma-kpi-card span {
+  display: block;
+}
+
+.figma-kpi-card strong {
+  margin-bottom: 8px;
+  color: #18212f;
+  font-size: 29px;
+  line-height: 1;
+  letter-spacing: -.04em;
+}
+
+.figma-kpi-card span {
+  color: #64748b;
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.figma-kpi-card.accent {
+  background: #f2fbf8;
+  border-color: #d7efe8;
+}
+
+.figma-kpi-card.accent strong {
+  color: #047857;
+}
+
+.figma-what-title {
+  margin: 4px 0 -2px;
+  color: #18212f;
+  font-size: 23px;
+  letter-spacing: -.03em;
+}
+
+.figma-what-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.figma-insight-card {
+  padding: 20px;
+  border: 1px solid #e4e9f1;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(15,23,42,.045);
+}
+
+.figma-insight-card .card-label {
+  display: block;
+  color: #64748b;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.figma-insight-card h3 {
+  margin: 10px 0 7px;
+  color: #18212f;
+  font-size: 20px;
+  letter-spacing: -.025em;
+}
+
+.figma-insight-card .card-stat {
+  color: #0284c7;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.figma-insight-card p {
+  margin: 8px 0 0;
+  color: #64748b;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.figma-insights-bottom {
+  display: grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 16px;
+}
+
+.figma-panel {
+  padding: 20px;
+  border: 1px solid #e4e9f1;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(15,23,42,.045);
+}
+
+.figma-panel h3 {
+  margin: 5px 0 0;
+  color: #18212f;
+  font-size: 22px;
+  letter-spacing: -.035em;
+}
+
+.figma-week-bars {
+  display: grid;
+  grid-template-columns: repeat(7,1fr);
+  gap: 8px;
+  align-items: end;
+  height: 174px;
+  margin-top: 18px;
+}
+
+.figma-week-day {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 7px;
+}
+
+.figma-week-day span,
+.figma-week-day small {
+  color: #64748b;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.figma-week-track {
+  width: 100%;
+  height: 112px;
+  padding: 4px;
+  border-radius: 10px;
+  background: #f1f5f9;
+  display: flex;
+  align-items: flex-end;
+}
+
+.figma-week-fill {
+  width: 100%;
+  min-height: 6px;
+  border-radius: 7px;
+  background: linear-gradient(180deg,#22c55e,#10b981);
+}
+
+.figma-week-day.today span {
+  color: #0284c7;
+}
+
+.figma-week-day.future {
+  opacity: .4;
+}
+
+.figma-takeaway strong {
+  display: block;
+  margin: 16px 0 7px;
+  color: #18212f;
+  font-size: 30px;
+  letter-spacing: -.04em;
+}
+
+.figma-takeaway p {
+  margin: 0;
+  max-width: 290px;
+  color: #64748b;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+/* ---------- Dark mode ---------- */
+html[data-theme="dark"] .app-shell,
+html[data-theme="dark"] .content {
+  background: #0b1120 !important;
+}
+
+html[data-theme="dark"] .hero-card,
+html[data-theme="dark"] .figma-insights-header,
+html[data-theme="dark"] .figma-kpi-card,
+html[data-theme="dark"] .figma-insight-card,
+html[data-theme="dark"] .figma-panel,
+html[data-theme="dark"] .content:has(.habit-list) .stats-row > div,
+html[data-theme="dark"] .content:has(.habit-list) .habit-card,
+html[data-theme="dark"] .table-card {
+  background: #111827 !important;
+  border-color: #29364a !important;
+  box-shadow: 0 6px 24px rgba(0,0,0,.16) !important;
+}
+
+html[data-theme="dark"] .hero-card h1,
+html[data-theme="dark"] .content:has(.habit-list) .toolbar h2,
+html[data-theme="dark"] .content:has(.habit-list) .habit-main h3,
+html[data-theme="dark"] .content:has(.habit-list) .stats-row strong,
+html[data-theme="dark"] .figma-insights-header h1,
+html[data-theme="dark"] .figma-insights-section-title,
+html[data-theme="dark"] .figma-what-title,
+html[data-theme="dark"] .figma-insight-card h3,
+html[data-theme="dark"] .figma-panel h3,
+html[data-theme="dark"] .figma-takeaway strong,
+html[data-theme="dark"] .figma-kpi-card strong,
+html[data-theme="dark"] .figma-insights-headstat strong {
+  color: #eef4fb !important;
+}
+
+html[data-theme="dark"] .hero-card .muted.light,
+html[data-theme="dark"] .figma-insights-header > div:first-child > p:last-child,
+html[data-theme="dark"] .figma-insight-card p,
+html[data-theme="dark"] .figma-takeaway p,
+html[data-theme="dark"] .content:has(.habit-list) .reorder-hint,
+html[data-theme="dark"] .content:has(.habit-list) .meta {
+  color: #9aa9bd !important;
+}
+
+html[data-theme="dark"] .hero-progress,
+html[data-theme="dark"] .figma-insights-headstat,
+html[data-theme="dark"] .figma-week-track,
+html[data-theme="dark"] .content:has(.habit-list) .search,
+html[data-theme="dark"] .content:has(.habit-list) .ghost,
+html[data-theme="dark"] .content:has(.habit-list) input,
+html[data-theme="dark"] .content:has(.habit-list) select {
+  background: #151f31 !important;
+  border-color: #3a4a62 !important;
+  color: #eef4fb !important;
+}
+
+html[data-theme="dark"] th {
+  background: #151f31 !important;
+  color: #9aa9bd !important;
+  border-color: #29364a !important;
+}
+
+html[data-theme="dark"] td,
+html[data-theme="dark"] .sticky-col {
+  background: #111827 !important;
+  border-color: #29364a !important;
+}
+
+html[data-theme="dark"] .today-head {
+  background: #102b3c !important;
+  color: #7dd3fc !important;
+}
+
+html[data-theme="dark"] .today-cell {
+  background: #102331 !important;
+}
+
+html[data-theme="dark"] .done {
+  background: color-mix(in srgb, var(--habit-color) 13%, #111827) !important;
+}
+
+html[data-theme="dark"] .figma-kpi-card.accent {
+  background: #102820 !important;
+  border-color: #254a3b !important;
+}
+
+html[data-theme="dark"] .figma-kpi-card.accent strong {
+  color: #6ee7b7 !important;
+}
+
+html[data-theme="dark"] .figma-insight-card .card-label,
+html[data-theme="dark"] .figma-week-day span,
+html[data-theme="dark"] .figma-week-day small,
+html[data-theme="dark"] .figma-insights-headstat span {
+  color: #9aa9bd !important;
+}
+
+html[data-theme="dark"] .figma-insight-card .card-stat {
+  color: #7dd3fc !important;
+}
+
+html[data-theme="dark"] .figma-week-fill {
+  background: linear-gradient(180deg,#34d399,#10b981) !important;
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 980px) {
+  .figma-insights-header { align-items: flex-start; }
+  .figma-kpi-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .figma-insights-bottom { grid-template-columns: 1fr; }
+  .figma-insights-headstats { min-width: 280px; }
+}
+
+@media (max-width: 760px) {
+  .content,
+  .figma-insights { width: calc(100% - 20px) !important; }
+
+  .hero-card {
+    padding: 22px !important;
+    min-height: auto !important;
+  }
+
+  .hero-card h1 { font-size: 34px !important; }
+  .hero-progress { width: 100% !important; min-height: 96px; }
+
+  .figma-insights-header {
+    flex-direction: column;
+    padding: 22px;
+    gap: 16px;
+  }
+
+  .figma-insights-headstats {
+    width: 100%;
+    min-width: 0;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+  }
+
+  .figma-kpi-grid,
+  .figma-what-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .figma-week-bars { gap: 5px; height: 145px; }
+  .figma-week-track { height: 92px; }
+}
