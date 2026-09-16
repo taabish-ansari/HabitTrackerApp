@@ -1,0 +1,628 @@
+/* Theme Consistency Layer
+   Loaded last so every page uses one intentional light/dark palette.
+   Structure stays the same between themes; only color, contrast, borders,
+   shadows and state emphasis change. */
+
+:root {
+  --theme-bg: #f5f7fb;
+  --theme-surface: #ffffff;
+  --theme-surface-soft: #f8fafc;
+  --theme-surface-muted: #f1f5f9;
+  --theme-text: #18212f;
+  --theme-text-soft: #64748b;
+  --theme-text-faint: #94a3b8;
+  --theme-line: #e4e9f1;
+  --theme-line-strong: #d6dde8;
+  --theme-accent: #0ea5e9;
+  --theme-accent-strong: #0284c7;
+  --theme-success: #10b981;
+  --theme-success-strong: #059669;
+  --theme-warning: #f59e0b;
+  --theme-danger: #dc2626;
+  --theme-danger-soft: #fff1f2;
+  --theme-sidebar: #0f172a;
+  --theme-sidebar-soft: #172033;
+  --theme-shadow-sm: 0 4px 16px rgba(15,23,42,.05);
+  --theme-shadow-md: 0 16px 40px rgba(15,23,42,.08);
+  --theme-shadow-lg: 0 28px 90px rgba(15,23,42,.16);
+
+  /* Keep older visual tokens aligned with the same palette. */
+  --bg: var(--theme-bg);
+  --surface: rgba(255,255,255,.94);
+  --surface-strong: var(--theme-surface);
+  --surface-soft: var(--theme-surface-soft);
+  --text: var(--theme-text);
+  --text-soft: var(--theme-text-soft);
+  --line: var(--theme-line);
+  --line-strong: var(--theme-line-strong);
+  --accent: var(--theme-accent);
+  --accent-strong: var(--theme-accent-strong);
+  --success: var(--theme-success);
+  --p-ink: #111827;
+  --p-ink-2: #1f2937;
+  --p-paper: var(--theme-bg);
+  --p-paper-2: #eef2f7;
+  --p-card: rgba(255,255,255,.94);
+  --p-line: var(--theme-line);
+  --p-accent: #0ea5a4;
+  --p-accent-2: var(--theme-success);
+  --p-warm: var(--theme-warning);
+}
+
+html[data-theme="dark"] {
+  --theme-bg: #0b1120;
+  --theme-surface: #111827;
+  --theme-surface-soft: #172033;
+  --theme-surface-muted: #1b2638;
+  --theme-text: #eef4fb;
+  --theme-text-soft: #9aa9bd;
+  --theme-text-faint: #6f8099;
+  --theme-line: #29364b;
+  --theme-line-strong: #3a4961;
+  --theme-accent: #38bdf8;
+  --theme-accent-strong: #60c8ff;
+  --theme-success: #34d399;
+  --theme-success-strong: #10b981;
+  --theme-warning: #fbbf24;
+  --theme-danger: #fb7185;
+  --theme-danger-soft: #24151b;
+  --theme-sidebar: #080d18;
+  --theme-sidebar-soft: #101827;
+  --theme-shadow-sm: 0 4px 18px rgba(0,0,0,.18);
+  --theme-shadow-md: 0 16px 42px rgba(0,0,0,.24);
+  --theme-shadow-lg: 0 28px 90px rgba(0,0,0,.38);
+
+  --bg: var(--theme-bg);
+  --surface: rgba(17,24,39,.96);
+  --surface-strong: var(--theme-surface);
+  --surface-soft: var(--theme-surface-soft);
+  --text: var(--theme-text);
+  --text-soft: var(--theme-text-soft);
+  --line: var(--theme-line);
+  --line-strong: var(--theme-line-strong);
+  --accent: var(--theme-accent);
+  --accent-strong: var(--theme-accent-strong);
+  --success: var(--theme-success);
+  --p-ink: #f8fafc;
+  --p-ink-2: #e2e8f0;
+  --p-paper: var(--theme-bg);
+  --p-paper-2: #101827;
+  --p-card: rgba(17,24,39,.96);
+  --p-line: var(--theme-line);
+  --p-accent: #2dd4bf;
+  --p-accent-2: var(--theme-success);
+  --p-warm: var(--theme-warning);
+}
+
+html,
+body,
+#root {
+  background: var(--theme-bg) !important;
+  color: var(--theme-text) !important;
+}
+
+body {
+  color-scheme: light;
+}
+
+html[data-theme="dark"] body {
+  color-scheme: dark;
+}
+
+/* ---------- App shell ---------- */
+.app-shell {
+  background: var(--theme-bg) !important;
+  color: var(--theme-text) !important;
+}
+
+.sidebar {
+  background: linear-gradient(180deg, var(--theme-sidebar-soft) 0%, var(--theme-sidebar) 100%) !important;
+  border-right-color: rgba(255,255,255,.07) !important;
+}
+
+html[data-theme="dark"] .sidebar {
+  box-shadow: 12px 0 42px rgba(0,0,0,.22);
+}
+
+.side-nav button {
+  color: #9aa8bc !important;
+}
+
+.side-nav button:hover {
+  background: rgba(255,255,255,.055) !important;
+  color: #ffffff !important;
+}
+
+.side-nav button.active {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border-color: rgba(255,255,255,.9) !important;
+}
+
+html[data-theme="dark"] .side-nav button.active {
+  background: #e8f0f7 !important;
+  color: #0b1120 !important;
+  border-color: rgba(255,255,255,.78) !important;
+}
+
+.sidebar .brand-mark,
+.mobile-header .brand-mark {
+  background: linear-gradient(145deg, #f8fafc, #dbe3ea) !important;
+  color: #0f172a !important;
+}
+
+html[data-theme="dark"] .sidebar .brand-mark,
+html[data-theme="dark"] .mobile-header .brand-mark {
+  background: linear-gradient(145deg, #172033, #273449) !important;
+  color: #f8fafc !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 8px 24px rgba(0,0,0,.24) !important;
+}
+
+.sidebar .mini-profile {
+  border-color: #263249 !important;
+  background: rgba(255,255,255,.035) !important;
+}
+
+html[data-theme="dark"] .sidebar .mini-profile {
+  border-color: #2b3950 !important;
+  background: rgba(255,255,255,.03) !important;
+}
+
+.sidebar .ghost {
+  background: #121d30 !important;
+  border-color: #2c3950 !important;
+  color: #dbe4ef !important;
+}
+
+html[data-theme="dark"] .sidebar .ghost {
+  background: #101827 !important;
+  border-color: #34425a !important;
+  color: #e4edf7 !important;
+}
+
+/* ---------- Main backgrounds and type ---------- */
+.content,
+.mobile-header,
+.mobile-nav {
+  color: var(--theme-text) !important;
+}
+
+.eyebrow {
+  color: var(--theme-accent-strong) !important;
+}
+
+.muted,
+.reorder-hint,
+.meta,
+.insights-muted {
+  color: var(--theme-text-soft) !important;
+}
+
+.muted.light {
+  color: #b9c5d5 !important;
+}
+
+html[data-theme="dark"] .muted.light {
+  color: #b8c6d8 !important;
+}
+
+/* ---------- Hero surfaces ----------
+   Light mode intentionally keeps a dark anchor card, matching the existing
+   Today / Calendar visual language. Dark mode makes it deeper, not brighter. */
+.hero-card,
+.insight-hero,
+.insights-enhancer-head,
+.reward-hero,
+.reward-hero-upgraded,
+.insight-card.large {
+  background:
+    radial-gradient(circle at 84% 12%, rgba(56,189,248,.11), transparent 25%),
+    linear-gradient(145deg, #101827 0%, #172235 58%, #1d2b3f 100%) !important;
+  color: #f8fafc !important;
+  border-color: rgba(255,255,255,.08) !important;
+}
+
+html[data-theme="dark"] .hero-card,
+html[data-theme="dark"] .insight-hero,
+html[data-theme="dark"] .insights-enhancer-head,
+html[data-theme="dark"] .reward-hero,
+html[data-theme="dark"] .reward-hero-upgraded,
+html[data-theme="dark"] .insight-card.large {
+  background:
+    radial-gradient(circle at 84% 12%, rgba(56,189,248,.08), transparent 24%),
+    linear-gradient(145deg, #0a1020 0%, #111827 58%, #162236 100%) !important;
+  border-color: rgba(255,255,255,.07) !important;
+}
+
+.hero-card h1,
+.reward-hero-main h2,
+.insights-enhancer-head h1,
+.insight-hero h2 {
+  color: #f8fafc !important;
+}
+
+.hero-card .eyebrow,
+.insight-hero .eyebrow,
+.insights-enhancer-head .eyebrow {
+  color: #60c7ff !important;
+}
+
+.hero-progress {
+  background: rgba(255,255,255,.055) !important;
+  border-color: rgba(255,255,255,.09) !important;
+}
+
+.progress-track,
+.reward-progress-track {
+  background: rgba(255,255,255,.10) !important;
+}
+
+.progress-track i,
+.reward-progress-track i,
+.insights-week-bar i,
+.week-bar i {
+  background: linear-gradient(90deg, #34d399, #22c55e) !important;
+}
+
+/* ---------- Shared cards ---------- */
+.stats-row > div,
+.habit-card,
+.table-card,
+.insights-panel,
+.insights-enhancer-panel,
+.insights-enhancer-kpis > div,
+.insight-kpi,
+.insight-card,
+.recommendations-panel,
+.behavior-insights-panel,
+.reward-stat-card,
+.achievements-panel {
+  background: var(--theme-surface) !important;
+  border-color: var(--theme-line) !important;
+  box-shadow: var(--theme-shadow-sm) !important;
+}
+
+html[data-theme="dark"] .stats-row > div,
+html[data-theme="dark"] .habit-card,
+html[data-theme="dark"] .table-card,
+html[data-theme="dark"] .insights-panel,
+html[data-theme="dark"] .insights-enhancer-panel,
+html[data-theme="dark"] .insights-enhancer-kpis > div,
+html[data-theme="dark"] .insight-kpi,
+html[data-theme="dark"] .insight-card,
+html[data-theme="dark"] .recommendations-panel,
+html[data-theme="dark"] .behavior-insights-panel,
+html[data-theme="dark"] .reward-stat-card,
+html[data-theme="dark"] .achievements-panel {
+  background: var(--theme-surface) !important;
+  border-color: var(--theme-line) !important;
+  box-shadow: var(--theme-shadow-sm) !important;
+}
+
+.stats-row span,
+.stats-row em,
+.insights-panel .panel-subtitle,
+.insight-kpi span,
+.reward-stat-card span,
+.reward-stat-card small,
+.achievement-title-row span,
+.achievement-main p,
+.achievement-main small {
+  color: var(--theme-text-soft) !important;
+}
+
+.stats-row strong,
+.insights-panel h2,
+.insight-kpi strong,
+.rank-copy strong,
+.rank-value,
+.reward-stat-card strong,
+.achievements-panel-head h2,
+.achievement-title-row h3 {
+  color: var(--theme-text) !important;
+}
+
+/* ---------- Controls ---------- */
+.ghost,
+.month-nav button,
+input,
+select,
+.search {
+  background: var(--theme-surface) !important;
+  color: var(--theme-text) !important;
+  border-color: var(--theme-line-strong) !important;
+}
+
+.ghost:hover:not(:disabled),
+.month-nav button:hover,
+input:hover,
+select:hover {
+  background: var(--theme-surface-soft) !important;
+  border-color: var(--theme-line-strong) !important;
+}
+
+input::placeholder {
+  color: var(--theme-text-faint) !important;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--theme-accent) !important;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--theme-accent) 13%, transparent) !important;
+}
+
+.primary {
+  background: linear-gradient(145deg, #172033, #0f172a) !important;
+  color: #ffffff !important;
+  box-shadow: var(--theme-shadow-sm) !important;
+}
+
+html[data-theme="dark"] .primary {
+  background: linear-gradient(145deg, #25334a, #162136) !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,.24) !important;
+}
+
+/* ---------- Habit states ---------- */
+.habit-card:hover {
+  border-color: var(--theme-line-strong) !important;
+  box-shadow: var(--theme-shadow-md) !important;
+}
+
+.habit-card.complete {
+  background: color-mix(in srgb, var(--habit-color) 11%, var(--theme-surface)) !important;
+  border-color: color-mix(in srgb, var(--habit-color) 36%, var(--theme-line)) !important;
+}
+
+.check {
+  background: var(--theme-surface-strong, var(--theme-surface)) !important;
+  border-color: var(--theme-line-strong) !important;
+  color: #ffffff !important;
+}
+
+.icon-button {
+  color: var(--theme-text-soft) !important;
+}
+
+.icon-button:hover {
+  color: var(--theme-text) !important;
+}
+
+.icon-button.danger:hover {
+  color: var(--theme-danger) !important;
+}
+
+.streak {
+  background: #fff8ec !important;
+  border-color: #f8d7a0 !important;
+  color: #b45309 !important;
+}
+
+html[data-theme="dark"] .streak {
+  background: #261e0e !important;
+  border-color: #6e5523 !important;
+  color: #fbbf24 !important;
+}
+
+/* ---------- Calendar ---------- */
+th {
+  background: var(--theme-surface-soft) !important;
+  color: var(--theme-text-soft) !important;
+  border-color: var(--theme-line) !important;
+}
+
+td {
+  border-color: var(--theme-line) !important;
+}
+
+.sticky-col {
+  background: var(--theme-surface) !important;
+}
+
+.today-head {
+  color: #047857 !important;
+  background: #ecfdf5 !important;
+}
+
+.today-cell {
+  box-shadow: inset 0 0 0 2px rgba(16,185,129,.45) !important;
+}
+
+.done {
+  background: color-mix(in srgb, var(--habit-color) 14%, var(--theme-surface)) !important;
+}
+
+html[data-theme="dark"] .today-head {
+  color: #6ee7b7 !important;
+  background: #0f2a24 !important;
+}
+
+html[data-theme="dark"] .today-cell {
+  box-shadow: inset 0 0 0 2px rgba(52,211,153,.50) !important;
+}
+
+/* ---------- Insights ---------- */
+.insights-enhancer-shell {
+  background: var(--theme-bg) !important;
+}
+
+.insights-score-ring {
+  background: conic-gradient(var(--theme-success) var(--insight-score), #2b3a4f 0) !important;
+}
+
+.insights-score-ring::before {
+  background: #152237 !important;
+}
+
+.insights-week-bar i,
+.week-bar i {
+  box-shadow: 0 8px 18px rgba(14,165,233,.12) !important;
+}
+
+.best-day,
+.rank-row {
+  background: var(--theme-surface-soft) !important;
+  border-color: var(--theme-line) !important;
+}
+
+.achievement-card {
+  background: var(--theme-surface-soft) !important;
+  border-color: var(--theme-line) !important;
+}
+
+.achievement-card.earned {
+  background: color-mix(in srgb, var(--theme-success) 7%, var(--theme-surface)) !important;
+  border-color: color-mix(in srgb, var(--theme-success) 24%, var(--theme-line)) !important;
+}
+
+.achievement-icon {
+  background: var(--theme-surface-muted) !important;
+  color: var(--theme-text-soft) !important;
+}
+
+.achievements-panel-head > span {
+  background: var(--theme-surface-muted) !important;
+  color: var(--theme-text-soft) !important;
+}
+
+html[data-theme="dark"] .achievement-card {
+  background: #0f1727 !important;
+}
+
+html[data-theme="dark"] .achievement-card.earned {
+  background: color-mix(in srgb, var(--theme-success) 10%, var(--theme-surface)) !important;
+}
+
+/* ---------- Rewards ---------- */
+.rewards-count {
+  background: var(--theme-surface) !important;
+  border-color: var(--theme-line) !important;
+}
+
+.rewards-count span {
+  color: var(--theme-text-soft) !important;
+}
+
+.reward-progress-wrap {
+  background: rgba(255,255,255,.05) !important;
+  border-color: rgba(255,255,255,.08) !important;
+}
+
+.reward-progress-top {
+  color: #cbd5e1 !important;
+}
+
+.reward-progress-top strong,
+.reward-level-orb strong {
+  color: #f8fafc !important;
+}
+
+.reward-level-orb {
+  background: linear-gradient(145deg, rgba(45,212,191,.18), rgba(255,255,255,.05)) !important;
+  border-color: rgba(255,255,255,.12) !important;
+}
+
+/* ---------- Modals / overlays ---------- */
+.modal-backdrop,
+.profile-overlay,
+.habit-schedule-backdrop,
+.reward-celebration-backdrop {
+  background: rgba(3,8,20,.62) !important;
+}
+
+.modal,
+.profile-panel,
+.habit-schedule-panel,
+.profile-card,
+.habit-schedule-card {
+  background: var(--theme-surface) !important;
+  border-color: var(--theme-line) !important;
+  box-shadow: var(--theme-shadow-lg) !important;
+  color: var(--theme-text) !important;
+}
+
+.close,
+.profile-close,
+.habit-schedule-close {
+  background: var(--theme-surface-soft) !important;
+  color: var(--theme-text) !important;
+  border-color: var(--theme-line) !important;
+}
+
+/* ---------- Error / feedback ---------- */
+.error,
+.error-banner {
+  background: var(--theme-danger-soft) !important;
+  color: var(--theme-danger) !important;
+  border-color: color-mix(in srgb, var(--theme-danger) 28%, var(--theme-line)) !important;
+}
+
+/* ---------- Theme control ---------- */
+.theme-toggle {
+  background: var(--theme-surface) !important;
+  color: var(--theme-text) !important;
+  border-color: var(--theme-line-strong) !important;
+  box-shadow: var(--theme-shadow-sm) !important;
+}
+
+.theme-toggle:hover {
+  background: var(--theme-surface-soft) !important;
+}
+
+html[data-theme="dark"] .theme-toggle {
+  background: #111827 !important;
+  color: #e8f0f7 !important;
+  border-color: #34425a !important;
+  box-shadow: 0 10px 28px rgba(0,0,0,.30) !important;
+}
+
+/* Keep system transitions calm when the palette switches. */
+html,
+body,
+.app-shell,
+.content,
+.sidebar,
+.mobile-header,
+.mobile-nav,
+.stats-row > div,
+.habit-card,
+.table-card,
+.insights-panel,
+.insight-card,
+.reward-stat-card,
+.achievements-panel,
+.recommendations-panel,
+.behavior-insights-panel,
+.ghost,
+input,
+select,
+.modal,
+.theme-toggle {
+  transition: background-color .18s ease, background .18s ease, color .18s ease,
+              border-color .18s ease, box-shadow .18s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html,
+  body,
+  .app-shell,
+  .content,
+  .sidebar,
+  .mobile-header,
+  .mobile-nav,
+  .stats-row > div,
+  .habit-card,
+  .table-card,
+  .insights-panel,
+  .insight-card,
+  .reward-stat-card,
+  .achievements-panel,
+  .recommendations-panel,
+  .behavior-insights-panel,
+  .ghost,
+  input,
+  select,
+  .modal,
+  .theme-toggle {
+    transition: none !important;
+  }
+}
