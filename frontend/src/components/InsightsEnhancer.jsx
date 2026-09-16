@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { habitsApi, logsApi } from '../services/api';
-import { getBehaviorInsights } from '../utils/behaviorInsights';
 
 function monthRangeFromLabel(label) {
   const parsed = new Date(`${label} 1, 12:00:00`);
@@ -22,7 +21,35 @@ function dateKey(date) {
 }
 
 function formatDate(date) {
-  return new Date(`${date}T12:00:00`).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+  return new Date(`${date}T12:00:00`).toLocaleDateString(undefined, {
+    weekday: 'long',
+    month: 'short',
+    day: 'numeric',
+  });
+}
+
+function weekdayStats(keys, habits, lookup) {
+  const days = Array.from({ length: 7 }, (_, index) => ({
+    index,
+    label: new Date(2026, 0, 4 + index).toLocaleDateString(undefined, { weekday: 'short' }),
+    completed: 0,
+    possible: 0,
+  }));
+
+  keys.forEach((key) => {
+    const date = new Date(`${key}T12:00:00`);
+    const bucket = days[date.getDay() === 0 ? 6 : date.getDay() - 1];
+    bucket.possible += habits.length;
+    bucket.completed += habits.reduce(
+      (sum, habit) => sum + (lookup.get(`${habit.id}-${key}`)?.completed ? 1 : 0),
+      0,
+    );
+  });
+
+  return days.map((day) => ({
+    ...day,
+    rate: day.possible ? Math.round((day.completed / day.possible) * 100) : 0,
+  }));
 }
 
 export default function InsightsEnhancer() {
@@ -36,7 +63,8 @@ export default function InsightsEnhancer() {
 
   useEffect(() => {
     const sync = () => {
-      const activeButton = [...document.querySelectorAll('.side-nav button')].find(button => button.classList.contains('active'));
+      const activeButton = [...document.querySelectorAll('.side-nav button')]
+        .find((button) => button.classList.contains('active'));
       const isInsights = activeButton?.textContent?.includes('Insights');
       const root = document.querySelector('.content');
       setActive(Boolean(isInsights));
@@ -58,13 +86,19 @@ export default function InsightsEnhancer() {
 
     sync();
     const observer = new MutationObserver(sync);
-    observer.observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ['class'] });
+    observer.observe(document.body, {
+      subtree: true,
+      childList: true,
+      attributes: true,
+      attributeFilter: ['class'],
+    });
     return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
     if (!active || !range) return undefined;
     let cancelled = false;
+
     const load = async () => {
       setLoading(true);
       try {
@@ -80,12 +114,14 @@ export default function InsightsEnhancer() {
         if (!cancelled) setLoading(false);
       }
     };
+
     load();
     return () => { cancelled = true; };
   }, [active, range?.from, range?.to]);
 
   const analysis = useMemo(() => {
     if (!range) return null;
+
     const now = new Date();
     const sameMonth = range.year === now.getFullYear() && range.month === now.getMonth();
     const elapsed = sameMonth
@@ -93,96 +129,179 @@ export default function InsightsEnhancer() {
       : range.year < now.getFullYear() || (range.year === now.getFullYear() && range.month < now.getMonth())
         ? new Date(range.year, range.month + 1, 0).getDate()
         : 0;
-    const keys = Array.from({ length: elapsed }, (_, i) => `${range.year}-${String(range.month + 1).padStart(2, '0')}-${String(i + 1).padStart(2, '0')}`);
-    const lookup = new Map(logs.map(log => [`${log.habit_id}-${log.date}`, log]));
+
+    const keys = Array.from(
+      { length: elapsed },
+      (_, index) => `${range.year}-${String(range.month + 1).padStart(2, '0')}-${String(index + 1).padStart(2, '0')}`,
+    );
+    const lookup = new Map(logs.map((log) => [`${log.habit_id}-${log.date}`, log]));
     const totalPossible = habits.length * keys.length;
-    const totalCompleted = habits.reduce((sum, habit) => sum + keys.reduce((count, key) => count + (lookup.get(`${habit.id}-${key}`)?.completed ? 1 : 0), 0), 0);
+    const totalCompleted = habits.reduce(
+      (sum, habit) => sum + keys.reduce(
+        (count, key) => count + (lookup.get(`${habit.id}-${key}`)?.completed ? 1 : 0),
+        0,
+      ),
+      0,
+    );
     const score = totalPossible ? Math.round((totalCompleted / totalPossible) * 100) : 0;
-    const habitStats = habits.map(habit => {
-      const completed = keys.reduce((count, key) => count + (lookup.get(`${habit.id}-${key}`)?.completed ? 1 : 0), 0);
-      return { habit, completed, rate: keys.length ? Math.round((completed / keys.length) * 100) : 0 };
+
+    const habitStats = habits.map((habit) => {
+      const completed = keys.reduce(
+        (count, key) => count + (lookup.get(`${habit.id}-${key}`)?.completed ? 1 : 0),
+        0,
+      );
+      return {
+        habit,
+        completed,
+        rate: keys.length ? Math.round((completed / keys.length) * 100) : 0,
+      };
     }).sort((a, b) => b.rate - a.rate || b.completed - a.completed);
-    const daily = keys.map(date => ({
+
+    const daily = keys.map((date) => ({
       date,
-      count: habits.reduce((sum, habit) => sum + (lookup.get(`${habit.id}-${date}`)?.completed ? 1 : 0), 0),
+      count: habits.reduce(
+        (sum, habit) => sum + (lookup.get(`${habit.id}-${date}`)?.completed ? 1 : 0),
+        0,
+      ),
     }));
-    const bestDay = [...daily].sort((a, b) => b.count - a.count)[0] || null;
-    const activeDays = daily.filter(day => day.count > 0).length;
+
+    const activeDays = daily.filter((day) => day.count > 0).length;
+    const avgCompletedPerDay = elapsed ? (totalCompleted / elapsed).toFixed(1) : '0.0';
+    const weekly = weekdayStats(keys, habits, lookup);
+    const strongestDay = [...weekly].sort((a, b) => b.rate - a.rate || b.completed - a.completed)[0];
+    const strongestHabit = habitStats[0] || null;
+    const opportunity = habitStats.length > 1 ? habitStats[habitStats.length - 1] : strongestHabit;
+    const onTrack = habitStats.filter((item) => item.rate >= 80).length;
+    const bestStreak = Math.max(
+      0,
+      ...habits.flatMap((habit) => (habit.streaks || []).map((streak) => Number(streak.longest_streak) || 0)),
+    );
+
     const todayKey = dateKey(now);
-    const week = Array.from({ length: 7 }, (_, index) => {
+    const recentWeek = Array.from({ length: 7 }, (_, index) => {
       const date = new Date(now);
       date.setDate(now.getDate() - (6 - index));
       const key = dateKey(date);
-      const count = habits.reduce((sum, habit) => sum + (lookup.get(`${habit.id}-${key}`)?.completed ? 1 : 0), 0);
-      return { date: key, count, label: date.toLocaleDateString(undefined, { weekday: 'narrow' }), future: key > todayKey };
+      const count = habits.reduce(
+        (sum, habit) => sum + (lookup.get(`${habit.id}-${key}`)?.completed ? 1 : 0),
+        0,
+      );
+      return {
+        date: key,
+        count,
+        label: date.toLocaleDateString(undefined, { weekday: 'narrow' }),
+        future: key > todayKey,
+      };
     });
-    const weekPossible = habits.length * week.filter(item => !item.future).length;
-    const weekCompleted = week.reduce((sum, item) => sum + item.count, 0);
-    const weekScore = weekPossible ? Math.round((weekCompleted / weekPossible) * 100) : 0;
-    const behaviorInsights = getBehaviorInsights(habits, logs, range.year, range.month, todayKey);
-    return { totalPossible, totalCompleted, score, habitStats, bestDay, activeDays, week, weekScore, behaviorInsights };
+
+    return {
+      score,
+      totalCompleted,
+      activeDays,
+      avgCompletedPerDay,
+      onTrack,
+      bestStreak,
+      strongestHabit,
+      opportunity,
+      strongestDay,
+      weekly,
+      recentWeek,
+      elapsed,
+    };
   }, [habits, logs, range]);
 
   if (!active || !contentRoot) return null;
 
   return createPortal(
-    <section className="insights-enhancer-shell">
-      {loading || !analysis ? <div className="insights-loading">Building your insights…</div> : (
+    <section className="figma-insights">
+      {loading || !analysis ? (
+        <div className="figma-panel">Building your insights…</div>
+      ) : (
         <>
-          <div className="insights-enhancer-head">
+          <header className="figma-insights-header">
             <div>
-              <p className="eyebrow">Powerful insights</p>
-              <h1>See what your consistency is telling you.</h1>
-              <p>Clear patterns from your actual check-ins — future days never count against you.</p>
+              <p className="eyebrow">Your patterns</p>
+              <h1>Understand what is working.</h1>
+              <p>A simple view of your consistency, strengths, and where you can improve.</p>
             </div>
-            <div className="insights-score-ring" style={{ '--insight-score': `${analysis.score}%` }}><span>{analysis.score}%</span><small>consistency</small></div>
-          </div>
-
-          <div className="insights-enhancer-kpis">
-            <div><span>Check-ins</span><strong>{analysis.totalCompleted}</strong><small>completed this month</small></div>
-            <div><span>Active days</span><strong>{analysis.activeDays}</strong><small>days you showed up</small></div>
-            <div><span>Best habit</span><strong>{analysis.habitStats[0]?.rate || 0}%</strong><small>{analysis.habitStats[0]?.habit.name || 'No habits yet'}</small></div>
-            <div><span>Best day</span><strong>{analysis.bestDay?.count || 0}</strong><small>{analysis.bestDay ? formatDate(analysis.bestDay.date) : 'No data yet'}</small></div>
-          </div>
-
-          {analysis.behaviorInsights.length > 0 && (
-            <section className="behavior-insights-panel">
-              <div className="behavior-insights-head">
-                <div>
-                  <p className="eyebrow">What we are noticing</p>
-                  <h2>Your routine has a pattern.</h2>
-                </div>
-                <span>Based on your scheduled days</span>
+            <div className="figma-insights-headstats">
+              <div className="figma-insights-headstat">
+                <strong>{analysis.score}%</strong>
+                <span>Month consistency</span>
               </div>
-              <div className="behavior-insights-grid">
-                {analysis.behaviorInsights.map((insight) => (
-                  <article className="behavior-insight" key={`${insight.type}-${insight.title}`} style={{ '--behavior-color': insight.color || '#0ea5e9' }}>
-                    <span className="behavior-insight-mark" />
-                    <div>
-                      <h3>{insight.title}</h3>
-                      <p>{insight.body}</p>
+              <div className="figma-insights-headstat">
+                <span>Best streak</span>
+                <strong>{analysis.bestStreak} days</strong>
+              </div>
+            </div>
+          </header>
+
+          <section>
+            <p className="eyebrow figma-insights-section-label">At a glance</p>
+            <h2 className="figma-insights-section-title">This month</h2>
+            <div className="figma-kpi-grid">
+              <article className="figma-kpi-card">
+                <strong>{analysis.score}%</strong>
+                <span>overall consistency</span>
+              </article>
+              <article className="figma-kpi-card">
+                <strong>{analysis.avgCompletedPerDay}</strong>
+                <span>avg. completed / day</span>
+              </article>
+              <article className="figma-kpi-card">
+                <strong>{analysis.onTrack} / {habits.length}</strong>
+                <span>habits on track</span>
+              </article>
+              <article className="figma-kpi-card accent">
+                <strong>You’re strongest on weekdays.</strong>
+                <span>{analysis.strongestDay?.label || 'Your strongest day will appear here.'}</span>
+              </article>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="figma-what-title">What your habits are telling you</h2>
+            <div className="figma-what-grid">
+              <article className="figma-insight-card">
+                <span className="card-label">Strongest habit</span>
+                <h3>{analysis.strongestHabit?.habit.name || 'No habits yet'}</h3>
+                <div className="card-stat">{analysis.strongestHabit?.rate || 0}% consistency this month</div>
+                <p>This is the habit you stick to most reliably.</p>
+              </article>
+              <article className="figma-insight-card">
+                <span className="card-label">Biggest opportunity</span>
+                <h3>{analysis.opportunity?.habit.name || 'No habits yet'}</h3>
+                <div className="card-stat">{analysis.opportunity?.rate || 0}% consistency this month</div>
+                <p>A little more consistency here would move your month forward.</p>
+              </article>
+            </div>
+          </section>
+
+          <div className="figma-insights-bottom">
+            <section className="figma-panel">
+              <p className="eyebrow">Weekly rhythm</p>
+              <h3>Your consistency by day</h3>
+              <div className="figma-week-bars">
+                {analysis.weekly.map((day) => (
+                  <div className="figma-week-day" key={day.index}>
+                    <span>{day.label}</span>
+                    <div className="figma-week-track">
+                      <i className="figma-week-fill" style={{ height: `${Math.max(6, day.rate)}%` }} />
                     </div>
-                  </article>
+                    <small>{day.rate}%</small>
+                  </div>
                 ))}
               </div>
             </section>
-          )}
 
-          <div className="insights-enhancer-grid">
-            <div className="insights-enhancer-panel wide">
-              <p className="eyebrow">Recent momentum</p>
-              <h2>Last 7 days</h2>
-              <div className="insights-week-bars">
-                {analysis.week.map(item => <div className={`insights-week-bar ${item.future ? 'future' : ''}`} key={item.date} title={`${formatDate(item.date)} · ${item.count}/${habits.length} completed`}><span>{item.label}</span><i style={{ height: `${Math.max(5, Math.round((item.count / Math.max(1, habits.length)) * 100))}%` }} /><small>{item.count}</small></div>)}
-              </div>
-              <div className="insights-panel-foot"><span>7-day consistency</span><strong>{analysis.weekScore}%</strong></div>
-            </div>
-
-            <div className="insights-enhancer-panel">
-              <p className="eyebrow">Performance</p>
-              <h2>Most reliable habits</h2>
-              {analysis.habitStats.length === 0 ? <p className="insights-muted">Create a habit to start seeing patterns.</p> : <div className="insights-rank-list">{analysis.habitStats.slice(0, 6).map(({ habit, completed, rate }, index) => <div className="insights-rank" key={habit.id}><span className="rank-dot" style={{ background: habit.color }} /><div><strong>{index + 1}. {habit.name}</strong><small>{completed} completed · {rate}% consistency</small><div><i style={{ width: `${rate}%`, background: habit.color }} /></div></div></div>)}</div>}
-            </div>
+            <section className="figma-panel figma-takeaway">
+              <p className="eyebrow">One useful takeaway</p>
+              <h3>Your strongest day</h3>
+              <strong>{analysis.strongestDay?.label || '—'}</strong>
+              <p>
+                You tend to finish more habits later in the week. Keep that momentum going.
+              </p>
+            </section>
           </div>
         </>
       )}
