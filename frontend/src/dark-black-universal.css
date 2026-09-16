@@ -1,0 +1,96 @@
+/* Final universal black-mode cleanup. Loaded after every existing stylesheet. */
+html[data-theme="dark"] {
+  /* Legacy UI token systems used by Today, Calendar and Insights. */
+  --ui-bg:#070707;
+  --ui-surface:#101010;
+  --ui-surface-strong:#101010;
+  --ui-surface-soft:#161616;
+  --ui-text:#f5f5f5;
+  --ui-text-soft:#a3a3a3;
+  --ui-text-faint:#737373;
+  --ui-muted:#a3a3a3;
+  --ui-line:#262626;
+  --ui-line-strong:#3a3a3a;
+  --ui-border:#262626;
+  --ui-border-strong:#3a3a3a;
+  --ui-accent:#e5e5e5;
+  --ui-accent-strong:#ffffff;
+  --ui-success:#d4d4d4;
+  --ui-focus:0 0 0 4px rgba(255,255,255,.08);
+  --ui-chrome:#050505;
+  --ui-shadow:0 18px 44px rgba(0,0,0,.30);
+  --ui-shadow-sm:0 5px 18px rgba(0,0,0,.30);
+  --ui-shadow-md:0 16px 38px rgba(0,0,0,.38);
+  --ui-shadow-lg:0 30px 90px rgba(0,0,0,.52);
+  --ui-shadow-card:0 12px 36px rgba(0,0,0,.26);
+}
+
+html[data-theme="dark"],
+html[data-theme="dark"] body,
+html[data-theme="dark"] #root,
+html[data-theme="dark"] .app-shell { background:#070707 !important; }
+
+/* Neutralize remaining blue/teal app accents without touching habit identity colors. */
+html[data-theme="dark"] .week-bar i,
+html[data-theme="dark"] .insights-week-bar i { background:linear-gradient(180deg,#eeeeee,#666666) !important; box-shadow:none !important; }
+html[data-theme="dark"] .insights-score-ring { background:conic-gradient(#e5e5e5 var(--insight-score),#2a2a2a 0) !important; }
+html[data-theme="dark"] .insight-kpi::after { background:rgba(255,255,255,.05) !important; }
+html[data-theme="dark"] .week-day.today label { color:#f0f0f0 !important; }
+html[data-theme="dark"] .recommendations-panel,
+html[data-theme="dark"] .recommendation-card,
+html[data-theme="dark"] .behavior-insights-panel,
+html[data-theme="dark"] .behavior-insight { background:#101010 !important; border-color:#292929 !important; }
+html[data-theme="dark"] .recommendations-head > span,
+html[data-theme="dark"] .recommendation-label { background:#1a1a1a !important; color:#bdbdbd !important; }
+
+/* Calendar theme chrome: current-day state stays neutral; habit completion colors remain. */
+html[data-theme="dark"] .today-head { background:#202020 !important; color:#f0f0f0 !important; }
+html[data-theme="dark"] .today-cell { background:#181818 !important; box-shadow:inset 0 0 0 2px rgba(255,255,255,.18) !important; }
+html[data-theme="dark"] th { background:#161616 !important; color:#8f8f8f !important; border-color:#252525 !important; }
+html[data-theme="dark"] td,
+html[data-theme="dark"] .sticky-col,
+html[data-theme="dark"] table { background:#101010 !important; border-color:#252525 !important; }
+
+/* Rewards / milestones stay black + graphite instead of navy. */
+html[data-theme="dark"] .milestone-panel { background:#101010 !important; border-color:#262626 !important; }
+html[data-theme="dark"] .milestone-panel-head > span { background:#1c1c1c !important; color:#a3a3a3 !important; }
+html[data-theme="dark"] .milestone-next { background:linear-gradient(145deg,#0d0d0d,#181818) !important; }
+html[data-theme="dark"] .milestone-next-icon,
+html[data-theme="dark"] .milestone-next-progress { background:#151515 !important; border-color:#2a2a2a !important; }
+html[data-theme="dark"] .milestone-progress-track { background:#292929 !important; }
+html[data-theme="dark"] .milestone-progress-track i { background:linear-gradient(90deg,#eeeeee,#777777) !important; }
+html[data-theme="dark"] .milestone-step:not(:last-child)::after { background:#2b2b2b !important; }
+html[data-theme="dark"] .milestone-node { background:#1a1a1a !important; border-color:#333 !important; color:#a8a8a8 !important; box-shadow:none !important; }
+html[data-theme="dark"] .milestone-step.reached .milestone-node { background:#e5e5e5 !important; color:#111 !important; border-color:#e5e5e5 !important; }
+html[data-theme="dark"] .achievement-card { background:#161616 !important; border-color:#282828 !important; }
+html[data-theme="dark"] .achievement-card.earned { background:#191919 !important; border-color:#3a3a3a !important; }
+html[data-theme="dark"] .achievement-icon { background:#202020 !important; color:#bdbdbd !important; }
+html[data-theme="dark"] .achievement-card.earned .achievement-icon { background:#303030 !important; color:#f5f5f5 !important; box-shadow:none !important; }
+html[data-theme="dark"] .achievement-mini-progress { background:#292929 !important; }
+html[data-theme="dark"] .achievement-mini-progress i { background:#8a8a8a !important; }
+
+/* Schedules launcher: black/gray, including its green icon. */
+html[data-theme="dark"] .habit-schedule-launcher {
+  background:#111 !important;
+  color:#ededed !important;
+  border-color:#353535 !important;
+  box-shadow:0 14px 34px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.05) !important;
+}
+html[data-theme="dark"] .habit-schedule-launcher span { color:#e5e5e5 !important; }
+html[data-theme="dark"] .habit-schedule-launcher:hover { background:#1a1a1a !important; border-color:#555 !important; }
+html[data-theme="dark"] .habit-schedule-backdrop { background:rgba(0,0,0,.66) !important; }
+html[data-theme="dark"] .habit-schedule-panel { background:#101010 !important; border-color:#262626 !important; }
+html[data-theme="dark"] .habit-schedule-close { background:#171717 !important; border-color:#323232 !important; color:#ededed !important; }
+html[data-theme="dark"] .habit-schedule-card { background:linear-gradient(135deg,#141414,#101010) !important; box-shadow:none !important; }
+html[data-theme="dark"] .habit-schedule-types button,
+html[data-theme="dark"] .habit-schedule-days button { background:#171717 !important; border-color:#303030 !important; color:#a3a3a3 !important; }
+html[data-theme="dark"] .habit-schedule-types button.active { background:#202020 !important; border-color:#777 !important; color:#f0f0f0 !important; box-shadow:none !important; }
+html[data-theme="dark"] .habit-schedule-days button.selected { background:#e5e5e5 !important; border-color:#e5e5e5 !important; color:#111 !important; }
+html[data-theme="dark"] .habit-schedule-footer { border-color:#262626 !important; color:#a3a3a3 !important; }
+html[data-theme="dark"] .global-theme-control .theme-toggle { background:#111 !important; color:#f0f0f0 !important; border-color:#363636 !important; }
+
+@media (max-width:760px) {
+  html[data-theme="dark"] .mobile-nav { background:#0c0c0c !important; border-color:#252525 !important; }
+  html[data-theme="dark"] .mobile-nav button { color:#8e8e8e !important; }
+  html[data-theme="dark"] .mobile-nav button.active { color:#f4f4f4 !important; background:#181818 !important; }
+}
