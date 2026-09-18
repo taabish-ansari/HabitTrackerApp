@@ -1385,3 +1385,23 @@ html[data-theme="dark"] .auth-card .error{
     font-size:12px !important;
   }
 }
+
+
+/* Auth type scale aligned with the main app UI. */
+.auth-card .brand-label{font-size:14px !important;}
+.auth-heading .eyebrow{font-size:10px !important;}
+.auth-heading h1{font-size:42px !important;}
+.auth-heading p.muted{font-size:13px !important;}
+.auth-card label{font-size:12px !important;}
+.auth-card input{font-size:13px !important;}
+.auth-card .primary{font-size:13px !important;}
+.auth-card .link-button{font-size:12px !important;}
+.auth-card .error{font-size:12px !important;}
+.auth-card .password-toggle{font-size:10px !important;}
+@media(max-width:760px){
+  .auth-heading h1{font-size:34px !important;}
+  .auth-heading p.muted{font-size:12px !important;}
+  .auth-card label{font-size:11px !important;}
+  .auth-card input,.auth-card .primary{font-size:12px !important;}
+  .auth-card .link-button{font-size:11px !important;}
+}
