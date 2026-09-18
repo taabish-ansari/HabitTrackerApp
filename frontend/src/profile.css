@@ -80,3 +80,43 @@ html[data-theme="dark"] .profile-progress-ring>div {
   background:#000000 !important;
   border-color:#292929 !important;
 }
+
+/* Profile header polish — spacing/readability only; colors and behavior unchanged. */
+html[data-theme="dark"] .profile-cover{
+  height:188px;
+}
+html[data-theme="dark"] .profile-body{
+  padding:0 36px 36px;
+}
+html[data-theme="dark"] .profile-avatar-wrap{
+  margin-top:-50px;
+}
+html[data-theme="dark"] .profile-avatar-large{
+  width:100px;
+  height:100px;
+}
+html[data-theme="dark"] .profile-intro{
+  margin-top:17px;
+}
+html[data-theme="dark"] .profile-intro h1{
+  margin:6px 0 5px;
+  line-height:1.05;
+}
+html[data-theme="dark"] .profile-intro>p:last-child{
+  line-height:1.45;
+}
+@media(max-width:760px){
+  html[data-theme="dark"] .profile-cover{
+    height:150px;
+  }
+  html[data-theme="dark"] .profile-body{
+    padding:0 20px 22px;
+  }
+  html[data-theme="dark"] .profile-avatar-wrap{
+    margin-top:-43px;
+  }
+  html[data-theme="dark"] .profile-avatar-large{
+    width:84px;
+    height:84px;
+  }
+}
