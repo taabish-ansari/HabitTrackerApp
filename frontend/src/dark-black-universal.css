@@ -658,3 +658,51 @@ html[data-theme="dark"] .calendar-section table thead th.today-head {
     box-sizing:border-box;
   }
 }
+
+/* Profile information cards polish — spacing/readability only; colors and behavior unchanged. */
+html[data-theme="dark"] .profile-grid{
+  gap:13px;
+  margin-top:29px;
+}
+html[data-theme="dark"] .profile-card{
+  min-height:132px;
+  padding:19px;
+}
+html[data-theme="dark"] .profile-card span{
+  line-height:1.3;
+}
+html[data-theme="dark"] .profile-card strong{
+  margin-top:11px;
+  font-size:23px;
+  line-height:1.15;
+}
+html[data-theme="dark"] .profile-card small{
+  margin-top:8px;
+  line-height:1.45;
+}
+html[data-theme="dark"] .profile-email{
+  font-size:15px!important;
+  line-height:1.3!important;
+}
+@media(max-width:760px){
+  html[data-theme="dark"] .profile-grid{
+    gap:9px;
+    margin-top:22px;
+  }
+  html[data-theme="dark"] .profile-card{
+    min-height:112px;
+    padding:15px;
+  }
+  html[data-theme="dark"] .profile-card strong{
+    font-size:20px;
+  }
+}
+@media(max-width:500px){
+  html[data-theme="dark"] .profile-grid{
+    gap:10px;
+  }
+  html[data-theme="dark"] .profile-card{
+    min-height:auto;
+    padding:15px;
+  }
+}
