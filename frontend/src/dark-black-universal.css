@@ -329,3 +329,57 @@ html[data-theme="dark"] .calendar-section table thead th.today-head {
     padding-bottom:16px;
   }
 }
+
+/* Insights mobile polish — proportions/readability only; colors and behavior unchanged. */
+@media(max-width:760px){
+  .insights-grid .insight-card.large,
+  .insights-grid .insight-card:not(.large):not(.wide),
+  .insights-grid .insight-card.wide,
+  .insights-grid .recommendations-panel{
+    width:100%;
+    box-sizing:border-box;
+  }
+  .insights-grid .insight-card.large .muted{
+    max-width:100%;
+  }
+  .insights-grid .recommendations-head{
+    align-items:flex-start;
+    gap:8px;
+  }
+  .insights-grid .recommendations-head>span{
+    line-height:1.4;
+  }
+  .insights-grid .recommendation-card{
+    min-width:0;
+  }
+  .insights-grid .recommendation-card p{
+    overflow-wrap:anywhere;
+  }
+}
+
+@media(max-width:460px){
+  .insights-grid{
+    gap:10px;
+    margin-top:10px;
+  }
+  .insights-grid .insight-card.large{
+    min-height:160px;
+    padding:16px;
+  }
+  .insights-grid .insight-card.large h2{
+    font-size:20px;
+  }
+  .insights-grid .insight-card.large .big-number{
+    font-size:40px;
+  }
+  .insights-grid .insight-card:not(.large):not(.wide){
+    min-height:132px;
+    padding:14px;
+  }
+  .insights-grid .insight-card.wide{
+    padding:14px;
+  }
+  .insights-grid .recommendations-panel{
+    padding:14px;
+  }
+}
