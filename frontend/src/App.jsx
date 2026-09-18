@@ -8,6 +8,7 @@ import RewardsView from './components/RewardsView';
 import OnboardingEmptyState from './components/OnboardingEmptyState';
 import { getDailyScore } from './utils/dailyScore';
 import { getPersonalizedRecommendations } from './utils/personalizedRecommendations';
+import HabitScheduleManager from './components/HabitScheduleManager';
 
 const categories = ['Health', 'Study', 'Fitness', 'Work', 'Finance', 'Personal', 'Other'];
 const colors = ['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6', '#ef4444', '#06b6d4', '#ec4899'];
@@ -127,6 +128,7 @@ function Dashboard({ user }) {
       {view === 'rewards' && <RewardsView game={game} />}
     </main>
     {showForm && <HabitModal initial={editing} onClose={() => { setShowForm(false); setEditing(null); }} onSave={handleSave} />}
+    <HabitScheduleManager />
   </div>;
 }
 
