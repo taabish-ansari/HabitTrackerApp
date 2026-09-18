@@ -847,3 +847,28 @@ html[data-theme="dark"] .profile-saved{
     font-size:31px;
   }
 }
+
+/* Global cross-page spacing polish — presentation only; colors and behavior unchanged. */
+.content{
+  box-sizing:border-box;
+}
+.content>section{
+  box-sizing:border-box;
+}
+button,
+input,
+select,
+textarea{
+  line-height:1.25;
+}
+@media(max-width:760px){
+  .content{
+    box-sizing:border-box;
+  }
+  button,
+  input,
+  select,
+  textarea{
+    line-height:1.3;
+  }
+}
