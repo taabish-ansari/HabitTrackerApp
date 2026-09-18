@@ -30,6 +30,12 @@ html[data-theme="dark"] body,
 html[data-theme="dark"] #root,
 html[data-theme="dark"] .app-shell { background:#070707 !important; }
 
+/* Today stats: true black cards to match the dark UI. */
+html[data-theme="dark"] .stats-row > div {
+  background:#000000 !important;
+  border-color:#252525 !important;
+}
+
 /* Neutralize remaining blue/teal app accents without touching habit identity colors. */
 html[data-theme="dark"] .week-bar i,
 html[data-theme="dark"] .insights-week-bar i { background:linear-gradient(180deg,#eeeeee,#666666) !important; box-shadow:none !important; }
