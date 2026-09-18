@@ -350,3 +350,27 @@ html[data-theme="dark"] .content:has(.habit-list) .stats-row.four>div{box-shadow
     font-size:15px;
   }
 }
+
+/* Today mobile layout polish — presentation only; colors and behavior unchanged. */
+@media(max-width:760px){
+  .content:has(.habit-list){
+    padding-top:18px;
+  }
+  .content:has(.habit-list) .hero-card{
+    width:100%;
+  }
+  .content:has(.habit-list) .stats-row.four{
+    width:100%;
+  }
+  .content:has(.habit-list) .habit-list{
+    width:100%;
+  }
+}
+@media(max-width:500px){
+  .content:has(.habit-list) .hero-card{
+    padding:18px;
+  }
+  .content:has(.habit-list) .stats-row.four{
+    gap:9px;
+  }
+}
