@@ -131,3 +131,38 @@ html[data-theme="dark"] .calendar-section table thead th:not(.sticky-col),
 html[data-theme="dark"] .calendar-section table thead th.today-head {
   color:#737373 !important;
 }
+
+/* Calendar typography alignment — text size only; colors and behavior unchanged. */
+.calendar-section .month-nav strong{
+  font-size:16px !important;
+}
+.calendar-section table thead th:not(.sticky-col){
+  font-size:13px !important;
+}
+.calendar-section th.sticky-col{
+  font-size:14px !important;
+}
+.calendar-section .habit-name{
+  font-size:14px !important;
+}
+.calendar-section td{
+  font-size:13px !important;
+}
+.calendar-section .calendar-toolbar > .ghost{
+  font-size:13.5px !important;
+}
+@media(max-width:760px){
+  .calendar-section .month-nav strong{
+    font-size:15px !important;
+  }
+  .calendar-section table thead th:not(.sticky-col){
+    font-size:12px !important;
+  }
+  .calendar-section th.sticky-col,
+  .calendar-section .habit-name{
+    font-size:13px !important;
+  }
+  .calendar-section td{
+    font-size:12px !important;
+  }
+}
