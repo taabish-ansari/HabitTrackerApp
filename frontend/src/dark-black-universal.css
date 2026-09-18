@@ -508,3 +508,83 @@ html[data-theme="dark"] .calendar-section table thead th.today-head {
     font-size:24px;
   }
 }
+
+/* Rewards achievements polish — spacing/readability only; colors and behavior unchanged. */
+.rewards-page .achievements-panel{
+  padding:23px;
+}
+.rewards-page .achievements-panel-head{
+  gap:16px;
+  margin-bottom:17px;
+}
+.rewards-page .achievements-panel-head h2{
+  font-size:26px;
+  line-height:1.15;
+}
+.rewards-page .achievements-panel-head>span{
+  line-height:1.25;
+}
+.rewards-page .achievement-grid{
+  gap:13px;
+}
+.rewards-page .achievement-card{
+  min-height:96px;
+  padding:15px;
+  gap:14px;
+  align-items:flex-start;
+}
+.rewards-page .achievement-icon{
+  width:46px;
+  height:46px;
+  border-radius:13px;
+  font-size:18px;
+}
+.rewards-page .achievement-title-row{
+  gap:10px;
+  align-items:baseline;
+}
+.rewards-page .achievement-title-row h3{
+  font-size:15px;
+  line-height:1.25;
+}
+.rewards-page .achievement-title-row span{
+  line-height:1.2;
+}
+.rewards-page .achievement-main p{
+  margin:7px 0 8px;
+  line-height:1.5;
+}
+.rewards-page .achievement-main small{
+  line-height:1.3;
+}
+.rewards-page .achievement-mini-progress{
+  height:6px;
+}
+@media(max-width:760px){
+  .rewards-page .achievements-panel{
+    padding:16px;
+  }
+  .rewards-page .achievements-panel-head{
+    gap:9px;
+    margin-bottom:14px;
+  }
+  .rewards-page .achievements-panel-head h2{
+    font-size:21px;
+  }
+  .rewards-page .achievement-grid{
+    gap:10px;
+  }
+  .rewards-page .achievement-card{
+    min-height:88px;
+    padding:13px;
+    gap:12px;
+  }
+  .rewards-page .achievement-icon{
+    width:41px;
+    height:41px;
+    font-size:17px;
+  }
+  .rewards-page .achievement-title-row h3{
+    font-size:14px;
+  }
+}
