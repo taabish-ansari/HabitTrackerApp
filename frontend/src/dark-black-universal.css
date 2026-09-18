@@ -125,3 +125,9 @@ html[data-theme="dark"] .calendar-section th.sticky-col {
 html[data-theme="dark"] .calendar-section td.sticky-col .habit-name {
   color:#f5f5f5 !important;
 }
+
+/* Calendar day numbers: remove the blue accent and use neutral graphite text. */
+html[data-theme="dark"] .calendar-section table thead th:not(.sticky-col),
+html[data-theme="dark"] .calendar-section table thead th.today-head {
+  color:#737373 !important;
+}
