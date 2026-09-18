@@ -180,3 +180,32 @@
     inset:3px;
   }
 }
+
+/* Calendar table polish — proportions/scrolling only; colors and behavior unchanged. */
+.calendar-section .table-scroll{
+  width:100%;
+  overscroll-behavior-x:contain;
+}
+.calendar-section table{
+  width:100%;
+  table-layout:fixed;
+}
+.calendar-section .sticky-col{
+  width:235px;
+}
+.calendar-section th:not(.sticky-col),
+.calendar-section td:not(.sticky-col){
+  min-width:32px;
+}
+@media(max-width:760px){
+  .calendar-section table{
+    table-layout:auto;
+  }
+  .calendar-section .sticky-col{
+    width:170px;
+  }
+  .calendar-section th:not(.sticky-col),
+  .calendar-section td:not(.sticky-col){
+    min-width:32px;
+  }
+}
