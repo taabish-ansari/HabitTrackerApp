@@ -465,3 +465,46 @@ html[data-theme="dark"] .calendar-section table thead th.today-head {
     height:68px;
   }
 }
+
+/* Rewards stats polish — spacing/readability only; colors and behavior unchanged. */
+.rewards-page .reward-stat-grid{
+  gap:14px;
+}
+.rewards-page .reward-stat-card{
+  min-height:112px;
+  padding:19px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.rewards-page .reward-stat-card span,
+.rewards-page .reward-stat-card small{
+  line-height:1.35;
+}
+.rewards-page .reward-stat-card strong{
+  margin:9px 0 5px;
+  font-size:32px;
+  line-height:1;
+}
+@media(max-width:760px){
+  .rewards-page .reward-stat-grid{
+    gap:9px;
+  }
+  .rewards-page .reward-stat-card{
+    min-height:88px;
+    padding:14px;
+  }
+  .rewards-page .reward-stat-card strong{
+    margin:7px 0 4px;
+    font-size:26px;
+  }
+}
+@media(max-width:430px){
+  .rewards-page .reward-stat-card{
+    min-height:82px;
+    padding:13px;
+  }
+  .rewards-page .reward-stat-card strong{
+    font-size:24px;
+  }
+}
