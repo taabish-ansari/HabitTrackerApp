@@ -637,3 +637,24 @@ html[data-theme="dark"] .calendar-section table thead th.today-head {
     padding:15px;
   }
 }
+
+/* Rewards final desktop alignment — spacing only; colors and behavior unchanged. */
+@media(min-width:761px){
+  .rewards-page{
+    gap:18px;
+  }
+  .rewards-page .rewards-heading{
+    margin-top:10px;
+    margin-bottom:4px;
+  }
+  .rewards-page .reward-stat-grid{
+    align-items:stretch;
+  }
+  .rewards-page .reward-stat-card{
+    height:100%;
+    box-sizing:border-box;
+  }
+  .rewards-page .achievements-panel{
+    box-sizing:border-box;
+  }
+}
