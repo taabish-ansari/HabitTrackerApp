@@ -1334,3 +1334,54 @@ html[data-theme="dark"] .auth-card .error{
   outline:2px solid #777;
   outline-offset:1px;
 }
+
+
+/* Auth typography — increase readability without changing auth behavior. */
+.auth-card .brand-label{
+  font-size:15px !important;
+}
+.auth-heading .eyebrow{
+  font-size:11px !important;
+}
+.auth-heading h1{
+  font-size:44px !important;
+}
+.auth-heading p.muted{
+  font-size:14px !important;
+}
+.auth-card label{
+  font-size:13px !important;
+}
+.auth-card input{
+  font-size:14px !important;
+}
+.auth-card .primary{
+  font-size:14px !important;
+}
+.auth-card .link-button{
+  font-size:13px !important;
+}
+.auth-card .error{
+  font-size:13px !important;
+}
+.auth-card .password-toggle{
+  font-size:11px !important;
+}
+@media(max-width:760px){
+  .auth-heading h1{
+    font-size:36px !important;
+  }
+  .auth-heading p.muted{
+    font-size:13px !important;
+  }
+  .auth-card label{
+    font-size:12px !important;
+  }
+  .auth-card input,
+  .auth-card .primary{
+    font-size:13px !important;
+  }
+  .auth-card .link-button{
+    font-size:12px !important;
+  }
+}
