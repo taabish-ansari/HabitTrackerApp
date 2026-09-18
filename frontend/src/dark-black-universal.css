@@ -1020,3 +1020,12 @@ html[data-theme="dark"] .onboarding-empty-steps>article>span{
   background:#e8e8e8;
   color:#111;
 }
+
+
+/* Calendar day headers — remove remaining blue header blocks. */
+html[data-theme="dark"] .calendar-section table thead th:not(.sticky-col),
+html[data-theme="dark"] .calendar-section table thead th.today-head{
+  background:#000000 !important;
+  color:#737373 !important;
+  box-shadow:none !important;
+}
