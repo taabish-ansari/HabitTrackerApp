@@ -588,3 +588,52 @@ html[data-theme="dark"] .calendar-section table thead th.today-head {
     font-size:14px;
   }
 }
+
+/* Rewards mobile layout polish — proportions/spacing only; colors and behavior unchanged. */
+@media(max-width:760px){
+  .rewards-page{
+    gap:12px;
+    padding-top:0;
+  }
+  .rewards-page .rewards-heading{
+    gap:11px;
+    margin:6px 0 2px;
+  }
+  .rewards-page .rewards-heading h1{
+    font-size:34px;
+    line-height:1.05;
+  }
+  .rewards-page .rewards-heading .muted{
+    line-height:1.45;
+  }
+  .rewards-page .rewards-count{
+    padding:10px 13px;
+  }
+  .rewards-page .reward-hero-main .muted{
+    line-height:1.45;
+  }
+  .rewards-page .reward-progress-wrap small{
+    line-height:1.35;
+  }
+  .rewards-page .achievements-panel-head{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+}
+@media(max-width:430px){
+  .rewards-page{
+    gap:10px;
+  }
+  .rewards-page .rewards-heading h1{
+    font-size:31px;
+  }
+  .rewards-page .reward-hero-upgraded{
+    padding:16px!important;
+  }
+  .rewards-page .reward-hero-main{
+    gap:13px;
+  }
+  .rewards-page .reward-progress-wrap{
+    padding:15px;
+  }
+}
