@@ -862,9 +862,6 @@ textarea{
   line-height:1.25;
 }
 @media(max-width:760px){
-  .content{
-    box-sizing:border-box;
-  }
   button,
   input,
   select,
