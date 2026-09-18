@@ -101,3 +101,19 @@ html[data-theme="dark"] .content:has(.habit-list) .stats-row.four>div{box-shadow
   .content:has(.habit-list) .habit-main h3{font-size:12px}
   .content:has(.habit-list) .meta{font-size:7.5px}
 }
+
+/* Today hero readability polish — layout/typography only; colors and behavior unchanged. */
+@media (max-width:760px){
+  .content:has(.habit-list) .hero-card{gap:15px}
+  .content:has(.habit-list) .hero-card h1{font-size:32px}
+  .content:has(.habit-list) .hero-card .muted.light{font-size:14px}
+  .content:has(.habit-list) .hero-progress{min-height:108px;padding:15px}
+  .content:has(.habit-list) .hero-progress>span{font-size:36px}
+  .content:has(.habit-list) .hero-progress small{font-size:10px;margin:4px 0 8px}
+}
+@media (max-width:500px){
+  .content:has(.habit-list) .hero-card{gap:14px}
+  .content:has(.habit-list) .hero-card h1{font-size:30px}
+  .content:has(.habit-list) .hero-progress{min-height:104px}
+  .content:has(.habit-list) .hero-progress>span{font-size:34px}
+}
