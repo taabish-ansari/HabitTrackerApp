@@ -151,3 +151,32 @@
     padding:0 3px;
   }
 }
+
+/* Calendar state alignment polish — spacing only; colors and behavior unchanged. */
+.calendar-section td.today-cell{
+  z-index:1;
+}
+.calendar-section td.done,
+.calendar-section td.future-cell{
+  overflow:hidden;
+}
+.calendar-section td.done::after{
+  inset:7px;
+}
+.calendar-section td.today-cell::before{
+  inset:3px;
+}
+.calendar-section td.today-cell.done::before{
+  inset:2px;
+}
+.calendar-section td.future-cell input{
+  transform:scale(.95);
+}
+@media(max-width:760px){
+  .calendar-section td.done::after{
+    inset:6px;
+  }
+  .calendar-section td.today-cell::before{
+    inset:3px;
+  }
+}
