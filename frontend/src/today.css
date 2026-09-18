@@ -249,3 +249,52 @@ html[data-theme="dark"] .content:has(.habit-list) .stats-row.four>div{box-shadow
     margin-top:7px;
   }
 }
+
+/* Today habit cards polish — spacing/readability only; colors and behavior unchanged. */
+.content:has(.habit-list) .habit-card{
+  min-height:86px;
+  padding:16px 19px;
+}
+.content:has(.habit-list) .habit-main{
+  gap:13px;
+}
+.content:has(.habit-list) .habit-main h3{
+  font-size:17px;
+  line-height:1.25;
+  margin-bottom:6px;
+}
+.content:has(.habit-list) .meta{
+  font-size:12px;
+  line-height:1.35;
+}
+.content:has(.habit-list) .habit-right{
+  gap:6px;
+}
+.content:has(.habit-list) .streak{
+  padding:7px 10px;
+  line-height:1.2;
+}
+.content:has(.habit-list) .icon-button{
+  padding:8px 7px;
+  line-height:1.2;
+}
+.content:has(.habit-list) .drag-handle{
+  line-height:1;
+}
+@media(max-width:760px){
+  .content:has(.habit-list) .habit-card{
+    min-height:74px;
+    padding:12px 13px;
+  }
+  .content:has(.habit-list) .habit-main{
+    gap:10px;
+  }
+  .content:has(.habit-list) .habit-main h3{
+    font-size:15px;
+    line-height:1.25;
+  }
+  .content:has(.habit-list) .meta{
+    font-size:10px;
+    line-height:1.35;
+  }
+}
