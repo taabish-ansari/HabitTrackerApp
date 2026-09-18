@@ -126,3 +126,28 @@
     line-height:1.25;
   }
 }
+
+/* Calendar day columns polish — spacing/alignment only; colors and behavior unchanged. */
+.calendar-section thead th:not(.sticky-col){
+  line-height:1.25;
+  padding-inline:4px;
+}
+.calendar-section tbody td:not(.sticky-col){
+  vertical-align:middle;
+  padding:0 4px;
+}
+.calendar-section td input[type="checkbox"]{
+  display:block;
+  margin:auto;
+}
+.calendar-section td.today-cell input[type="checkbox"]{
+  margin:auto;
+}
+@media(max-width:760px){
+  .calendar-section thead th:not(.sticky-col){
+    padding-inline:3px;
+  }
+  .calendar-section tbody td:not(.sticky-col){
+    padding:0 3px;
+  }
+}
