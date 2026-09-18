@@ -298,3 +298,34 @@ html[data-theme="dark"] .content:has(.habit-list) .stats-row.four>div{box-shadow
     line-height:1.35;
   }
 }
+
+/* Today card controls polish — spacing/readability only; colors and behavior unchanged. */
+.content:has(.habit-list) .habit-right{
+  min-width:max-content;
+  gap:7px;
+}
+.content:has(.habit-list) .habit-right .streak{
+  line-height:1.2;
+  white-space:nowrap;
+}
+.content:has(.habit-list) .habit-right .icon-button{
+  min-width:34px;
+  min-height:34px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  line-height:1;
+}
+.content:has(.habit-list) .drag-handle{
+  min-height:28px;
+  line-height:1;
+}
+@media(max-width:760px){
+  .content:has(.habit-list) .habit-right{
+    gap:4px;
+  }
+  .content:has(.habit-list) .habit-right .icon-button{
+    min-width:30px;
+    min-height:30px;
+  }
+}
