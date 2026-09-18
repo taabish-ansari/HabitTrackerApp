@@ -1029,3 +1029,14 @@ html[data-theme="dark"] .calendar-section table thead th.today-head{
   color:#737373 !important;
   box-shadow:none !important;
 }
+
+
+/* Onboarding card final dark override — uiux rewrite uses !important, so match it here. */
+html[data-theme="dark"] .onboarding-empty{
+  background:#000000 !important;
+  border-color:#252525 !important;
+  box-shadow:0 18px 52px rgba(0,0,0,.28) !important;
+}
+html[data-theme="dark"] .onboarding-empty::after{
+  border-color:#1d1d1d !important;
+}
