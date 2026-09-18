@@ -54,3 +54,47 @@
   .habit-schedule-launcher{font-size:12px}
   .sidebar .ghost.full{font-size:12px}
 }
+
+/* Calendar header polish — spacing/alignment only; colors and behavior unchanged. */
+.calendar-section .calendar-toolbar{
+  gap:16px;
+}
+.calendar-section .month-nav{
+  gap:9px;
+}
+.calendar-section .month-nav button{
+  width:38px;
+  height:38px;
+  display:inline-grid;
+  place-items:center;
+  line-height:1;
+}
+.calendar-section .month-nav strong{
+  min-width:154px;
+  text-align:center;
+  line-height:1.2;
+}
+.calendar-section .calendar-toolbar > .ghost{
+  min-height:38px;
+  padding-inline:14px;
+  line-height:1.2;
+}
+@media(max-width:760px){
+  .calendar-section .calendar-toolbar{
+    gap:10px;
+  }
+  .calendar-section .month-nav{
+    gap:7px;
+  }
+  .calendar-section .month-nav button{
+    width:36px;
+    height:36px;
+  }
+  .calendar-section .month-nav strong{
+    min-width:118px;
+  }
+  .calendar-section .calendar-toolbar > .ghost{
+    min-height:36px;
+    padding-inline:12px;
+  }
+}
