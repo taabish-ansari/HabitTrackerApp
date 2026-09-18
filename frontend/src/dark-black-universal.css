@@ -300,3 +300,32 @@ html[data-theme="dark"] .calendar-section table thead th.today-head {
     height:7px;
   }
 }
+
+/* Insights overall layout polish — spacing/responsiveness only; colors and behavior unchanged. */
+.insights-grid{
+  gap:18px;
+  margin-top:18px;
+}
+.insights-grid>.insight-card.large,
+.insights-grid>.insight-card:not(.large):not(.wide),
+.insights-grid>.insight-card.wide,
+.insights-grid>.recommendations-panel{
+  box-sizing:border-box;
+}
+.insights-grid>.insight-card.wide{
+  padding-top:21px;
+  padding-bottom:21px;
+}
+.insights-grid>.recommendations-panel{
+  margin-top:0;
+}
+@media(max-width:760px){
+  .insights-grid{
+    gap:12px;
+    margin-top:12px;
+  }
+  .insights-grid>.insight-card.wide{
+    padding-top:16px;
+    padding-bottom:16px;
+  }
+}
