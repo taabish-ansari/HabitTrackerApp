@@ -706,3 +706,40 @@ html[data-theme="dark"] .profile-email{
     padding:15px;
   }
 }
+
+/* Profile progress card polish — spacing/readability only; colors and behavior unchanged. */
+html[data-theme="dark"] .profile-progress-card{
+  min-height:112px;
+  padding:23px 25px;
+  gap:26px;
+}
+html[data-theme="dark"] .profile-progress-card h2{
+  margin:6px 0 8px;
+  font-size:29px;
+  line-height:1.1;
+}
+html[data-theme="dark"] .profile-progress-card p:not(.eyebrow){
+  line-height:1.5;
+}
+html[data-theme="dark"] .profile-progress-ring{
+  width:84px;
+  height:84px;
+}
+html[data-theme="dark"] .profile-progress-ring strong{
+  line-height:1;
+}
+@media(max-width:760px){
+  html[data-theme="dark"] .profile-progress-card{
+    min-height:0;
+    padding:18px;
+    gap:18px;
+  }
+  html[data-theme="dark"] .profile-progress-card h2{
+    font-size:25px;
+    margin:5px 0 7px;
+  }
+  html[data-theme="dark"] .profile-progress-ring{
+    width:76px;
+    height:76px;
+  }
+}
