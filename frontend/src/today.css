@@ -220,3 +220,32 @@ html[data-theme="dark"] .content:has(.habit-list) .stats-row.four>div{box-shadow
     font-size:9px;
   }
 }
+
+/* Today stats polish — proportions/readability only; colors and behavior unchanged. */
+.content:has(.habit-list) .stats-row.four>div{
+  min-height:112px;
+  padding:19px 20px;
+}
+.content:has(.habit-list) .stats-row.four span{
+  line-height:1.35;
+}
+.content:has(.habit-list) .stats-row.four strong{
+  line-height:1.05;
+  margin-top:8px;
+}
+.content:has(.habit-list) .stats-row.four em{
+  line-height:1.35;
+}
+@media(max-width:760px){
+  .content:has(.habit-list) .stats-row.four>div{
+    min-height:88px;
+    padding:14px 15px;
+  }
+  .content:has(.habit-list) .stats-row.four span{
+    line-height:1.3;
+  }
+  .content:has(.habit-list) .stats-row.four strong{
+    line-height:1.05;
+    margin-top:7px;
+  }
+}
