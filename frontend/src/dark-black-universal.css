@@ -804,3 +804,46 @@ html[data-theme="dark"] .profile-saved{
     margin-top:16px;
   }
 }
+
+/* Profile final responsive polish — proportions/spacing only; colors and behavior unchanged. */
+@media(max-width:760px){
+  html[data-theme="dark"] .profile-overlay{
+    padding:10px;
+  }
+  html[data-theme="dark"] .profile-panel{
+    max-height:calc(100vh - 20px);
+  }
+  html[data-theme="dark"] .profile-body{
+    padding-left:18px;
+    padding-right:18px;
+  }
+  html[data-theme="dark"] .profile-intro h1{
+    font-size:33px;
+  }
+  html[data-theme="dark"] .profile-grid{
+    margin-top:21px;
+  }
+  html[data-theme="dark"] .profile-progress-card{
+    margin-top:10px;
+  }
+}
+@media(max-width:500px){
+  html[data-theme="dark"] .profile-overlay{
+    padding:7px;
+  }
+  html[data-theme="dark"] .profile-panel{
+    max-height:calc(100vh - 14px);
+    border-radius:22px;
+  }
+  html[data-theme="dark"] .profile-body{
+    padding-left:16px;
+    padding-right:16px;
+    padding-bottom:20px;
+  }
+  html[data-theme="dark"] .profile-intro{
+    margin-top:15px;
+  }
+  html[data-theme="dark"] .profile-intro h1{
+    font-size:31px;
+  }
+}
