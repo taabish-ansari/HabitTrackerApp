@@ -44,7 +44,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <App />
     <ProfileOverlay />
     <HabitDetailOverlay />
-    <HabitScheduleManager />
-    <RewardCelebration />
+        <RewardCelebration />
   </React.StrictMode>
 );
