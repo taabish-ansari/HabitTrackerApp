@@ -16,3 +16,67 @@
   object-fit: cover;
   border-radius: 50%;
 }
+
+
+/* Profile: match the app's black dark theme. */
+html[data-theme="dark"] .profile-panel {
+  background:#000000 !important;
+  border-color:#252525 !important;
+}
+html[data-theme="dark"] .profile-cover {
+  background:radial-gradient(circle at 20% 20%,rgba(255,255,255,.035),transparent 35%),radial-gradient(circle at 85% 70%,rgba(255,255,255,.025),transparent 38%),linear-gradient(135deg,#000000,#080808 55%,#101010) !important;
+}
+html[data-theme="dark"] .profile-avatar-large {
+  border-color:#000000 !important;
+  background:linear-gradient(145deg,#e5e5e5,#9a9a9a) !important;
+  color:#111111 !important;
+}
+html[data-theme="dark"] .profile-avatar-upload {
+  background:#101010 !important;
+  border-color:#333333 !important;
+  color:#dddddd !important;
+}
+html[data-theme="dark"] .profile-intro>p:last-child,
+html[data-theme="dark"] .profile-card small,
+html[data-theme="dark"] .profile-edit-head>div>p:last-child,
+html[data-theme="dark"] .profile-progress-card p:not(.eyebrow) {
+  color:#858585 !important;
+}
+html[data-theme="dark"] .profile-card,
+html[data-theme="dark"] .profile-edit-form {
+  background:linear-gradient(180deg,#101010,#090909) !important;
+  border-color:#252525 !important;
+}
+html[data-theme="dark"] .profile-card span,
+html[data-theme="dark"] .profile-edit-fields label>span {
+  color:#929292 !important;
+}
+html[data-theme="dark"] .profile-edit-button,
+html[data-theme="dark"] .profile-save-button {
+  background:linear-gradient(135deg,#171717,#0b0b0b) !important;
+  border-color:#333333 !important;
+  color:#f0f0f0 !important;
+}
+html[data-theme="dark"] .profile-edit-fields input {
+  background:#080808 !important;
+  border-color:#303030 !important;
+  color:#f0f0f0 !important;
+}
+html[data-theme="dark"] .profile-edit-fields input:focus {
+  border-color:#666666 !important;
+  box-shadow:0 0 0 3px rgba(255,255,255,.06) !important;
+}
+html[data-theme="dark"] .profile-edit-cancel,
+html[data-theme="dark"] .profile-close {
+  background:#111111 !important;
+  border-color:#303030 !important;
+  color:#dddddd !important;
+}
+html[data-theme="dark"] .profile-progress-card {
+  background:linear-gradient(120deg,#0b0b0b,#151515 60%,#101010) !important;
+  border-color:#292929 !important;
+}
+html[data-theme="dark"] .profile-progress-ring>div {
+  background:#000000 !important;
+  border-color:#292929 !important;
+}
