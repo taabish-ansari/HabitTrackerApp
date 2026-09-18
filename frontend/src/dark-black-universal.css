@@ -383,3 +383,36 @@ html[data-theme="dark"] .calendar-section table thead th.today-head {
     padding:14px;
   }
 }
+
+/* Insights final alignment polish — typography/spacing only; colors and behavior unchanged. */
+.insights-grid .eyebrow{
+  line-height:1.3;
+  letter-spacing:.08em;
+}
+.insights-grid .insight-card h3{
+  line-height:1.25;
+}
+.insights-grid .insight-card .muted{
+  line-height:1.5;
+}
+.insights-grid .bar-row>div:first-child{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:12px;
+}
+.insights-grid .recommendations-head{
+  display:flex;
+  justify-content:space-between;
+}
+.insights-grid .recommendation-card{
+  min-width:0;
+}
+@media(max-width:760px){
+  .insights-grid .recommendations-head{
+    flex-direction:column;
+  }
+  .insights-grid .bar-row>div:first-child{
+    gap:8px;
+  }
+}
