@@ -1001,3 +1001,22 @@ html[data-theme="dark"] .auth-card .error{
     font-size:14px;
   }
 }
+
+
+/* Empty onboarding state — black theme alignment; functionality and layout unchanged. */
+html[data-theme="dark"] .onboarding-empty{
+  background:#000;
+  border-color:#252525;
+  box-shadow:0 18px 52px rgba(0,0,0,.28);
+}
+html[data-theme="dark"] .onboarding-empty::after{
+  border-color:#1d1d1d;
+}
+html[data-theme="dark"] .onboarding-empty-steps article{
+  background:#000;
+  border-color:#252525;
+}
+html[data-theme="dark"] .onboarding-empty-steps>article>span{
+  background:#e8e8e8;
+  color:#111;
+}
