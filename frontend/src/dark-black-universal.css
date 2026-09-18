@@ -1297,3 +1297,40 @@ html[data-theme="dark"] .auth-card .error{
     font-size:31px !important;
   }
 }
+
+
+/* Auth password visibility control — presentation only. */
+.auth-card .password-field{
+  position:relative;
+  width:100%;
+}
+.auth-card .password-field input{
+  padding-right:58px !important;
+}
+.auth-card .password-toggle{
+  position:absolute;
+  top:50%;
+  right:8px;
+  transform:translateY(-50%);
+  min-width:42px;
+  min-height:28px;
+  padding:4px 7px;
+  border:1px solid #292929;
+  border-radius:7px;
+  background:#111;
+  color:#cfcfcf;
+  font:inherit;
+  font-size:10px;
+  font-weight:700;
+  line-height:1;
+  cursor:pointer;
+}
+.auth-card .password-toggle:hover{
+  background:#191919;
+  border-color:#3a3a3a;
+  color:#f5f5f5;
+}
+.auth-card .password-toggle:focus-visible{
+  outline:2px solid #777;
+  outline-offset:1px;
+}
