@@ -1040,3 +1040,16 @@ html[data-theme="dark"] .onboarding-empty{
 html[data-theme="dark"] .onboarding-empty::after{
   border-color:#1d1d1d !important;
 }
+
+
+/* Create/edit habit modal — black theme alignment. */
+html[data-theme="dark"] .modal{
+  background:#000000 !important;
+  border-color:#252525 !important;
+  box-shadow:0 34px 100px rgba(0,0,0,.55) !important;
+}
+html[data-theme="dark"] .modal .close{
+  background:#000000 !important;
+  border-color:#303030 !important;
+  color:#e5e5e5 !important;
+}
