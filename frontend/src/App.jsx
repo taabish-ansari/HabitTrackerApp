@@ -3,6 +3,7 @@ import { habitsApi, gameApi } from './services/api';
 import { useHabits, useHabitLogs } from './hooks/useHabits';
 import { useUsageStreak } from './hooks/useUsageStreak';
 import { useSession, signIn, signUp } from './hooks/useSession';
+import { useTheme } from './hooks/useTheme';
 import { supabase } from './lib/supabase';
 import RewardsView from './components/RewardsView';
 import OnboardingEmptyState from './components/OnboardingEmptyState';
@@ -47,6 +48,7 @@ function AuthScreen() {
 }
 
 function App() {
+  useTheme();
   const { session, loading } = useSession();
   if (loading) return <div className="center"><div className="spinner" />Loading your workspace…</div>;
   return session ? <Dashboard user={session.user} /> : <AuthScreen />;
