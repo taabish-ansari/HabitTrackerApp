@@ -94,3 +94,20 @@ html[data-theme="dark"] .global-theme-control .theme-toggle { background:#111 !i
   html[data-theme="dark"] .mobile-nav button { color:#8e8e8e !important; }
   html[data-theme="dark"] .mobile-nav button.active { color:#f4f4f4 !important; background:#181818 !important; }
 }
+
+/* Today toolbar controls: black/graphite to match the dark theme. */
+html[data-theme="dark"] .content:has(.habit-list) .reorder-hint {
+  background:#101010 !important;
+  color:#a3a3a3 !important;
+  border-color:#303030 !important;
+}
+
+html[data-theme="dark"] .content:has(.habit-list) .search {
+  background:#101010 !important;
+  color:#f5f5f5 !important;
+  border-color:#303030 !important;
+}
+
+html[data-theme="dark"] .content:has(.habit-list) .search::placeholder {
+  color:#737373 !important;
+}
