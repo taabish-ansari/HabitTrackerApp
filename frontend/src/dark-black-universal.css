@@ -111,3 +111,17 @@ html[data-theme="dark"] .content:has(.habit-list) .search {
 html[data-theme="dark"] .content:has(.habit-list) .search::placeholder {
   color:#737373 !important;
 }
+
+/* Calendar habit column: black to match the rest of the dark theme. */
+html[data-theme="dark"] .calendar-section .sticky-col {
+  background:#000000 !important;
+  border-color:#252525 !important;
+}
+
+html[data-theme="dark"] .calendar-section th.sticky-col {
+  color:#a3a3a3 !important;
+}
+
+html[data-theme="dark"] .calendar-section td.sticky-col .habit-name {
+  color:#f5f5f5 !important;
+}
